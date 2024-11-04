@@ -91,17 +91,18 @@ Route::get('/print-map-trends{any?}', function () {
     return redirect()->route('print-map-trends');
 })->where('any', '.*');
 
-Route::get('/management/admin', function () {
-    return view('management.admin.index');
+Route::get('/management-admin', function () {
+    return view('admin.index');
 })->name('admin');
 
-Route::get('/management/agriculturist', function () {
-    return view('management.agriculturist.index');
+Route::get('/management-agriculturist', function () {
+    return view('agriculturist.index');
 })->name('agriculturist');
 
-Route::get('/management/logindas', function () {
-    return view('management.login.index');
+Route::get('/management-login', function () {
+    return view('login.index');
 })->name('login');
+
 
 Route::middleware([TrimTrailingSlashes::class])->group(function () {
     Route::get('/greet/me', function () {

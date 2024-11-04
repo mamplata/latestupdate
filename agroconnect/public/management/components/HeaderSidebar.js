@@ -360,7 +360,7 @@ $(document).ready(function () {
                             );
                             // Redirect after a short delay to let the toast show
                             setTimeout(function () {
-                                window.location.href = "/management/login"; // Redirect to login page
+                                window.location.href = "/management-login"; // Redirect to login page
                             }, 1500); // Adjust delay as needed
                         } else {
                             toastr.error(

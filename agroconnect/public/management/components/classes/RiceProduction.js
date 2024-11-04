@@ -407,7 +407,7 @@ function initializeMethodsRiceProduction() {
             "cropName",
             "areaPlanted",
             "monthHarvested",
-            "volumericeProduction",
+            "volumeProduction", // Fixed typo from 'volumericeProduction' to 'volumeProduction'
             "averageYield",
             "season",
             "year",
@@ -418,36 +418,33 @@ function initializeMethodsRiceProduction() {
 
         // Filter data to match the new headers
         const filteredData = data.map((row) => {
-            const filteredRow = {};
-            headersToInclude.forEach((key) => {
-                filteredRow[headerMap[key]] = row[key];
-            });
-            return filteredRow;
+            return headersToInclude.reduce((acc, key) => {
+                acc[headerMap[key]] = row[key];
+                return acc;
+            }, {});
         });
 
         // Create a new workbook and add a worksheet
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet(filename);
 
-        // Add filtered data to the worksheet
+        // Add header row to the worksheet
         worksheet.addRow(mappedHeaders);
+
+        // Add filtered data to the worksheet
         filteredData.forEach((row) => {
             worksheet.addRow(
-                headersToInclude.map((header) => {
-                    const value = row[headerMap[header]];
-                    // Format specific columns with peso sign
-                    return value;
-                })
+                headersToInclude.map((header) => row[headerMap[header]])
             );
         });
 
-        // Define header and data style
+        // Define header and data styles
         const headerStyle = {
             font: {
                 name: "Calibri",
                 size: 12,
                 bold: true,
-                color: { argb: "FFFFFFFF" }, // White color
+                color: { argb: "FFFFFFFF" },
             },
             fill: {
                 type: "pattern",
@@ -456,7 +453,7 @@ function initializeMethodsRiceProduction() {
             },
             alignment: { horizontal: "center", vertical: "middle" },
             border: {
-                top: { style: "thin", color: { argb: "FF000000" } }, // Black border
+                top: { style: "thin", color: { argb: "FF000000" } },
                 right: { style: "thin", color: { argb: "FF000000" } },
                 bottom: { style: "thin", color: { argb: "FF000000" } },
                 left: { style: "thin", color: { argb: "FF000000" } },
@@ -464,35 +461,29 @@ function initializeMethodsRiceProduction() {
         };
 
         const dataStyle = {
-            font: {
-                name: "Calibri",
-                size: 11,
-            },
+            font: { name: "Calibri", size: 11 },
             alignment: {
                 horizontal: "center",
                 vertical: "middle",
                 wrapText: true,
             },
             border: {
-                top: { style: "thin", color: { argb: "FF000000" } }, // Black border
+                top: { style: "thin", color: { argb: "FF000000" } },
                 right: { style: "thin", color: { argb: "FF000000" } },
                 bottom: { style: "thin", color: { argb: "FF000000" } },
                 left: { style: "thin", color: { argb: "FF000000" } },
             },
         };
 
-        // Apply style to header row
-        const headerRow = worksheet.getRow(1);
-        headerRow.eachCell({ includeEmpty: true }, (cell) => {
+        // Apply styles to header and data rows
+        worksheet.getRow(1).eachCell((cell) => {
             cell.style = headerStyle;
         });
-        headerRow.height = 20; // Set header row height
 
-        // Apply style to data rows
         worksheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
             if (rowNumber > 1) {
                 // Skip header row
-                row.eachCell({ includeEmpty: true }, (cell) => {
+                row.eachCell((cell) => {
                     cell.style = dataStyle;
                 });
             }
@@ -504,7 +495,7 @@ function initializeMethodsRiceProduction() {
         }));
 
         // Write workbook to browser
-        workbook.xlsx.writeBuffer().then(function (buffer) {
+        workbook.xlsx.writeBuffer().then((buffer) => {
             const blob = new Blob([buffer], {
                 type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             });
@@ -512,9 +503,12 @@ function initializeMethodsRiceProduction() {
             const a = document.createElement("a");
             a.href = url;
             a.download = filename;
+            document.body.appendChild(a); // Append anchor to body
             a.click();
+            document.body.removeChild(a); // Remove anchor from body
             URL.revokeObjectURL(url);
         });
+
         addDownload(filename, "XLSX");
     }
 
