@@ -1,44 +1,76 @@
+import Dialog from '../management/components/helpers/Dialog.js';
+
 $(document).ready(function() {
-  const apiKey = 'TrO3i54Ru1N0tgNmEUvMZeqWmzPG7KAK';
-  const locationKey = '3409731';
-  const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
-  console.log(WEATHER_API_KEY); // Outputs your API key
+  let apiKey;
+  let locationKey;
   let lastFetchTimestamp = 0; // Initialize timestamp in memory
   let cachedWeatherData = null; // Initialize data cache
   const fetchInterval = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
 
-  function fetchWeatherData() {
+  $(document).ready(function() {
+    $('#infoBtn').click(function() {
+        let htmlScript = `
+        <p>Welcome to the Weather Forecast page. This tool provides a 5-day weather forecast to help you plan and prepare for upcoming weather conditions. Follow these instructions to use the tool effectively:</p>
+
+        <ol>
+          <li><strong>View the 5-Day Forecast:</strong><br>
+          The forecast displays weather information for the next five days. Each day includes detailed data on the following parameters:
+            <ul>
+              <li><strong>Temperature:</strong> The expected high and low temperatures for each day.</li>
+              <li><strong>Humidity:</strong> The forecasted humidity levels, indicating the amount of moisture in the air.</li>
+              <li><strong>Precipitation:</strong> The amount of expected precipitation, including rain, snow, or other forms of moisture.</li>
+              <li><strong>Rainfall Probability:</strong> The likelihood of rainfall, expressed as a percentage probability.</li>
+            </ul>
+          </li>
+
+          <li><strong>Understand Weather Parameters:</strong><br>
+          Each weather parameter provides insights into the expected conditions:
+            <ul>
+              <li><strong>Temperature:</strong> Helps you prepare for hot or cold weather.</li>
+              <li><strong>Humidity:</strong> Useful for understanding comfort levels and potential impacts on health.</li>
+              <li><strong>Precipitation:</strong> Indicates potential for rain or snow, helping you plan outdoor activities.</li>
+              <li><strong>Rainfall Probability:</strong> Allows you to gauge the chance of rain and plan accordingly.</li>
+            </ul>
+          </li>
+
+        <p>This tool provides comprehensive weather forecasting to help you make informed decisions based on expected weather conditions.</p>
+        `;
+
+        Dialog.showInfoModal(htmlScript);
+    });
+});
+
+
+  async function fetchWeatherData() {
     const url = `https://dataservice.accuweather.com/forecasts/v1/daily/5day/${locationKey}?apikey=${apiKey}&details=true&metric=true`;
   
-    $.getJSON(url)
-      .done(function(data) {
-        // Save data to your API endpoint
-        $.ajax({
-          url: 'api/weatherforecasts',
-          method: 'POST',
-          contentType: 'application/json',
-          data: JSON.stringify({
-            weather_data: data,
-            timestamp: new Date().getTime()
-          }),
-          success: function(response) {
-            console.log('Data successfully saved to the server.');
-  
-            // Cache the data in memory
-            cachedWeatherData = data;
-            lastFetchTimestamp = new Date().getTime(); // Update the timestamp
-  
-            displayWeatherData(data);
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-            console.error('Error saving data to the server:', jqXHR, textStatus, errorThrown);
-          }
-        });
-      })
-      .fail(function(jqXHR, textStatus, errorThrown) {
-        console.error('Error fetching forecast data:', textStatus, errorThrown);
+    try {
+      // Fetch weather data
+      const data = await $.getJSON(url);
+      
+      // Save data to your API endpoint
+      await $.ajax({
+        url: 'api/weatherforecasts',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+          weather_data: data,
+          timestamp: new Date().getTime()
+        })
       });
+  
+      console.log('Data successfully saved to the server.');
+  
+      // Cache the data in memory
+      cachedWeatherData = data;
+      lastFetchTimestamp = new Date().getTime(); // Update the timestamp
+  
+      displayWeatherData(data);
+    } catch (error) {
+      console.error('Error fetching or saving forecast data:', error);
+    }
   }
+  
 
   function setWeatherBackground(weatherCondition) {
     const now = new Date();
@@ -208,32 +240,59 @@ $(document).ready(function() {
     });
   }
 
-  function loadWeatherData() {
+  async function loadWeatherData() {
     const now = new Date().getTime();
   
-    // Perform a GET request to check if cached data exists and is valid
-    $.getJSON('api/weatherforecasts')
-      .done(function(response) {
-        // Assuming the response has a `timestamp` field and `weather_data`
-        const cachedTimestamp = response.timestamp;
-        const cachedData = response.weather_data;
+    try {
+      // Perform a GET request to check if cached data exists and is valid
+      const response = await $.getJSON('api/weatherforecasts');
+      const cachedTimestamp = response.timestamp;
+      const cachedData = response.weather_data;
   
-        if (cachedTimestamp && (now - cachedTimestamp) < fetchInterval) {
-          // Use cached data if it's recent enough
-          displayWeatherData(cachedData);
-          console.log('Displayed cached weather data.');
-          return;
-        } else {
-          console.log('Cached weather data is not valid or not available.');
-        }
-      })
-      .fail(function(jqXHR, textStatus, errorThrown) {
-        console.error('Error fetching cached data from the server:', textStatus, errorThrown);
-      });
-  
-    // Fetch new data if no recent cached data
-    fetchWeatherData();
+      if (cachedTimestamp && (now - cachedTimestamp) < fetchInterval) {
+        // Use cached data if it's recent enough
+        displayWeatherData(cachedData);
+        console.log('Displayed cached weather data.');
+      } else {
+        console.log('Cached weather data is not valid or not available.');
+        // Fetch new data if no recent cached data
+        await fetchWeatherData();
+      }
+    } catch (error) {
+      console.error('Error fetching cached data from the server:', error);
+      // Fetch new data if there was an error fetching the cached data
+      await fetchWeatherData();
+    }
   }
 
-  loadWeatherData();
+  async function fetchWeatherKeys() {
+    try {
+        const response = await fetch('/api/weather-keys');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        
+        apiKey = data.weather_api_key;
+        locationKey = data.weather_location_key;
+
+        console.log('Weather API Key:', apiKey);
+        console.log('Weather Location Key:', locationKey);
+
+    } catch (error) {
+        console.error('Error fetching weather keys:', error);
+    }
+}
+
+  $(document).ready(async function() {
+      // Fetch the API keys before fetching weather data
+      await fetchWeatherKeys();
+    
+      // Fetch and display the weather data after keys are available
+      if (apiKey && locationKey) {
+          await loadWeatherData();
+      } else {
+          console.error('Weather API Key or Location Key is missing.');
+      }
+  });
 });

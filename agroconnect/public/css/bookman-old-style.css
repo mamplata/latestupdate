@@ -1,27 +1,2 @@
-@font-face {
-    font-family: 'Bookman Old Style';
-    src: url('../assets/font/bookman-old-style/Bookman Old Style Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Bookman Old Style';
-    src: url('../assets/font/bookman-old-style/Bookman Old Style Bold.ttf') format('truetype');
-    font-weight: bold;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Bookman Old Style';
-    src: url('../assets/font/bookman-old-style/Bookman Old Style Italic.ttf') format('truetype');
-    font-weight: normal;
-    font-style: italic;
-}
-
-@font-face {
-    font-family: 'Bookman Old Style';
-    src: url('../assets/font/bookman-old-style/Bookman Old Style Bold Italic.ttf') format('truetype');
-    font-weight: bold;
-    font-style: italic;
-}
+@font-face{font-family:Bookman Old Style;font-style:normal;font-weight:400;src:url("/fonts/Bookman Old Style Regular.ttf?cef603751bb8b1b908b14bd56be7dbab") format("truetype")}@font-face{font-family:Bookman Old Style;font-style:normal;font-weight:700;src:url("/fonts/Bookman Old Style Bold.ttf?0eeb8f1b4cda5717a3e59b5dd88f8ba5") format("truetype")}@font-face{font-family:Bookman Old Style;font-style:italic;font-weight:400;src:url("/fonts/Bookman Old Style Italic.ttf?9fdf25cf8ab1fd695935d19e8f2de7d7") format("truetype")}@font-face{font-family:Bookman Old Style;font-style:italic;font-weight:700;src:url("/fonts/Bookman Old Style Bold Italic.ttf?8e0be5c2b1f800698e18bebcfa49be60") format("truetype")}
+@font-face{font-family:Bookman Old Style;font-style:normal;font-weight:400;src:url("/fonts/Bookman Old Style Regular.ttf?cef603751bb8b1b908b14bd56be7dbab") format("truetype")}@font-face{font-family:Bookman Old Style;font-style:normal;font-weight:700;src:url("/fonts/Bookman Old Style Bold.ttf?0eeb8f1b4cda5717a3e59b5dd88f8ba5") format("truetype")}@font-face{font-family:Bookman Old Style;font-style:italic;font-weight:400;src:url("/fonts/Bookman Old Style Italic.ttf?9fdf25cf8ab1fd695935d19e8f2de7d7") format("truetype")}@font-face{font-family:Bookman Old Style;font-style:italic;font-weight:700;src:url("/fonts/Bookman Old Style Bold Italic.ttf?8e0be5c2b1f800698e18bebcfa49be60") format("truetype")}

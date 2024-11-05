@@ -92,20 +92,20 @@ Route::get('/print-map-trends{any?}', function () {
 })->where('any', '.*');
 
 Route::get('/management-admin', function () {
-    return view('admin.index');
+    return view('management.admin.index');
 })->name('admin');
 
 Route::get('/management-agriculturist', function () {
-    return view('agriculturist.index');
+    return view('management.agriculturist.index');
 })->name('agriculturist');
 
 Route::get('/management-login', function () {
-    return view('login.index');
+    return view('management.login.index');
 })->name('login');
 
 
 Route::middleware([TrimTrailingSlashes::class])->group(function () {
-    Route::get('/greet/me', function () {
+    Route::get('/greet', function () {
         return view('greet');
     });
 });

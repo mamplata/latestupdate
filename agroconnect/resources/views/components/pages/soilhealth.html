@@ -99,627 +99,670 @@
 
         <div class="main-content">
             <div class="container-fluid card">
-               <div class="d-flex justify-content-between align-items-center mx-5">
+                <div
+                    class="d-flex justify-content-between align-items-center mx-5"
+                >
                     <h1 class="mt-4">Cabuyao Soil Health Monitoring</h1>
-                    <button
-                        id="infoBtn"
-                        class="btn"
-                    >
+                    <button id="infoBtn" class="btn">
                         <i class="fas fa-info-circle"></i>
                     </button>
-               </div>
-                 
-            <div>
-                <!-- Vegetables Section -->
-                <div class="cont">
-                    <div class="card w-100 bg-white">
-                        <div
-                            id="pageTitle"
-                            class="container-fluid text-white d-flex justify-content-center align-items-center py-2 position-relative"
-                        >
-                            <h2 class="w-100 text-center">Vegetables</h2>
-                        </div>
-                        <div class="card">
+                </div>
+
+                <div>
+                    <!-- Vegetables Section -->
+                    <div class="cont">
+                        <div class="card w-100 bg-white">
                             <div
-                                class="card-body mb-3 text-center"
-                                id="vegetables-body"
+                                id="pageTitle"
+                                class="container-fluid text-white d-flex justify-content-center align-items-center py-2 position-relative"
                             >
+                                <h2 class="w-100 text-center">Vegetables</h2>
+                            </div>
+                            <div class="card">
                                 <div
-                                    class="row justify-content-between align-items-center"
+                                    class="card-body mb-3 text-center"
+                                    id="vegetables-body"
                                 >
-                                    <div class="col-md-6">
-                                        <canvas id="vegetablesChart"></canvas>
-                                    </div>
-                                    <div class="col-md-6" id="vegetables-card">
-                                        <div class="row justify-content-center">
-                                            <div class="col-md-4 mb-2">
-                                                <div
-                                                    class="card rounded-custom bg-primary text-white d-flex align-items-center justify-content-center"
-                                                    style="
-                                                        height: 120px;
-                                                        margin: 10px;
-                                                    "
-                                                >
+                                    <div
+                                        class="row justify-content-between align-items-center"
+                                    >
+                                        <div class="col-md-6">
+                                            <canvas
+                                                id="vegetablesChart"
+                                            ></canvas>
+                                        </div>
+                                        <div
+                                            class="col-md-6"
+                                            id="vegetables-card"
+                                        >
+                                            <div
+                                                class="row justify-content-center"
+                                            >
+                                                <div class="col-md-4 mb-2">
                                                     <div
-                                                        class="card-body text-center"
+                                                        class="card rounded-custom bg-primary text-white d-flex align-items-center justify-content-center"
+                                                        style="
+                                                            height: 120px;
+                                                            margin: 10px;
+                                                        "
                                                     >
-                                                        <h1
-                                                            style="
-                                                                font-size: 1.5rem;
-                                                            "
+                                                        <div
+                                                            class="card-body text-center"
                                                         >
-                                                            GR
-                                                        </h1>
-                                                        <p
-                                                            id="vegetables-general"
-                                                            style="
-                                                                font-size: 0.8rem;
-                                                            "
-                                                        >
-                                                            Loading...
-                                                        </p>
+                                                            <h1
+                                                                style="
+                                                                    font-size: 1.5rem;
+                                                                "
+                                                            >
+                                                                GR
+                                                            </h1>
+                                                            <p
+                                                                id="vegetables-general"
+                                                                style="
+                                                                    font-size: 0.8rem;
+                                                                "
+                                                            >
+                                                                Loading...
+                                                            </p>
+                                                        </div>
                                                     </div>
+                                                    <p>
+                                                        <strong
+                                                            >General
+                                                            Rating</strong
+                                                        >
+                                                    </p>
                                                 </div>
-                                                <p>
-                                                    <strong
-                                                        >General Rating</strong
+                                                <div class="col-md-4 mb-2">
+                                                    <div
+                                                        class="card rounded-custom bg-warning text-dark d-flex align-items-center justify-content-center"
+                                                        style="
+                                                            height: 120px;
+                                                            margin: 10px;
+                                                        "
                                                     >
-                                                </p>
+                                                        <div
+                                                            class="card-body text-center"
+                                                        >
+                                                            <h1
+                                                                style="
+                                                                    font-size: 1.5rem;
+                                                                "
+                                                            >
+                                                                P
+                                                            </h1>
+                                                            <p
+                                                                id="vegetables-phosphorus"
+                                                                style="
+                                                                    font-size: 0.8rem;
+                                                                "
+                                                            >
+                                                                Loading...
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <p>
+                                                        <strong
+                                                            >Phosphorus</strong
+                                                        >
+                                                    </p>
+                                                </div>
+                                                <div class="col-md-4 mb-2">
+                                                    <div
+                                                        class="card rounded-custom bg-success text-white d-flex align-items-center justify-content-center"
+                                                        style="
+                                                            height: 120px;
+                                                            margin: 10px;
+                                                        "
+                                                    >
+                                                        <div
+                                                            class="card-body text-center"
+                                                        >
+                                                            <h1
+                                                                style="
+                                                                    font-size: 1.5rem;
+                                                                "
+                                                            >
+                                                                pH
+                                                            </h1>
+                                                            <p
+                                                                id="vegetables-ph"
+                                                                style="
+                                                                    font-size: 0.8rem;
+                                                                "
+                                                            >
+                                                                Loading...
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <p><strong>pH</strong></p>
+                                                </div>
                                             </div>
-                                            <div class="col-md-4 mb-2">
-                                                <div
-                                                    class="card rounded-custom bg-warning text-dark d-flex align-items-center justify-content-center"
-                                                    style="
-                                                        height: 120px;
-                                                        margin: 10px;
-                                                    "
-                                                >
+                                            <div
+                                                class="row justify-content-center"
+                                            >
+                                                <div class="col-md-4 mb-3">
                                                     <div
-                                                        class="card-body text-center"
+                                                        class="card rounded-custom bg-danger text-white d-flex align-items-center justify-content-center"
+                                                        style="
+                                                            height: 120px;
+                                                            margin: 10px;
+                                                        "
                                                     >
-                                                        <h1
-                                                            style="
-                                                                font-size: 1.5rem;
-                                                            "
+                                                        <div
+                                                            class="card-body text-center"
                                                         >
-                                                            P
-                                                        </h1>
-                                                        <p
-                                                            id="vegetables-phosphorus"
-                                                            style="
-                                                                font-size: 0.8rem;
-                                                            "
-                                                        >
-                                                            Loading...
-                                                        </p>
+                                                            <h1
+                                                                style="
+                                                                    font-size: 1.5rem;
+                                                                "
+                                                            >
+                                                                K
+                                                            </h1>
+                                                            <p
+                                                                id="vegetables-potassium"
+                                                                style="
+                                                                    font-size: 0.8rem;
+                                                                "
+                                                            >
+                                                                Loading...
+                                                            </p>
+                                                        </div>
                                                     </div>
+                                                    <p>
+                                                        <strong
+                                                            >Potassium</strong
+                                                        >
+                                                    </p>
                                                 </div>
-                                                <p>
-                                                    <strong>Phosphorus</strong>
-                                                </p>
-                                            </div>
-                                            <div class="col-md-4 mb-2">
-                                                <div
-                                                    class="card rounded-custom bg-success text-white d-flex align-items-center justify-content-center"
-                                                    style="
-                                                        height: 120px;
-                                                        margin: 10px;
-                                                    "
-                                                >
+                                                <div class="col-md-4 mb-3">
                                                     <div
-                                                        class="card-body text-center"
+                                                        class="card rounded-custom bg-info text-white d-flex align-items-center justify-content-center"
+                                                        style="
+                                                            height: 120px;
+                                                            margin: 10px;
+                                                        "
                                                     >
-                                                        <h1
-                                                            style="
-                                                                font-size: 1.5rem;
-                                                            "
+                                                        <div
+                                                            class="card-body text-center"
                                                         >
-                                                            pH
-                                                        </h1>
-                                                        <p
-                                                            id="vegetables-ph"
-                                                            style="
-                                                                font-size: 0.8rem;
-                                                            "
-                                                        >
-                                                            Loading...
-                                                        </p>
+                                                            <h1
+                                                                style="
+                                                                    font-size: 1.5rem;
+                                                                "
+                                                            >
+                                                                N
+                                                            </h1>
+                                                            <p
+                                                                id="vegetables-nitrogen"
+                                                                style="
+                                                                    font-size: 0.8rem;
+                                                                "
+                                                            >
+                                                                Loading...
+                                                            </p>
+                                                        </div>
                                                     </div>
+                                                    <p>
+                                                        <strong
+                                                            >Nitrogen</strong
+                                                        >
+                                                    </p>
                                                 </div>
-                                                <p><strong>pH</strong></p>
                                             </div>
                                         </div>
-                                        <div class="row justify-content-center">
-                                            <div class="col-md-4 mb-3">
-                                                <div
-                                                    class="card rounded-custom bg-danger text-white d-flex align-items-center justify-content-center"
-                                                    style="
-                                                        height: 120px;
-                                                        margin: 10px;
-                                                    "
-                                                >
-                                                    <div
-                                                        class="card-body text-center"
-                                                    >
-                                                        <h1
-                                                            style="
-                                                                font-size: 1.5rem;
-                                                            "
-                                                        >
-                                                            K
-                                                        </h1>
-                                                        <p
-                                                            id="vegetables-potassium"
-                                                            style="
-                                                                font-size: 0.8rem;
-                                                            "
-                                                        >
-                                                            Loading...
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <p>
-                                                    <strong>Potassium</strong>
-                                                </p>
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <div
-                                                    class="card rounded-custom bg-info text-white d-flex align-items-center justify-content-center"
-                                                    style="
-                                                        height: 120px;
-                                                        margin: 10px;
-                                                    "
-                                                >
-                                                    <div
-                                                        class="card-body text-center"
-                                                    >
-                                                        <h1
-                                                            style="
-                                                                font-size: 1.5rem;
-                                                            "
-                                                        >
-                                                            N
-                                                        </h1>
-                                                        <p
-                                                            id="vegetables-nitrogen"
-                                                            style="
-                                                                font-size: 0.8rem;
-                                                            "
-                                                        >
-                                                            Loading...
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <p><strong>Nitrogen</strong></p>
-                                            </div>
-                                        </div>
                                     </div>
+                                    <div id="interpretation">
+                                        <div id="vegetablesBreakdown"></div>
+                                    </div>
+                                    <button
+                                        class="btn btn-primary download-btn"
+                                        data-type="vegetables"
+                                    >
+                                        Download Vegetables Data
+                                    </button>
                                 </div>
-                                <div id="interpretation">
-                                    <div id="vegetablesBreakdown"></div>
-                                </div>
-                                <button
-                                    class="btn btn-primary download-btn"
-                                    data-type="vegetables"
-                                >
-                                    Download Vegetables Data
-                                </button>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Rice Section -->
-                <div class="cont">
-                    <div class="card w-100 bg-white">
-                        <div
-                            id="pageTitle"
-                            class="container-fluid text-white d-flex justify-content-center align-items-center py-2 position-relative"
-                        >
-                            <h2 class="w-100 text-center">Rice</h2>
-                        </div>
-                        <div class="card">
+                    <!-- Rice Section -->
+                    <div class="cont">
+                        <div class="card w-100 bg-white">
                             <div
-                                class="card-body mb-3 text-center"
-                                id="rice-body"
+                                id="pageTitle"
+                                class="container-fluid text-white d-flex justify-content-center align-items-center py-2 position-relative"
                             >
+                                <h2 class="w-100 text-center">Rice</h2>
+                            </div>
+                            <div class="card">
                                 <div
-                                    class="row justify-content-between align-items-center"
+                                    class="card-body mb-3 text-center"
+                                    id="rice-body"
                                 >
-                                    <div class="col-md-6">
-                                        <canvas
-                                            id="riceChart"
-                                            style="
-                                                max-width: 100%;
-                                                margin: auto;
-                                            "
-                                        ></canvas>
-                                    </div>
-                                    <div class="col-md-6" id="rice-card">
-                                        <div class="row justify-content-center">
-                                            <div class="col-md-4 mb-2">
-                                                <div
-                                                    class="card rounded-custom bg-primary text-white d-flex align-items-center justify-content-center"
-                                                    style="
-                                                        height: 120px;
-                                                        margin: 10px;
-                                                    "
-                                                >
+                                    <div
+                                        class="row justify-content-between align-items-center"
+                                    >
+                                        <div class="col-md-6">
+                                            <canvas
+                                                id="riceChart"
+                                                style="
+                                                    max-width: 100%;
+                                                    margin: auto;
+                                                "
+                                            ></canvas>
+                                        </div>
+                                        <div class="col-md-6" id="rice-card">
+                                            <div
+                                                class="row justify-content-center"
+                                            >
+                                                <div class="col-md-4 mb-2">
                                                     <div
-                                                        class="card-body text-center"
+                                                        class="card rounded-custom bg-primary text-white d-flex align-items-center justify-content-center"
+                                                        style="
+                                                            height: 120px;
+                                                            margin: 10px;
+                                                        "
                                                     >
-                                                        <h1
-                                                            style="
-                                                                font-size: 1.5rem;
-                                                            "
+                                                        <div
+                                                            class="card-body text-center"
                                                         >
-                                                            GR
-                                                        </h1>
-                                                        <p
-                                                            id="rice-general"
-                                                            style="
-                                                                font-size: 0.8rem;
-                                                            "
-                                                        >
-                                                            Loading...
-                                                        </p>
+                                                            <h1
+                                                                style="
+                                                                    font-size: 1.5rem;
+                                                                "
+                                                            >
+                                                                GR
+                                                            </h1>
+                                                            <p
+                                                                id="rice-general"
+                                                                style="
+                                                                    font-size: 0.8rem;
+                                                                "
+                                                            >
+                                                                Loading...
+                                                            </p>
+                                                        </div>
                                                     </div>
+                                                    <p>
+                                                        <strong
+                                                            >General
+                                                            Rating</strong
+                                                        >
+                                                    </p>
                                                 </div>
-                                                <p>
-                                                    <strong
-                                                        >General Rating</strong
+                                                <div class="col-md-4 mb-2">
+                                                    <div
+                                                        class="card rounded-custom bg-warning text-dark d-flex align-items-center justify-content-center"
+                                                        style="
+                                                            height: 120px;
+                                                            margin: 10px;
+                                                        "
                                                     >
-                                                </p>
+                                                        <div
+                                                            class="card-body text-center"
+                                                        >
+                                                            <h1
+                                                                style="
+                                                                    font-size: 1.5rem;
+                                                                "
+                                                            >
+                                                                P
+                                                            </h1>
+                                                            <p
+                                                                id="rice-phosphorus"
+                                                                style="
+                                                                    font-size: 0.8rem;
+                                                                "
+                                                            >
+                                                                Loading...
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <p>
+                                                        <strong
+                                                            >Phosphorus</strong
+                                                        >
+                                                    </p>
+                                                </div>
+                                                <div class="col-md-4 mb-2">
+                                                    <div
+                                                        class="card rounded-custom bg-success text-white d-flex align-items-center justify-content-center"
+                                                        style="
+                                                            height: 120px;
+                                                            margin: 10px;
+                                                        "
+                                                    >
+                                                        <div
+                                                            class="card-body text-center"
+                                                        >
+                                                            <h1
+                                                                style="
+                                                                    font-size: 1.5rem;
+                                                                "
+                                                            >
+                                                                pH
+                                                            </h1>
+                                                            <p
+                                                                id="rice-ph"
+                                                                style="
+                                                                    font-size: 0.8rem;
+                                                                "
+                                                            >
+                                                                Loading...
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <p><strong>pH</strong></p>
+                                                </div>
                                             </div>
-                                            <div class="col-md-4 mb-2">
-                                                <div
-                                                    class="card rounded-custom bg-warning text-dark d-flex align-items-center justify-content-center"
-                                                    style="
-                                                        height: 120px;
-                                                        margin: 10px;
-                                                    "
-                                                >
+                                            <div
+                                                class="row justify-content-center"
+                                            >
+                                                <div class="col-md-4 mb-3">
                                                     <div
-                                                        class="card-body text-center"
+                                                        class="card rounded-custom bg-danger text-white d-flex align-items-center justify-content-center"
+                                                        style="
+                                                            height: 120px;
+                                                            margin: 10px;
+                                                        "
                                                     >
-                                                        <h1
-                                                            style="
-                                                                font-size: 1.5rem;
-                                                            "
+                                                        <div
+                                                            class="card-body text-center"
                                                         >
-                                                            P
-                                                        </h1>
-                                                        <p
-                                                            id="rice-phosphorus"
-                                                            style="
-                                                                font-size: 0.8rem;
-                                                            "
-                                                        >
-                                                            Loading...
-                                                        </p>
+                                                            <h1
+                                                                style="
+                                                                    font-size: 1.5rem;
+                                                                "
+                                                            >
+                                                                K
+                                                            </h1>
+                                                            <p
+                                                                id="rice-potassium"
+                                                                style="
+                                                                    font-size: 0.8rem;
+                                                                "
+                                                            >
+                                                                Loading...
+                                                            </p>
+                                                        </div>
                                                     </div>
+                                                    <p>
+                                                        <strong
+                                                            >Potassium</strong
+                                                        >
+                                                    </p>
                                                 </div>
-                                                <p>
-                                                    <strong>Phosphorus</strong>
-                                                </p>
-                                            </div>
-                                            <div class="col-md-4 mb-2">
-                                                <div
-                                                    class="card rounded-custom bg-success text-white d-flex align-items-center justify-content-center"
-                                                    style="
-                                                        height: 120px;
-                                                        margin: 10px;
-                                                    "
-                                                >
+                                                <div class="col-md-4 mb-3">
                                                     <div
-                                                        class="card-body text-center"
+                                                        class="card rounded-custom bg-info text-white d-flex align-items-center justify-content-center"
+                                                        style="
+                                                            height: 120px;
+                                                            margin: 10px;
+                                                        "
                                                     >
-                                                        <h1
-                                                            style="
-                                                                font-size: 1.5rem;
-                                                            "
+                                                        <div
+                                                            class="card-body text-center"
                                                         >
-                                                            pH
-                                                        </h1>
-                                                        <p
-                                                            id="rice-ph"
-                                                            style="
-                                                                font-size: 0.8rem;
-                                                            "
-                                                        >
-                                                            Loading...
-                                                        </p>
+                                                            <h1
+                                                                style="
+                                                                    font-size: 1.5rem;
+                                                                "
+                                                            >
+                                                                N
+                                                            </h1>
+                                                            <p
+                                                                id="rice-nitrogen"
+                                                                style="
+                                                                    font-size: 0.8rem;
+                                                                "
+                                                            >
+                                                                Loading...
+                                                            </p>
+                                                        </div>
                                                     </div>
+                                                    <p>
+                                                        <strong
+                                                            >Nitrogen</strong
+                                                        >
+                                                    </p>
                                                 </div>
-                                                <p><strong>pH</strong></p>
                                             </div>
                                         </div>
-                                        <div class="row justify-content-center">
-                                            <div class="col-md-4 mb-3">
-                                                <div
-                                                    class="card rounded-custom bg-danger text-white d-flex align-items-center justify-content-center"
-                                                    style="
-                                                        height: 120px;
-                                                        margin: 10px;
-                                                    "
-                                                >
-                                                    <div
-                                                        class="card-body text-center"
-                                                    >
-                                                        <h1
-                                                            style="
-                                                                font-size: 1.5rem;
-                                                            "
-                                                        >
-                                                            K
-                                                        </h1>
-                                                        <p
-                                                            id="rice-potassium"
-                                                            style="
-                                                                font-size: 0.8rem;
-                                                            "
-                                                        >
-                                                            Loading...
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <p>
-                                                    <strong>Potassium</strong>
-                                                </p>
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <div
-                                                    class="card rounded-custom bg-info text-white d-flex align-items-center justify-content-center"
-                                                    style="
-                                                        height: 120px;
-                                                        margin: 10px;
-                                                    "
-                                                >
-                                                    <div
-                                                        class="card-body text-center"
-                                                    >
-                                                        <h1
-                                                            style="
-                                                                font-size: 1.5rem;
-                                                            "
-                                                        >
-                                                            N
-                                                        </h1>
-                                                        <p
-                                                            id="rice-nitrogen"
-                                                            style="
-                                                                font-size: 0.8rem;
-                                                            "
-                                                        >
-                                                            Loading...
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <p><strong>Nitrogen</strong></p>
-                                            </div>
-                                        </div>
                                     </div>
+                                    <div id="interpretation">
+                                        <div id="riceBreakdown"></div>
+                                    </div>
+                                    <button
+                                        class="btn btn-primary download-btn"
+                                        data-type="rice"
+                                    >
+                                        Download Rice Data
+                                    </button>
                                 </div>
-                                <div id="interpretation">
-                                    <div id="riceBreakdown"></div>
-                                </div>
-                                <button
-                                    class="btn btn-primary download-btn"
-                                    data-type="rice"
-                                >
-                                    Download Rice Data
-                                </button>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Fruits Section -->
-                <div class="cont">
-                    <div class="card w-100 bg-white">
-                        <div
-                            id="pageTitle"
-                            class="container-fluid text-white d-flex justify-content-center align-items-center py-2 position-relative"
-                        >
-                            <h2 class="w-100 text-center">Fruits</h2>
-                        </div>
-                        <div class="card">
+                    <!-- Fruits Section -->
+                    <div class="cont">
+                        <div class="card w-100 bg-white">
                             <div
-                                class="card-body mb-3 text-center"
-                                id="fruits-body"
+                                id="pageTitle"
+                                class="container-fluid text-white d-flex justify-content-center align-items-center py-2 position-relative"
                             >
+                                <h2 class="w-100 text-center">Fruits</h2>
+                            </div>
+                            <div class="card">
                                 <div
-                                    class="row justify-content-between align-items-center"
+                                    class="card-body mb-3 text-center"
+                                    id="fruits-body"
                                 >
-                                    <div class="col-md-6">
-                                        <canvas
-                                            id="fruitsChart"
-                                            style="
-                                                max-width: 100%;
-                                                margin: auto;
-                                            "
-                                        ></canvas>
-                                    </div>
-                                    <div class="col-md-6" id="fruits-card">
-                                        <div class="row justify-content-center">
-                                            <div class="col-md-4 mb-2">
-                                                <div
-                                                    class="card rounded-custom bg-primary text-white d-flex align-items-center justify-content-center"
-                                                    style="
-                                                        height: 120px;
-                                                        margin: 10px;
-                                                    "
-                                                >
+                                    <div
+                                        class="row justify-content-between align-items-center"
+                                    >
+                                        <div class="col-md-6">
+                                            <canvas
+                                                id="fruitsChart"
+                                                style="
+                                                    max-width: 100%;
+                                                    margin: auto;
+                                                "
+                                            ></canvas>
+                                        </div>
+                                        <div class="col-md-6" id="fruits-card">
+                                            <div
+                                                class="row justify-content-center"
+                                            >
+                                                <div class="col-md-4 mb-2">
                                                     <div
-                                                        class="card-body text-center"
+                                                        class="card rounded-custom bg-primary text-white d-flex align-items-center justify-content-center"
+                                                        style="
+                                                            height: 120px;
+                                                            margin: 10px;
+                                                        "
                                                     >
-                                                        <h1
-                                                            style="
-                                                                font-size: 1.5rem;
-                                                            "
+                                                        <div
+                                                            class="card-body text-center"
                                                         >
-                                                            GR
-                                                        </h1>
-                                                        <p
-                                                            id="fruits-general"
-                                                            style="
-                                                                font-size: 0.8rem;
-                                                            "
-                                                        >
-                                                            Loading...
-                                                        </p>
+                                                            <h1
+                                                                style="
+                                                                    font-size: 1.5rem;
+                                                                "
+                                                            >
+                                                                GR
+                                                            </h1>
+                                                            <p
+                                                                id="fruits-general"
+                                                                style="
+                                                                    font-size: 0.8rem;
+                                                                "
+                                                            >
+                                                                Loading...
+                                                            </p>
+                                                        </div>
                                                     </div>
+                                                    <p>
+                                                        <strong
+                                                            >General
+                                                            Rating</strong
+                                                        >
+                                                    </p>
                                                 </div>
-                                                <p>
-                                                    <strong
-                                                        >General Rating</strong
+                                                <div class="col-md-4 mb-2">
+                                                    <div
+                                                        class="card rounded-custom bg-warning text-dark d-flex align-items-center justify-content-center"
+                                                        style="
+                                                            height: 120px;
+                                                            margin: 10px;
+                                                        "
                                                     >
-                                                </p>
+                                                        <div
+                                                            class="card-body text-center"
+                                                        >
+                                                            <h1
+                                                                style="
+                                                                    font-size: 1.5rem;
+                                                                "
+                                                            >
+                                                                P
+                                                            </h1>
+                                                            <p
+                                                                id="fruits-phosphorus"
+                                                                style="
+                                                                    font-size: 0.8rem;
+                                                                "
+                                                            >
+                                                                Loading...
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <p>
+                                                        <strong
+                                                            >Phosphorus</strong
+                                                        >
+                                                    </p>
+                                                </div>
+                                                <div class="col-md-4 mb-2">
+                                                    <div
+                                                        class="card rounded-custom bg-success text-white d-flex align-items-center justify-content-center"
+                                                        style="
+                                                            height: 120px;
+                                                            margin: 10px;
+                                                        "
+                                                    >
+                                                        <div
+                                                            class="card-body text-center"
+                                                        >
+                                                            <h1
+                                                                style="
+                                                                    font-size: 1.5rem;
+                                                                "
+                                                            >
+                                                                pH
+                                                            </h1>
+                                                            <p
+                                                                id="fruits-ph"
+                                                                style="
+                                                                    font-size: 0.8rem;
+                                                                "
+                                                            >
+                                                                Loading...
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <p><strong>pH</strong></p>
+                                                </div>
                                             </div>
-                                            <div class="col-md-4 mb-2">
-                                                <div
-                                                    class="card rounded-custom bg-warning text-dark d-flex align-items-center justify-content-center"
-                                                    style="
-                                                        height: 120px;
-                                                        margin: 10px;
-                                                    "
-                                                >
+                                            <div
+                                                class="row justify-content-center"
+                                            >
+                                                <div class="col-md-4 mb-3">
                                                     <div
-                                                        class="card-body text-center"
+                                                        class="card rounded-custom bg-danger text-white d-flex align-items-center justify-content-center"
+                                                        style="
+                                                            height: 120px;
+                                                            margin: 10px;
+                                                        "
                                                     >
-                                                        <h1
-                                                            style="
-                                                                font-size: 1.5rem;
-                                                            "
+                                                        <div
+                                                            class="card-body text-center"
                                                         >
-                                                            P
-                                                        </h1>
-                                                        <p
-                                                            id="fruits-phosphorus"
-                                                            style="
-                                                                font-size: 0.8rem;
-                                                            "
-                                                        >
-                                                            Loading...
-                                                        </p>
+                                                            <h1
+                                                                style="
+                                                                    font-size: 1.5rem;
+                                                                "
+                                                            >
+                                                                K
+                                                            </h1>
+                                                            <p
+                                                                id="fruits-potassium"
+                                                                style="
+                                                                    font-size: 0.8rem;
+                                                                "
+                                                            >
+                                                                Loading...
+                                                            </p>
+                                                        </div>
                                                     </div>
+                                                    <p>
+                                                        <strong
+                                                            >Potassium</strong
+                                                        >
+                                                    </p>
                                                 </div>
-                                                <p>
-                                                    <strong>Phosphorus</strong>
-                                                </p>
-                                            </div>
-                                            <div class="col-md-4 mb-2">
-                                                <div
-                                                    class="card rounded-custom bg-success text-white d-flex align-items-center justify-content-center"
-                                                    style="
-                                                        height: 120px;
-                                                        margin: 10px;
-                                                    "
-                                                >
+                                                <div class="col-md-4 mb-3">
                                                     <div
-                                                        class="card-body text-center"
+                                                        class="card rounded-custom bg-info text-white d-flex align-items-center justify-content-center"
+                                                        style="
+                                                            height: 120px;
+                                                            margin: 10px;
+                                                        "
                                                     >
-                                                        <h1
-                                                            style="
-                                                                font-size: 1.5rem;
-                                                            "
+                                                        <div
+                                                            class="card-body text-center"
                                                         >
-                                                            pH
-                                                        </h1>
-                                                        <p
-                                                            id="fruits-ph"
-                                                            style="
-                                                                font-size: 0.8rem;
-                                                            "
-                                                        >
-                                                            Loading...
-                                                        </p>
+                                                            <h1
+                                                                style="
+                                                                    font-size: 1.5rem;
+                                                                "
+                                                            >
+                                                                N
+                                                            </h1>
+                                                            <p
+                                                                id="fruits-nitrogen"
+                                                                style="
+                                                                    font-size: 0.8rem;
+                                                                "
+                                                            >
+                                                                Loading...
+                                                            </p>
+                                                        </div>
                                                     </div>
+                                                    <p>
+                                                        <strong
+                                                            >Nitrogen</strong
+                                                        >
+                                                    </p>
                                                 </div>
-                                                <p><strong>pH</strong></p>
                                             </div>
                                         </div>
-                                        <div class="row justify-content-center">
-                                            <div class="col-md-4 mb-3">
-                                                <div
-                                                    class="card rounded-custom bg-danger text-white d-flex align-items-center justify-content-center"
-                                                    style="
-                                                        height: 120px;
-                                                        margin: 10px;
-                                                    "
-                                                >
-                                                    <div
-                                                        class="card-body text-center"
-                                                    >
-                                                        <h1
-                                                            style="
-                                                                font-size: 1.5rem;
-                                                            "
-                                                        >
-                                                            K
-                                                        </h1>
-                                                        <p
-                                                            id="fruits-potassium"
-                                                            style="
-                                                                font-size: 0.8rem;
-                                                            "
-                                                        >
-                                                            Loading...
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <p>
-                                                    <strong>Potassium</strong>
-                                                </p>
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <div
-                                                    class="card rounded-custom bg-info text-white d-flex align-items-center justify-content-center"
-                                                    style="
-                                                        height: 120px;
-                                                        margin: 10px;
-                                                    "
-                                                >
-                                                    <div
-                                                        class="card-body text-center"
-                                                    >
-                                                        <h1
-                                                            style="
-                                                                font-size: 1.5rem;
-                                                            "
-                                                        >
-                                                            N
-                                                        </h1>
-                                                        <p
-                                                            id="fruits-nitrogen"
-                                                            style="
-                                                                font-size: 0.8rem;
-                                                            "
-                                                        >
-                                                            Loading...
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <p><strong>Nitrogen</strong></p>
-                                            </div>
-                                        </div>
                                     </div>
+                                    <div id="interpretation">
+                                        <div id="fruitsBreakdown"></div>
+                                    </div>
+                                    <button
+                                        class="btn btn-primary download-btn"
+                                        data-type="fruits"
+                                    >
+                                        Download Fruits Data
+                                    </button>
                                 </div>
-                                <div id="interpretation">
-                                    <div id="fruitsBreakdown"></div>
-                                </div>
-                                <button
-                                    class="btn btn-primary download-btn"
-                                    data-type="fruits"
-                                >
-                                    Download Fruits Data
-                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-             </div>
         </div>
 
         <div class="footer-container">
