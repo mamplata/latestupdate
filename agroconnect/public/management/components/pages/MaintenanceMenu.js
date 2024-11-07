@@ -1,3 +1,1070 @@
-/*! For license information please see MaintenanceMenu.js.LICENSE.txt */
-(()=>{var t={530:t=>{function e(t){return Promise.resolve().then((()=>{var e=new Error("Cannot find module '"+t+"'");throw e.code="MODULE_NOT_FOUND",e}))}e.keys=()=>[],e.resolve=e,e.id=530,t.exports=e},476:(t,e,n)=>{"use strict";var r,o=n(877);function a(t){return a="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},a(t)}function i(){i=function(){return e};var t,e={},n=Object.prototype,r=n.hasOwnProperty,o=Object.defineProperty||function(t,e,n){t[e]=n.value},c="function"==typeof Symbol?Symbol:{},s=c.iterator||"@@iterator",u=c.asyncIterator||"@@asyncIterator",l=c.toStringTag||"@@toStringTag";function f(t,e,n){return Object.defineProperty(t,e,{value:n,enumerable:!0,configurable:!0,writable:!0}),t[e]}try{f({},"")}catch(t){f=function(t,e,n){return t[e]=n}}function d(t,e,n,r){var a=e&&e.prototype instanceof b?e:b,i=Object.create(a.prototype),c=new _(r||[]);return o(i,"_invoke",{value:P(t,n,c)}),i}function p(t,e,n){try{return{type:"normal",arg:t.call(e,n)}}catch(t){return{type:"throw",arg:t}}}e.wrap=d;var h="suspendedStart",m="suspendedYield",v="executing",y="completed",g={};function b(){}function w(){}function x(){}var E={};f(E,s,(function(){return this}));var L=Object.getPrototypeOf,k=L&&L(L(N([])));k&&k!==n&&r.call(k,s)&&(E=k);var O=x.prototype=b.prototype=Object.create(E);function j(t){["next","throw","return"].forEach((function(e){f(t,e,(function(t){return this._invoke(e,t)}))}))}function T(t,e){function n(o,i,c,s){var u=p(t[o],t,i);if("throw"!==u.type){var l=u.arg,f=l.value;return f&&"object"==a(f)&&r.call(f,"__await")?e.resolve(f.__await).then((function(t){n("next",t,c,s)}),(function(t){n("throw",t,c,s)})):e.resolve(f).then((function(t){l.value=t,c(l)}),(function(t){return n("throw",t,c,s)}))}s(u.arg)}var i;o(this,"_invoke",{value:function(t,r){function o(){return new e((function(e,o){n(t,r,e,o)}))}return i=i?i.then(o,o):o()}})}function P(e,n,r){var o=h;return function(a,i){if(o===v)throw Error("Generator is already running");if(o===y){if("throw"===a)throw i;return{value:t,done:!0}}for(r.method=a,r.arg=i;;){var c=r.delegate;if(c){var s=S(c,r);if(s){if(s===g)continue;return s}}if("next"===r.method)r.sent=r._sent=r.arg;else if("throw"===r.method){if(o===h)throw o=y,r.arg;r.dispatchException(r.arg)}else"return"===r.method&&r.abrupt("return",r.arg);o=v;var u=p(e,n,r);if("normal"===u.type){if(o=r.done?y:m,u.arg===g)continue;return{value:u.arg,done:r.done}}"throw"===u.type&&(o=y,r.method="throw",r.arg=u.arg)}}}function S(e,n){var r=n.method,o=e.iterator[r];if(o===t)return n.delegate=null,"throw"===r&&e.iterator.return&&(n.method="return",n.arg=t,S(e,n),"throw"===n.method)||"return"!==r&&(n.method="throw",n.arg=new TypeError("The iterator does not provide a '"+r+"' method")),g;var a=p(o,e.iterator,n.arg);if("throw"===a.type)return n.method="throw",n.arg=a.arg,n.delegate=null,g;var i=a.arg;return i?i.done?(n[e.resultName]=i.value,n.next=e.nextLoc,"return"!==n.method&&(n.method="next",n.arg=t),n.delegate=null,g):i:(n.method="throw",n.arg=new TypeError("iterator result is not an object"),n.delegate=null,g)}function C(t){var e={tryLoc:t[0]};1 in t&&(e.catchLoc=t[1]),2 in t&&(e.finallyLoc=t[2],e.afterLoc=t[3]),this.tryEntries.push(e)}function A(t){var e=t.completion||{};e.type="normal",delete e.arg,t.completion=e}function _(t){this.tryEntries=[{tryLoc:"root"}],t.forEach(C,this),this.reset(!0)}function N(e){if(e||""===e){var n=e[s];if(n)return n.call(e);if("function"==typeof e.next)return e;if(!isNaN(e.length)){var o=-1,i=function n(){for(;++o<e.length;)if(r.call(e,o))return n.value=e[o],n.done=!1,n;return n.value=t,n.done=!0,n};return i.next=i}}throw new TypeError(a(e)+" is not iterable")}return w.prototype=x,o(O,"constructor",{value:x,configurable:!0}),o(x,"constructor",{value:w,configurable:!0}),w.displayName=f(x,l,"GeneratorFunction"),e.isGeneratorFunction=function(t){var e="function"==typeof t&&t.constructor;return!!e&&(e===w||"GeneratorFunction"===(e.displayName||e.name))},e.mark=function(t){return Object.setPrototypeOf?Object.setPrototypeOf(t,x):(t.__proto__=x,f(t,l,"GeneratorFunction")),t.prototype=Object.create(O),t},e.awrap=function(t){return{__await:t}},j(T.prototype),f(T.prototype,u,(function(){return this})),e.AsyncIterator=T,e.async=function(t,n,r,o,a){void 0===a&&(a=Promise);var i=new T(d(t,n,r,o),a);return e.isGeneratorFunction(n)?i:i.next().then((function(t){return t.done?t.value:i.next()}))},j(O),f(O,l,"Generator"),f(O,s,(function(){return this})),f(O,"toString",(function(){return"[object Generator]"})),e.keys=function(t){var e=Object(t),n=[];for(var r in e)n.push(r);return n.reverse(),function t(){for(;n.length;){var r=n.pop();if(r in e)return t.value=r,t.done=!1,t}return t.done=!0,t}},e.values=N,_.prototype={constructor:_,reset:function(e){if(this.prev=0,this.next=0,this.sent=this._sent=t,this.done=!1,this.delegate=null,this.method="next",this.arg=t,this.tryEntries.forEach(A),!e)for(var n in this)"t"===n.charAt(0)&&r.call(this,n)&&!isNaN(+n.slice(1))&&(this[n]=t)},stop:function(){this.done=!0;var t=this.tryEntries[0].completion;if("throw"===t.type)throw t.arg;return this.rval},dispatchException:function(e){if(this.done)throw e;var n=this;function o(r,o){return c.type="throw",c.arg=e,n.next=r,o&&(n.method="next",n.arg=t),!!o}for(var a=this.tryEntries.length-1;a>=0;--a){var i=this.tryEntries[a],c=i.completion;if("root"===i.tryLoc)return o("end");if(i.tryLoc<=this.prev){var s=r.call(i,"catchLoc"),u=r.call(i,"finallyLoc");if(s&&u){if(this.prev<i.catchLoc)return o(i.catchLoc,!0);if(this.prev<i.finallyLoc)return o(i.finallyLoc)}else if(s){if(this.prev<i.catchLoc)return o(i.catchLoc,!0)}else{if(!u)throw Error("try statement without catch or finally");if(this.prev<i.finallyLoc)return o(i.finallyLoc)}}}},abrupt:function(t,e){for(var n=this.tryEntries.length-1;n>=0;--n){var o=this.tryEntries[n];if(o.tryLoc<=this.prev&&r.call(o,"finallyLoc")&&this.prev<o.finallyLoc){var a=o;break}}a&&("break"===t||"continue"===t)&&a.tryLoc<=e&&e<=a.finallyLoc&&(a=null);var i=a?a.completion:{};return i.type=t,i.arg=e,a?(this.method="next",this.next=a.finallyLoc,g):this.complete(i)},complete:function(t,e){if("throw"===t.type)throw t.arg;return"break"===t.type||"continue"===t.type?this.next=t.arg:"return"===t.type?(this.rval=this.arg=t.arg,this.method="return",this.next="end"):"normal"===t.type&&e&&(this.next=e),g},finish:function(t){for(var e=this.tryEntries.length-1;e>=0;--e){var n=this.tryEntries[e];if(n.finallyLoc===t)return this.complete(n.completion,n.afterLoc),A(n),g}},catch:function(t){for(var e=this.tryEntries.length-1;e>=0;--e){var n=this.tryEntries[e];if(n.tryLoc===t){var r=n.completion;if("throw"===r.type){var o=r.arg;A(n)}return o}}throw Error("illegal catch attempt")},delegateYield:function(e,n,r){return this.delegate={iterator:N(e),resultName:n,nextLoc:r},"next"===this.method&&(this.arg=t),g}},e}function c(t,e,n,r,o,a,i){try{var c=t[a](i),s=c.value}catch(t){return void n(t)}c.done?e(s):Promise.resolve(s).then(r,o)}function s(t){return function(){var e=this,n=arguments;return new Promise((function(r,o){var a=t.apply(e,n);function i(t){c(a,r,o,i,s,"next",t)}function s(t){c(a,r,o,i,s,"throw",t)}i(void 0)}))}}$(document).ready((function(){function t(){$("#loadingScreen").fadeIn(),setTimeout((function(){$("#loadingScreen").fadeOut()}),2e3)}function e(){return a.apply(this,arguments)}function a(){return(a=s(i().mark((function t(){return i().wrap((function(t){for(;;)switch(t.prev=t.next){case 0:return t.abrupt("return",$('meta[name="csrf-token"]').attr("content"));case 1:case"end":return t.stop()}}),t)})))).apply(this,arguments)}function c(){return u.apply(this,arguments)}function u(){return(u=s(i().mark((function t(){return i().wrap((function(t){for(;;)switch(t.prev=t.next){case 0:return t.abrupt("return",$.ajax({url:"/api/csrf-cookie",type:"GET",xhrFields:{withCredentials:!0}}));case 1:case"end":return t.stop()}}),t)})))).apply(this,arguments)}function l(){return f.apply(this,arguments)}function f(){return(f=s(i().mark((function t(){var n;return i().wrap((function(t){for(;;)switch(t.prev=t.next){case 0:return t.next=2,e();case 2:return n=t.sent,t.abrupt("return",$.ajax({url:"/api/check-user",type:"GET",xhrFields:{withCredentials:!0},headers:{"X-CSRF-TOKEN":n}}));case 4:case"end":return t.stop()}}),t)})))).apply(this,arguments)}function d(){return(d=s(i().mark((function t(){var e;return i().wrap((function(t){for(;;)switch(t.prev=t.next){case 0:return t.prev=0,t.next=3,c();case 3:return t.next=5,l();case 5:"Invalid Token"!==(e=t.sent).message?(r=e.user,p()):window.location.href="/management-login",t.next=13;break;case 9:t.prev=9,t.t0=t.catch(0),console.error("An error occurred:",t.t0),window.location.href="/management-login";case 13:case"end":return t.stop()}}),t,null,[[0,9]])})))).apply(this,arguments)}function p(){function t(t){return a.apply(this,arguments)}function a(){return(a=s(i().mark((function t(e){var r;return i().wrap((function(t){for(;;)switch(t.prev=t.next){case 0:return t.prev=0,t.next=3,n(530)(e);case 3:(r=t.sent).default&&r.default(),t.next=10;break;case 7:t.prev=7,t.t0=t.catch(0),console.error("Failed to load module from ".concat(e,":"),t.t0);case 10:case"end":return t.stop()}}),t,null,[[0,7]])})))).apply(this,arguments)}function c(){return u.apply(this,arguments)}function u(){return(u=s(i().mark((function e(){var n,r;return i().wrap((function(e){for(;;)switch(e.prev=e.next){case 0:n=window.location.hash,e.t0=n,e.next="#dashboard"===e.t0?4:"#manage-users"===e.t0?9:"#maintenance"===e.t0?14:"#data-entries"===e.t0?19:"#concerns"===e.t0?24:29;break;case 4:return r="./management/components/pages/Dashboard.js",e.next=7,t(r);case 7:case 32:return l("#dashboard-link"),e.abrupt("break",34);case 9:return r="../components/pages/ManageUsers.js",e.next=12,t(r);case 12:return l("#manage-users-link"),e.abrupt("break",34);case 14:return r="../components/pages/Maintenance.js",e.next=17,t(r);case 17:return l("#maintenance-link"),e.abrupt("break",34);case 19:return r="../components/pages/DataEntries.js",e.next=22,t(r);case 22:return l("#data-entries-link"),e.abrupt("break",34);case 24:return r="../components/pages/Concerns.js",e.next=27,t(r);case 27:return l("#concerns-link"),e.abrupt("break",34);case 29:return r="./management/components/pages/Dashboard.js",e.next=32,t(r);case 34:case"end":return e.stop()}}),e)})))).apply(this,arguments)}function l(t){$(".nav-link").removeClass("active"),$(t).addClass("active")}window.location.hash||(window.location.hash="#dashboard"),$("head").prepend('\n            <link rel="icon" href="../../../img/logo.png" type="image/png">   \n        '),$("body").prepend('\n            <div class="wrapper">\n                \x3c!-- Header --\x3e\n                <div class="header">\n                    <header class="header d-flex justify-content-between align-items-center" style="background-color: #008000;">\n                        <div class="header d-flex align-items-center p-2">\n                            \x3c!-- Burger Menu Icon for smaller screens --\x3e\n                            <button class="navbar-toggler d-md-none mr-3" type="button" data-toggle="collapse" data-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">\n                                <span class="navbar-toggler-icon"><i class="fas fa-bars"></i></span>\n                            </button>\n                            <img src="../img/logo.png" alt="Logo" class="header-logo d-none d-md-block">\n                            <h3 id="appName" class="pl-3 d-none d-md-block">AgroConnect Cabuyao</h3> \x3c!-- Hidden on small screens --\x3e\n                        </div>\n                        <div class="pr-4 d-flex align-items-center">\n                            <span class="username font-weight-bold">'.concat(r.username,'</span>\n                            <span class="user-icon ml-3">\n                                <i class="fas fa-user-circle"></i>\n                            </span>\n                        </div>\n                    </header>\n                </div>\n        \n                \x3c!-- Sidebar and Content Wrapper --\x3e\n                <div class="content-wrapper d-flex">\n                    \x3c!-- Sidebar --\x3e\n                    <nav id="sidebar" class="sidebar collapse">\n                        \x3c!-- Close button for small screens --\x3e\n                        <button class="btn-close d-md-none" aria-label="Close" type="button">\n                            <i class="fas fa-times"></i>\n                        </button>\n                        \x3c!-- Logo for small screens --\x3e\n                        <div class="d-md-none text-center my-3">\n                            <img src="../img/logo.png" alt="Logo" class="sidebar-logo">\n                        </div>\n                        <div>\n                            <ul class="nav flex-column mt-4" id="sidebar-links">\n                                \x3c!-- Links will be dynamically added here --\x3e\n                            </ul>\n                            <ul class="nav flex-column logout">\n                                <li class="nav-item mt-auto">\n                                    <a class="nav-link" href="#">\n                                        <i class="fas fa-sign-out-alt"></i>\n                                        Logout\n                                    </a>\n                                </li>\n                            </ul>\n                        </div>\n                    </nav>\n        \n                    \x3c!-- Main Content Area --\x3e\n                    <main role="main" id="main-content" class="content ml-sm-auto col-lg-10 pr-4">\n                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">\n                            <h1 class="h2">Main Content</h1>\n                        </div>\n                        <div class="row">\n                            <div class="col-md-12">\n                                <p>Content area below the header and sidebar.</p>\n                            </div>\n                        </div>\n                    </main>\n                </div>\n            </div>\n            <script>\n                $(document).ready(function() {\n                     // Close sidebar when close button is clicked\n                    $(\'.btn-close\').on(\'click\', function() {\n                        $(\'#sidebar\').collapse(\'hide\');\n                    });\n\n                    // Close sidebar when any sidebar link is clicked\n                    $(\'#sidebar\').on(\'click\', \'.nav-link\', function() {\n                        $(\'#sidebar\').collapse(\'hide\');\n                    });\n                });\n            <\/script>\n        ')),$(document).ready((function(){c(),$(window).on("hashchange",(function(){c()}))})),function(){var t=[{id:"dashboard-link",href:"#dashboard",icon:"fas fa-tachometer-alt",text:"Dashboard"},{id:"manage-users-link",href:"#manage-users",icon:"fas fa-users",text:"Manage Users"},{id:"maintenance-link",href:"#maintenance",icon:"fas fa-wrench",text:"Maintenance"},{id:"data-entries-link",href:"#data-entries",icon:"fas fa-database",text:"Data Entries"},{id:"concerns-link",href:"#concerns",icon:"fas fa-exclamation-triangle",text:"Concerns"}];if("admin"===r.role)t.forEach((function(t){$("#sidebar-links").append('\n                        <li class="nav-item mt-3">\n                            <a id="'.concat(t.id,'" class="nav-link" href="').concat(t.href,'">\n                                <i class="').concat(t.icon,'"></i>\n                                ').concat(t.text,"\n                            </a>\n                        </li>\n                    "))}));else if("agriculturist"===r.role){[t[0],t[2],t[4]].forEach((function(t){$("#sidebar-links").append('\n                        <li class="nav-item mt-3">\n                            <a id="'.concat(t.id,'" class="nav-link" href="').concat(t.href,'">\n                                <i class="').concat(t.icon,'"></i>\n                                ').concat(t.text,"\n                            </a>\n                        </li>\n                    "))}))}}(),$(".logout a").on("click",function(){var t=s(i().mark((function t(n){return i().wrap((function(t){for(;;)switch(t.prev=t.next){case 0:return n.preventDefault(),n.stopPropagation(),t.next=4,o.A.confirmDialog("Logout","Are you sure you want to logout?");case 4:t.sent.operation===o.A.OK_OPTION&&$.ajax({url:"/api/logout",type:"POST",xhrFields:{withCredentials:!0},headers:{"X-CSRF-TOKEN":e()},success:function(t){t.success?(toastr.success("You have been logged out.","Success",{timeOut:5e3,positionClass:"toast-top-center",toastClass:"toast-success-custom"}),setTimeout((function(){window.location.href="/management-login"}),1500)):toastr.error("Logout failed: "+t.message,"Error",{timeOut:5e3,positionClass:"toast-center-center",toastClass:"toast-error"})},error:function(t){toastr.error("Logout failed: "+t.responseJSON.message,"Error",{timeOut:5e3,positionClass:"toast-center-center",toastClass:"toast-error"})}});case 6:case"end":return t.stop()}}),t)})));return function(e){return t.apply(this,arguments)}}())}$("body").prepend('\n        \x3c!-- Loading screen --\x3e\n        <div id="loadingScreen" class="loading-overlay1">\n            <div class="spinner-container1">\n                <div class="spinner-grow" role="status"></div>\n                <div class="spinner-grow" role="status"></div>\n                <div class="spinner-grow" role="status"></div>\n                <p class="loading-message1">Please wait while we load content...</p>\n            </div>\n        </div>\n    '),$(window).on("load",(function(){t()})),$(window).on("popstate",(function(){t()})),$(document).on("routeChange",(function(){t()})),$(".logout a").on("click",(function(t){t.stopPropagation()})),$(document).on("click","a",(function(e){$(this).closest(".logout").length||t()})),function(){d.apply(this,arguments)}()}))},877:(t,e,n)=>{"use strict";function r(t){return r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},r(t)}function o(){o=function(){return e};var t,e={},n=Object.prototype,a=n.hasOwnProperty,i=Object.defineProperty||function(t,e,n){t[e]=n.value},c="function"==typeof Symbol?Symbol:{},s=c.iterator||"@@iterator",u=c.asyncIterator||"@@asyncIterator",l=c.toStringTag||"@@toStringTag";function f(t,e,n){return Object.defineProperty(t,e,{value:n,enumerable:!0,configurable:!0,writable:!0}),t[e]}try{f({},"")}catch(t){f=function(t,e,n){return t[e]=n}}function d(t,e,n,r){var o=e&&e.prototype instanceof b?e:b,a=Object.create(o.prototype),c=new _(r||[]);return i(a,"_invoke",{value:P(t,n,c)}),a}function p(t,e,n){try{return{type:"normal",arg:t.call(e,n)}}catch(t){return{type:"throw",arg:t}}}e.wrap=d;var h="suspendedStart",m="suspendedYield",v="executing",y="completed",g={};function b(){}function w(){}function x(){}var E={};f(E,s,(function(){return this}));var L=Object.getPrototypeOf,k=L&&L(L(N([])));k&&k!==n&&a.call(k,s)&&(E=k);var O=x.prototype=b.prototype=Object.create(E);function j(t){["next","throw","return"].forEach((function(e){f(t,e,(function(t){return this._invoke(e,t)}))}))}function T(t,e){function n(o,i,c,s){var u=p(t[o],t,i);if("throw"!==u.type){var l=u.arg,f=l.value;return f&&"object"==r(f)&&a.call(f,"__await")?e.resolve(f.__await).then((function(t){n("next",t,c,s)}),(function(t){n("throw",t,c,s)})):e.resolve(f).then((function(t){l.value=t,c(l)}),(function(t){return n("throw",t,c,s)}))}s(u.arg)}var o;i(this,"_invoke",{value:function(t,r){function a(){return new e((function(e,o){n(t,r,e,o)}))}return o=o?o.then(a,a):a()}})}function P(e,n,r){var o=h;return function(a,i){if(o===v)throw Error("Generator is already running");if(o===y){if("throw"===a)throw i;return{value:t,done:!0}}for(r.method=a,r.arg=i;;){var c=r.delegate;if(c){var s=S(c,r);if(s){if(s===g)continue;return s}}if("next"===r.method)r.sent=r._sent=r.arg;else if("throw"===r.method){if(o===h)throw o=y,r.arg;r.dispatchException(r.arg)}else"return"===r.method&&r.abrupt("return",r.arg);o=v;var u=p(e,n,r);if("normal"===u.type){if(o=r.done?y:m,u.arg===g)continue;return{value:u.arg,done:r.done}}"throw"===u.type&&(o=y,r.method="throw",r.arg=u.arg)}}}function S(e,n){var r=n.method,o=e.iterator[r];if(o===t)return n.delegate=null,"throw"===r&&e.iterator.return&&(n.method="return",n.arg=t,S(e,n),"throw"===n.method)||"return"!==r&&(n.method="throw",n.arg=new TypeError("The iterator does not provide a '"+r+"' method")),g;var a=p(o,e.iterator,n.arg);if("throw"===a.type)return n.method="throw",n.arg=a.arg,n.delegate=null,g;var i=a.arg;return i?i.done?(n[e.resultName]=i.value,n.next=e.nextLoc,"return"!==n.method&&(n.method="next",n.arg=t),n.delegate=null,g):i:(n.method="throw",n.arg=new TypeError("iterator result is not an object"),n.delegate=null,g)}function C(t){var e={tryLoc:t[0]};1 in t&&(e.catchLoc=t[1]),2 in t&&(e.finallyLoc=t[2],e.afterLoc=t[3]),this.tryEntries.push(e)}function A(t){var e=t.completion||{};e.type="normal",delete e.arg,t.completion=e}function _(t){this.tryEntries=[{tryLoc:"root"}],t.forEach(C,this),this.reset(!0)}function N(e){if(e||""===e){var n=e[s];if(n)return n.call(e);if("function"==typeof e.next)return e;if(!isNaN(e.length)){var o=-1,i=function n(){for(;++o<e.length;)if(a.call(e,o))return n.value=e[o],n.done=!1,n;return n.value=t,n.done=!0,n};return i.next=i}}throw new TypeError(r(e)+" is not iterable")}return w.prototype=x,i(O,"constructor",{value:x,configurable:!0}),i(x,"constructor",{value:w,configurable:!0}),w.displayName=f(x,l,"GeneratorFunction"),e.isGeneratorFunction=function(t){var e="function"==typeof t&&t.constructor;return!!e&&(e===w||"GeneratorFunction"===(e.displayName||e.name))},e.mark=function(t){return Object.setPrototypeOf?Object.setPrototypeOf(t,x):(t.__proto__=x,f(t,l,"GeneratorFunction")),t.prototype=Object.create(O),t},e.awrap=function(t){return{__await:t}},j(T.prototype),f(T.prototype,u,(function(){return this})),e.AsyncIterator=T,e.async=function(t,n,r,o,a){void 0===a&&(a=Promise);var i=new T(d(t,n,r,o),a);return e.isGeneratorFunction(n)?i:i.next().then((function(t){return t.done?t.value:i.next()}))},j(O),f(O,l,"Generator"),f(O,s,(function(){return this})),f(O,"toString",(function(){return"[object Generator]"})),e.keys=function(t){var e=Object(t),n=[];for(var r in e)n.push(r);return n.reverse(),function t(){for(;n.length;){var r=n.pop();if(r in e)return t.value=r,t.done=!1,t}return t.done=!0,t}},e.values=N,_.prototype={constructor:_,reset:function(e){if(this.prev=0,this.next=0,this.sent=this._sent=t,this.done=!1,this.delegate=null,this.method="next",this.arg=t,this.tryEntries.forEach(A),!e)for(var n in this)"t"===n.charAt(0)&&a.call(this,n)&&!isNaN(+n.slice(1))&&(this[n]=t)},stop:function(){this.done=!0;var t=this.tryEntries[0].completion;if("throw"===t.type)throw t.arg;return this.rval},dispatchException:function(e){if(this.done)throw e;var n=this;function r(r,o){return c.type="throw",c.arg=e,n.next=r,o&&(n.method="next",n.arg=t),!!o}for(var o=this.tryEntries.length-1;o>=0;--o){var i=this.tryEntries[o],c=i.completion;if("root"===i.tryLoc)return r("end");if(i.tryLoc<=this.prev){var s=a.call(i,"catchLoc"),u=a.call(i,"finallyLoc");if(s&&u){if(this.prev<i.catchLoc)return r(i.catchLoc,!0);if(this.prev<i.finallyLoc)return r(i.finallyLoc)}else if(s){if(this.prev<i.catchLoc)return r(i.catchLoc,!0)}else{if(!u)throw Error("try statement without catch or finally");if(this.prev<i.finallyLoc)return r(i.finallyLoc)}}}},abrupt:function(t,e){for(var n=this.tryEntries.length-1;n>=0;--n){var r=this.tryEntries[n];if(r.tryLoc<=this.prev&&a.call(r,"finallyLoc")&&this.prev<r.finallyLoc){var o=r;break}}o&&("break"===t||"continue"===t)&&o.tryLoc<=e&&e<=o.finallyLoc&&(o=null);var i=o?o.completion:{};return i.type=t,i.arg=e,o?(this.method="next",this.next=o.finallyLoc,g):this.complete(i)},complete:function(t,e){if("throw"===t.type)throw t.arg;return"break"===t.type||"continue"===t.type?this.next=t.arg:"return"===t.type?(this.rval=this.arg=t.arg,this.method="return",this.next="end"):"normal"===t.type&&e&&(this.next=e),g},finish:function(t){for(var e=this.tryEntries.length-1;e>=0;--e){var n=this.tryEntries[e];if(n.finallyLoc===t)return this.complete(n.completion,n.afterLoc),A(n),g}},catch:function(t){for(var e=this.tryEntries.length-1;e>=0;--e){var n=this.tryEntries[e];if(n.tryLoc===t){var r=n.completion;if("throw"===r.type){var o=r.arg;A(n)}return o}}throw Error("illegal catch attempt")},delegateYield:function(e,n,r){return this.delegate={iterator:N(e),resultName:n,nextLoc:r},"next"===this.method&&(this.arg=t),g}},e}function a(t,e,n,r,o,a,i){try{var c=t[a](i),s=c.value}catch(t){return void n(t)}c.done?e(s):Promise.resolve(s).then(r,o)}function i(t){return function(){var e=this,n=arguments;return new Promise((function(r,o){var i=t.apply(e,n);function c(t){a(i,r,o,c,s,"next",t)}function s(t){a(i,r,o,c,s,"throw",t)}c(void 0)}))}}function c(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,u(r.key),r)}}function s(t,e,n){return(e=u(e))in t?Object.defineProperty(t,e,{value:n,enumerable:!0,configurable:!0,writable:!0}):t[e]=n,t}function u(t){var e=function(t,e){if("object"!=r(t)||!t)return t;var n=t[Symbol.toPrimitive];if(void 0!==n){var o=n.call(t,e||"default");if("object"!=r(o))return o;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===e?String:Number)(t)}(t,"string");return"symbol"==r(e)?e:e+""}n.d(e,{A:()=>f});var l=function(){return t=function t(){!function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}(this,t)},e=null,n=[{key:"confirmDialog",value:(l=i(o().mark((function t(e,n){var r,a,i,c,s,u,l;return o().wrap((function(t){for(;;)switch(t.prev=t.next){case 0:return r=document.createElement("dialog"),a=document.createElement("h4"),i=document.createElement("div"),c=document.createElement("div"),s=document.createElement("button"),u=document.createElement("button"),r.setAttribute("id","inputDialog"),a.setAttribute("id","title"),i.setAttribute("id","message"),c.setAttribute("id","divButtons"),s.setAttribute("id","btnOk"),s.innerText="OK",u.setAttribute("id","btnCancel"),u.innerText="Cancel",c.append(s,u),r.append(a,i,c),$("body").prepend(r),l={operation:0},t.abrupt("return",new Promise((function(t){r.open||(r.showModal(),a.innerText=e,i.innerHTML=n,s.addEventListener("click",(function(){r.close(),$(r).remove(),l.operation=1,t(l)})),u.addEventListener("click",(function(){r.close(),$(r).remove(),l.operation=0,t(l)})))})));case 19:case"end":return t.stop()}}),t)}))),function(t,e){return l.apply(this,arguments)})},{key:"changePasswordDialog",value:(u=i(o().mark((function t(e,n){var r,a,i,c,s,u,l,f,d,p,h;return o().wrap((function(t){for(;;)switch(t.prev=t.next){case 0:return r=document.createElement("dialog"),a=document.createElement("h4"),i=document.createElement("div"),c=document.createElement("form"),s=document.createElement("input"),u=document.createElement("input"),l=document.createElement("div"),f=document.createElement("button"),d=document.createElement("button"),p=document.createElement("div"),s.setAttribute("class","form-control mb-3"),u.setAttribute("class","form-control"),r.setAttribute("id","inputDialog"),a.setAttribute("id","title"),i.setAttribute("id","message"),l.setAttribute("id","divButtons"),f.setAttribute("id","btnSave"),f.innerText="Save",d.setAttribute("id","btnCancel"),d.innerText="Cancel",s.setAttribute("type","password"),s.setAttribute("placeholder","New Password"),s.setAttribute("id","newPassword"),u.setAttribute("type","password"),u.setAttribute("placeholder","Confirm Password"),u.setAttribute("id","confirmPassword"),p.setAttribute("id","errorMessage"),p.style.color="red",c.append(s,u,p),l.append(f,d),r.append(a,i,c,l),document.body.prepend(r),h={operation:0,newPassword:null},t.abrupt("return",new Promise((function(t){function o(){var t=s.value.trim(),e=u.value.trim();t!==e&&e.length>0?p.innerText="Passwords do not match.":/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(t)?p.innerText="":p.innerText="Password must be at least 8 characters \nand include both letters and numbers."}r.showModal(),a.innerText=e,i.innerHTML=n,f.addEventListener("click",(function(){var e=s.value.trim();e===u.value.trim()?(r.close(),$(r).remove(),h.operation=1,h.newPassword=e,t(h)):p.innerText="Passwords do not match. Please try again."})),d.addEventListener("click",(function(){r.close(),$(r).remove(),t(h)})),s.addEventListener("input",o),u.addEventListener("input",o)})));case 34:case"end":return t.stop()}}),t)}))),function(t,e){return u.apply(this,arguments)})},{key:"showCropModal",value:(s=i(o().mark((function t(e,n,r,a){var i,c;return o().wrap((function(t){for(;;)switch(t.prev=t.next){case 0:return(i=document.createElement("dialog")).setAttribute("id","messageDialog"),i.style.width="700px",i.style.padding="20px",i.style.textAlign="center",i.style.borderRadius="0.5rem",a.sort((function(t,e){return e.totalAreaPlanted-t.totalAreaPlanted})),i.innerHTML='\n        <div class="container-fluid">\n            <ul class="nav nav-tabs d-flex justify-content-around w-100" style="border-bottom: 2px solid #007bff;">\n                <li class="nav-item w-50">\n                    <a class="nav-link active bg-white text-center w-100" id="cropInfoTab" href="#" style="font-weight: bold; color: #28a745;">Crop Information</a>\n                </li>\n                <li class="nav-item w-50">\n                    <a class="nav-link bg-white text-center w-100" id="varietyTab" href="#" style="font-weight: bold; color: #6c757d;">Variety</a>\n                </li>\n            </ul>\n            <div class="tab-content">\n                <div class="tab-pane fade show active bg-transparent" id="cropInfoContent" style="text-align: justify; font-size: 0.9rem; margin-top: 15px;">\n                    <div class="text-center">\n                        <div style="background-color: #C9AF94; color: white; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 1.5rem; margin-bottom: 15px;">\n                            '.concat(r,'\n                        </div>\n                        <img id="cropImg" src="').concat(e,'" alt="Crop Image" class="img-fluid border border-primary rounded" style="width: 30rem; height: auto; margin-bottom: 10px;">\n                    </div>\n    \n                    <div class="text-dark mt-2">').concat(n,'</div>\n                </div>\n                <div class="tab-pane fade bg-transparent" id="varietyContent" style="text-align: justify; font-size: 0.9rem; color: #333;">\n                    <div class="accordion" id="varietyAccordion">\n                        ').concat(a.map((function(t,e){return'\n                        <div class="accordion-item">\n                            <h2 class="accordion-header" id="heading'.concat(e,'">\n                                <button class="bg-success accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse').concat(e,'" aria-expanded="false" aria-controls="collapse').concat(e,'">\n                                    ').concat(t.varietyName," (Total Area Planted: ").concat(t.totalAreaPlanted,')\n                                </button>\n                            </h2>\n                            <div id="collapse').concat(e,'" class="accordion-collapse collapse" aria-labelledby="heading').concat(e,'" data-bs-parent="#varietyAccordion">\n                                <div class="accordion-body">\n                                    <img src="').concat(t.cropImg,'" alt="').concat(t.varietyName,' Image" class="img-fluid border border-primary rounded" style="width: 20rem; height: auto; margin-bottom: 10px;">\n                                    <p><strong>Characteristics:</strong></p>\n                                    <p><strong>Color:</strong> ').concat(t.color,"</p>\n                                    <p><strong>Size:</strong> ").concat(t.size,"</p>\n                                    <p><strong>Flavor:</strong> ").concat(t.flavor,"</p>\n                                    <p><strong>Growth Conditions:</strong> ").concat(t.growthConditions,"</p>\n                                    <p><strong>Pest/Disease Resistance:</strong> ").concat(t.pestDiseaseResistance,"</p>\n                                    <p><strong>Recommended Practices:</strong> ").concat(t.recommendedPractices,"</p>\n                                </div>\n                            </div>\n                        </div>\n                        ")})).join(""),'\n                    </div>\n                </div>\n            </div>\n            <div class="d-flex justify-content-center mt-3">\n                <button id="btnClose" class="btn btn-danger" style="font-weight: bold;">Close</button>\n            </div>\n        </div>\n        '),document.body.append(i),c={operation:0},t.abrupt("return",new Promise((function(t){if(!i.open){i.showModal();var e=i.querySelector("#cropInfoContent"),n=i.querySelector("#varietyContent");i.querySelector(".nav-tabs").addEventListener("click",(function(t){var r=t.target;"cropInfoTab"===r.id?(e.classList.add("show","active"),n.classList.remove("show","active"),r.style.color="#28a745",i.querySelector("#varietyTab").style.color="#6c757d"):"varietyTab"===r.id&&(n.classList.add("show","active"),e.classList.remove("show","active"),r.style.color="#28a745",i.querySelector("#cropInfoTab").style.color="#6c757d")})),i.querySelector("#btnClose").addEventListener("click",(function(){i.close(),i.remove(),c.operation=1,t(c)}))}})));case 11:case"end":return t.stop()}}),t)}))),function(t,e,n,r){return s.apply(this,arguments)})},{key:"downloadDialog",value:(a=i(o().mark((function t(){var e,n,r,a,i,c,s,u,l,f;return o().wrap((function(t){for(;;)switch(t.prev=t.next){case 0:return e=document.createElement("dialog"),n=document.createElement("div"),r=document.createElement("h5"),a=document.createElement("div"),i=document.createElement("button"),c=document.createElement("button"),s=document.createElement("button"),u=document.createElement("button"),e.setAttribute("id","downloadModal"),e.setAttribute("role","dialog"),e.setAttribute("aria-labelledby","downloadModalLabel"),e.style.padding="20px",e.style.borderRadius="8px",e.style.maxWidth="400px",e.style.boxShadow="0 4px 10px rgba(0, 0, 0, 0.1)",r.className="modal-title text-center mb-4",r.id="downloadModalLabel",r.innerText="Download Options",u.type="button",u.innerText="Close",u.className="dialog-close btn btn-secondary",u.style.width="100%",u.addEventListener("click",(function(){e.close()})),i.className="btn btn-primary mb-3",i.innerHTML='<i class="fas fa-file-csv"></i> Download CSV',i.setAttribute("data-format","csv"),i.style.width="100%",c.className="btn btn-success mb-3",c.innerHTML='<i class="fas fa-file-excel"></i> Download Excel',c.setAttribute("data-format","xlsx"),c.style.width="100%",s.className="btn btn-danger mb-3",s.innerHTML='<i class="fas fa-file-pdf"></i> Download PDF',s.setAttribute("data-format","pdf"),s.style.width="100%",f=new Promise((function(t){l=t})),[i,c,s].forEach((function(t){t.addEventListener("click",(function(t){var n=t.currentTarget.getAttribute("data-format");l&&l(n),e.close()}))})),a.className="d-grid gap-3",a.append(i,c,s,u),n.className="text-center",n.append(r,a),e.appendChild(n),document.body.appendChild(e),e.showModal(),t.abrupt("return",f);case 45:case"end":return t.stop()}}),t)}))),function(){return a.apply(this,arguments)})},{key:"showInfoModal",value:(r=i(o().mark((function t(e){var n,r,a,i,c;return o().wrap((function(t){for(;;)switch(t.prev=t.next){case 0:return n=document.createElement("dialog"),r=document.createElement("div"),a=document.createElement("button"),i=document.createElement("div"),n.setAttribute("id","messageDialog"),a.setAttribute("id","btnClose"),a.innerText="Close",n.style.maxWidth="1000px",n.style.padding="20px",n.style.fontSize="1em",n.style.textAlign="justify",n.style.margin="20px",r.style.display="flex",r.style.flexDirection="column",r.style.alignItems="center",r.style.gap="20px",r.style.margin="20px",r.innerHTML=e,i.style.display="flex",i.style.justifyContent="flex-end",i.append(a),r.append(i),n.append(r),document.body.append(n),c={operation:0},t.abrupt("return",new Promise((function(t){n.open||(n.showModal(),a.addEventListener("click",(function(){n.close(),n.remove(),c.operation=1,t(c)})))})));case 26:case"end":return t.stop()}}),t)}))),function(t){return r.apply(this,arguments)})}],e&&c(t.prototype,e),n&&c(t,n),Object.defineProperty(t,"prototype",{writable:!1}),t;var t,e,n,r,a,s,u,l}();s(l,"OK_OPTION",1),s(l,"CANCEL_OPTION",0);const f=l}},e={};function n(r){var o=e[r];if(void 0!==o)return o.exports;var a=e[r]={exports:{}};return t[r](a,a.exports,n),a.exports}n.d=(t,e)=>{for(var r in e)n.o(e,r)&&!n.o(t,r)&&Object.defineProperty(t,r,{enumerable:!0,get:e[r]})},n.o=(t,e)=>Object.prototype.hasOwnProperty.call(t,e),(()=>{"use strict";var t=n(877);var e=[];function r(){$.ajaxSetup({headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content")}}),$.ajax({url:"/api/crops",method:"GET",success:function(t){e=t,console.log(e)},error:function(t,e,n){console.error("Error fetching crops:",n)}})}r();var o=[];function a(){$.ajaxSetup({headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content")}}),$.ajax({url:"/api/crop-varieties",method:"GET",success:function(t){o=t,console.log(o)},error:function(t,e,n){console.error("Error fetching crops:",n)}})}a();var i=[];function c(){$.ajaxSetup({headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content")}}),$.ajax({url:"/api/barangays",method:"GET",success:function(t){i=t,console.log(i)},error:function(t,e,n){console.error("Error fetching barangays:",n)}})}c();var s=[];function u(){$.ajaxSetup({headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content")}}),$.ajax({url:"/api/farmers",method:"GET",success:function(t){s=t,console.log(s)},error:function(t,e,n){console.error("Error fetching farmers:",n)}})}u();n(476);function l(t){return l="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},l(t)}function f(){f=function(){return e};var t,e={},n=Object.prototype,r=n.hasOwnProperty,o=Object.defineProperty||function(t,e,n){t[e]=n.value},a="function"==typeof Symbol?Symbol:{},i=a.iterator||"@@iterator",c=a.asyncIterator||"@@asyncIterator",s=a.toStringTag||"@@toStringTag";function u(t,e,n){return Object.defineProperty(t,e,{value:n,enumerable:!0,configurable:!0,writable:!0}),t[e]}try{u({},"")}catch(t){u=function(t,e,n){return t[e]=n}}function d(t,e,n,r){var a=e&&e.prototype instanceof b?e:b,i=Object.create(a.prototype),c=new _(r||[]);return o(i,"_invoke",{value:P(t,n,c)}),i}function p(t,e,n){try{return{type:"normal",arg:t.call(e,n)}}catch(t){return{type:"throw",arg:t}}}e.wrap=d;var h="suspendedStart",m="suspendedYield",v="executing",y="completed",g={};function b(){}function w(){}function x(){}var E={};u(E,i,(function(){return this}));var L=Object.getPrototypeOf,k=L&&L(L(N([])));k&&k!==n&&r.call(k,i)&&(E=k);var O=x.prototype=b.prototype=Object.create(E);function j(t){["next","throw","return"].forEach((function(e){u(t,e,(function(t){return this._invoke(e,t)}))}))}function T(t,e){function n(o,a,i,c){var s=p(t[o],t,a);if("throw"!==s.type){var u=s.arg,f=u.value;return f&&"object"==l(f)&&r.call(f,"__await")?e.resolve(f.__await).then((function(t){n("next",t,i,c)}),(function(t){n("throw",t,i,c)})):e.resolve(f).then((function(t){u.value=t,i(u)}),(function(t){return n("throw",t,i,c)}))}c(s.arg)}var a;o(this,"_invoke",{value:function(t,r){function o(){return new e((function(e,o){n(t,r,e,o)}))}return a=a?a.then(o,o):o()}})}function P(e,n,r){var o=h;return function(a,i){if(o===v)throw Error("Generator is already running");if(o===y){if("throw"===a)throw i;return{value:t,done:!0}}for(r.method=a,r.arg=i;;){var c=r.delegate;if(c){var s=S(c,r);if(s){if(s===g)continue;return s}}if("next"===r.method)r.sent=r._sent=r.arg;else if("throw"===r.method){if(o===h)throw o=y,r.arg;r.dispatchException(r.arg)}else"return"===r.method&&r.abrupt("return",r.arg);o=v;var u=p(e,n,r);if("normal"===u.type){if(o=r.done?y:m,u.arg===g)continue;return{value:u.arg,done:r.done}}"throw"===u.type&&(o=y,r.method="throw",r.arg=u.arg)}}}function S(e,n){var r=n.method,o=e.iterator[r];if(o===t)return n.delegate=null,"throw"===r&&e.iterator.return&&(n.method="return",n.arg=t,S(e,n),"throw"===n.method)||"return"!==r&&(n.method="throw",n.arg=new TypeError("The iterator does not provide a '"+r+"' method")),g;var a=p(o,e.iterator,n.arg);if("throw"===a.type)return n.method="throw",n.arg=a.arg,n.delegate=null,g;var i=a.arg;return i?i.done?(n[e.resultName]=i.value,n.next=e.nextLoc,"return"!==n.method&&(n.method="next",n.arg=t),n.delegate=null,g):i:(n.method="throw",n.arg=new TypeError("iterator result is not an object"),n.delegate=null,g)}function C(t){var e={tryLoc:t[0]};1 in t&&(e.catchLoc=t[1]),2 in t&&(e.finallyLoc=t[2],e.afterLoc=t[3]),this.tryEntries.push(e)}function A(t){var e=t.completion||{};e.type="normal",delete e.arg,t.completion=e}function _(t){this.tryEntries=[{tryLoc:"root"}],t.forEach(C,this),this.reset(!0)}function N(e){if(e||""===e){var n=e[i];if(n)return n.call(e);if("function"==typeof e.next)return e;if(!isNaN(e.length)){var o=-1,a=function n(){for(;++o<e.length;)if(r.call(e,o))return n.value=e[o],n.done=!1,n;return n.value=t,n.done=!0,n};return a.next=a}}throw new TypeError(l(e)+" is not iterable")}return w.prototype=x,o(O,"constructor",{value:x,configurable:!0}),o(x,"constructor",{value:w,configurable:!0}),w.displayName=u(x,s,"GeneratorFunction"),e.isGeneratorFunction=function(t){var e="function"==typeof t&&t.constructor;return!!e&&(e===w||"GeneratorFunction"===(e.displayName||e.name))},e.mark=function(t){return Object.setPrototypeOf?Object.setPrototypeOf(t,x):(t.__proto__=x,u(t,s,"GeneratorFunction")),t.prototype=Object.create(O),t},e.awrap=function(t){return{__await:t}},j(T.prototype),u(T.prototype,c,(function(){return this})),e.AsyncIterator=T,e.async=function(t,n,r,o,a){void 0===a&&(a=Promise);var i=new T(d(t,n,r,o),a);return e.isGeneratorFunction(n)?i:i.next().then((function(t){return t.done?t.value:i.next()}))},j(O),u(O,s,"Generator"),u(O,i,(function(){return this})),u(O,"toString",(function(){return"[object Generator]"})),e.keys=function(t){var e=Object(t),n=[];for(var r in e)n.push(r);return n.reverse(),function t(){for(;n.length;){var r=n.pop();if(r in e)return t.value=r,t.done=!1,t}return t.done=!0,t}},e.values=N,_.prototype={constructor:_,reset:function(e){if(this.prev=0,this.next=0,this.sent=this._sent=t,this.done=!1,this.delegate=null,this.method="next",this.arg=t,this.tryEntries.forEach(A),!e)for(var n in this)"t"===n.charAt(0)&&r.call(this,n)&&!isNaN(+n.slice(1))&&(this[n]=t)},stop:function(){this.done=!0;var t=this.tryEntries[0].completion;if("throw"===t.type)throw t.arg;return this.rval},dispatchException:function(e){if(this.done)throw e;var n=this;function o(r,o){return c.type="throw",c.arg=e,n.next=r,o&&(n.method="next",n.arg=t),!!o}for(var a=this.tryEntries.length-1;a>=0;--a){var i=this.tryEntries[a],c=i.completion;if("root"===i.tryLoc)return o("end");if(i.tryLoc<=this.prev){var s=r.call(i,"catchLoc"),u=r.call(i,"finallyLoc");if(s&&u){if(this.prev<i.catchLoc)return o(i.catchLoc,!0);if(this.prev<i.finallyLoc)return o(i.finallyLoc)}else if(s){if(this.prev<i.catchLoc)return o(i.catchLoc,!0)}else{if(!u)throw Error("try statement without catch or finally");if(this.prev<i.finallyLoc)return o(i.finallyLoc)}}}},abrupt:function(t,e){for(var n=this.tryEntries.length-1;n>=0;--n){var o=this.tryEntries[n];if(o.tryLoc<=this.prev&&r.call(o,"finallyLoc")&&this.prev<o.finallyLoc){var a=o;break}}a&&("break"===t||"continue"===t)&&a.tryLoc<=e&&e<=a.finallyLoc&&(a=null);var i=a?a.completion:{};return i.type=t,i.arg=e,a?(this.method="next",this.next=a.finallyLoc,g):this.complete(i)},complete:function(t,e){if("throw"===t.type)throw t.arg;return"break"===t.type||"continue"===t.type?this.next=t.arg:"return"===t.type?(this.rval=this.arg=t.arg,this.method="return",this.next="end"):"normal"===t.type&&e&&(this.next=e),g},finish:function(t){for(var e=this.tryEntries.length-1;e>=0;--e){var n=this.tryEntries[e];if(n.finallyLoc===t)return this.complete(n.completion,n.afterLoc),A(n),g}},catch:function(t){for(var e=this.tryEntries.length-1;e>=0;--e){var n=this.tryEntries[e];if(n.tryLoc===t){var r=n.completion;if("throw"===r.type){var o=r.arg;A(n)}return o}}throw Error("illegal catch attempt")},delegateYield:function(e,n,r){return this.delegate={iterator:N(e),resultName:n,nextLoc:r},"next"===this.method&&(this.arg=t),g}},e}function d(t,e,n,r,o,a,i){try{var c=t[a](i),s=c.value}catch(t){return void n(t)}c.done?e(s):Promise.resolve(s).then(r,o)}function p(t){return function(){var e=this,n=arguments;return new Promise((function(r,o){var a=t.apply(e,n);function i(t){d(a,r,o,i,c,"next",t)}function c(t){d(a,r,o,i,c,"throw",t)}i(void 0)}))}}window.confirmDownload=function(){var e=p(f().mark((function e(n,r){var o;return f().wrap((function(e){for(;;)switch(e.prev=e.next){case 0:return e.next=2,t.A.confirmDialog("Download File","Are you sure you want to download this file?");case 2:e.sent.operation===t.A.OK_OPTION&&((o=document.createElement("a")).href=n,o.download=r,o.click());case 4:case"end":return e.stop()}}),e)})));return function(t,n){return e.apply(this,arguments)}}()})()})();
-//# sourceMappingURL=MaintenanceMenu.js.map
+import{initializeMethodsCrop}from"../classes/Crop.js";import{getCrop}from"../../../js/fetch.js";import{initializeMethodsCropVariety}from"../classes/CropVariety.js";import{initializeMethodsBarangay}from"../classes/Barangay.js";import{initializeMethodsFarmer,getBarangayNames}from"../classes/Farmer.js";import{initializeMethodsRecord}from"../classes/Record.js";import Dialog from"../helpers/Dialog.js";function loadMonthYear(){$(document).ready(function(){var e=(new Date).getFullYear();var t=$("#yearSelect");for(var o=e;o>=e-10;o--){t.append($("<option>",{value:o,text:o}))}});$(document).ready(function(){var e=["January","February","March","April","May","June","July","August","September","October","November","December"];var t=(new Date).getMonth();var o=e[t];$("#monthPicker select").val(o)})}function initializeMaintenanceMenu(e){$("#maintenance-content").empty();switch(e){case"crop":initializeCropView();break;case"crop_variety":initializeCropVarietyView();break;case"barangay":initializeBarangayView();break;case"farmer":initializeFarmerView();break;case"riceProduction":initializeRiceProductionView();break;case"hvcProduction":initializeHVCProductionView();break;case"price":initializePriceMonitoringView();break;case"pestDisease":initializePestReportsView();break;case"damage":initializeDamageReportsView();break;case"soilHealth":initializeSoilHealthView();break;default:initializeBarangayView()}}function initializeCropView(){$("#maintenance-content").html(`
+  <div class="row d-flex align-items-start mt-5"> <!-- Aligns items at the top -->
+    <div class="col-md-4">
+      <form id="cropForm" class="form-spacing"> <!-- Add class for spacing -->
+        <input type="hidden" class="form-control" id="cropId" name="cropId">
+        
+        <div class="mb-3">
+          <input placeholder="Crop Name" type="text" class="form-control" id="cropName" name="cropName" required>
+        </div>
+
+        <div class="mb-3">
+          <input placeholder="Scientific Name" type="text" class="form-control" id="scientificName" name="scientificName" required>
+        </div>
+
+        <div class="mb-3">
+          <textarea placeholder="Planting Season" class="form-control" id="plantingSeason" name="plantingSeason" rows="3" required></textarea>
+        </div>
+
+        <div class="mb-3">
+          <textarea placeholder="Growth Duration" class="form-control" id="growthDuration" name="growthDuration" rows="3" required></textarea>
+        </div>
+        
+        <div class="mb-3">
+          <select class="form-control" id="cropType" name="cropType" required>
+            <option value="" disabled selected>Select Type</option>
+            <option value="Vegetables">Vegetables</option>
+            <option value="Rice">Rice</option>
+            <option value="Fruits">Fruits</option>
+          </select>
+        </div>
+        
+        <div class="mb-3">
+          <select class="form-control" id="unit" name="unit" required>
+            <option value="" disabled selected>Select Unit</option>
+            <option value="kg">kilogram</option>
+            <option value="pc">piece</option>
+            <option value="bundle">bundle</option>
+          </select>
+        </div>
+        
+        <div class="mb-3" id="weightDiv" style="display: none;">
+          <input placeholder="Weight on kilogram (optional)" type="number" class="form-control" id="weight" name="weight" value="1.00" step="0.01" min="0">
+        </div>
+
+        <div class="mb-3">
+          <label id="lblCropImg">Upload Image:</label>
+          <div class="input-group mb-3" style="width: 100%;">
+            <input type="file" class="form-control" id="cropImg" name="cropImg" accept="image/*">
+            <div class="input-group-append">
+              <label class="input-group-text" for="cropImg">
+                <i class="fas fa-upload"></i>
+              </label>
+            </div>
+          </div>
+        </div>
+        
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-custom" id="submitBtn">Add Crop</button>
+          <button type="button" class="btn btn-custom mt-2" id="cancelBtn" style="display: none;">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-md-8 actionBtn">
+      <div class="d-flex justify-content-end align-items-center mb-2">
+        <button id="editBtn" class="btn btn-warning" style="margin-right: 10px;" disabled>Edit</button>
+        <button id="deleteBtn" class="btn btn-danger" disabled>Delete</button>
+      </div>
+
+      <div class="table-responsive">
+        <table id="cropTable" class="table table-custom text-center">
+          <thead>
+            <tr style="background-color: #2774E9; color: white;">
+              <th scope="col" style="display: none;">Crop ID</th>
+              <th scope="col">Crop Image</th>
+              <th scope="col">Crop Name</th>
+              <th scope="col">Type</th>
+              <th scope="col">Scientific Name</th>
+              <th scope="col">Planting Season</th>
+              <th scope="col">Growth Duration</th>
+              <th scope="col">Unit</th>
+              <th scope="col">Weight</th>
+            </tr>
+          </thead>
+          <tbody id="cropTableBody">
+            <!-- Table rows will be dynamically added here -->
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="text-right">
+        <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
+        <button id="nextBtn" class="btn btn-green">Next</button>
+      </div>
+    </div>
+  </div>
+`);initializeMethodsCrop();$("#unit").change(function(){const e=$(this).val();if(e==="kg"){$("#weightDiv").hide();$("#weight").val("1.00")}else{$("#weightDiv").show()}})}function initializeCropVarietyView(){$("#maintenance-content").html(`
+      <div class="row d-flex justify-content-between align-items-start mt-5">
+          <div class="col-md-4">
+              <form id="cropVarietyForm" class="form-spacing">
+                  <input type="hidden" class="form-control" id="varietyId" name="varietyId">
+
+                  <div class="mb-3">
+                      <select class="form-control" id="cropId" name="cropId" required>
+                          <option value="" disabled selected>Select Associated Crop</option>
+                          <!-- Populate this dropdown with crop options -->
+                      </select>
+                  </div>
+                  
+                  <div class="mb-3">
+                      <input placeholder="Variety Name" type="text" class="form-control" id="varietyName" name="varietyName" required>
+                  </div>
+                  
+                  <div class="mb-3">
+                      <input placeholder="Color" type="text" class="form-control" id="color" name="color" required>
+                  </div>
+
+                  <div class="mb-3">
+                      <input placeholder="Size" type="text" class="form-control" id="size" name="size" required>
+                  </div>
+
+                  <div class="mb-3">
+                      <input placeholder="Flavor" type="text" class="form-control" id="flavor" name="flavor" required>
+                  </div>
+
+                  <div class="mb-3">
+                      <textarea placeholder="Growth Conditions" class="form-control" id="growthConditions" name="growthConditions" rows="3" required></textarea>
+                  </div>
+
+                  <div class="mb-3">
+                      <textarea placeholder="Pest/Disease Resistance" class="form-control" id="pestDiseaseResistance" name="pestDiseaseResistance" rows="3" required></textarea>
+                  </div>
+
+                  <div class="mb-3">
+                      <textarea placeholder="Recommended Practices" class="form-control" id="recommendedPractices" name="recommendedPractices" rows="3" required></textarea>
+                  </div>
+
+                  <div class="mb-3">
+                      <label id="lblCropImg">Upload Image:</label>
+                      <div class="input-group mb-3" style="width: 100%;">
+                          <input type="file" class="form-control" id="cropImg" name="cropImg" accept="image/*">
+                          <div class="input-group-append">
+                              <label class="input-group-text" for="cropImg">
+                                  <i class="fas fa-upload"></i>
+                              </label>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <button type="button" class="btn btn-custom" id="submitBtn">Add Variety</button>
+                  <button type="button" class="btn btn-custom mt-2" id="cancelBtn" style="display: none;">Cancel</button>
+              </form>
+          </div>
+
+          <div class="col-md-8 actionBtn">
+              <div class="d-flex justify-content-end align-items-center mb-2">
+                  <button id="editBtn" class="btn btn-warning" style="margin-right: 10px;" disabled>Edit</button>
+                  <button id="deleteBtn" class="btn btn-danger" disabled>Delete</button>
+              </div>
+
+              <div class="table-responsive">
+                  <table id="cropVarietyTable" class="table table-custom text-center">
+                      <thead>
+                          <tr style="background-color: #2774E9; color: white;">
+                              <th scope="col" style="display: none;">Variety ID</th>
+                              <th scope="col">Crop Image</th>
+                              <th scope="col">Variety Name</th>
+                              <th scope="col">Crop Name</th>
+                              <th scope="col">Color</th>
+                              <th scope="col">Size</th>
+                              <th scope="col">Flavor</th>
+                              <th scope="col">Growth Conditions</th>
+                              <th scope="col">Pest/Disease Resistance</th>
+                              <th scope="col">Recommended Practices</th>
+                          </tr>
+                      </thead>
+                      <tbody id="cropVarietyTableBody">
+                          <!-- Table rows will be dynamically added here -->
+                      </tbody>
+                  </table>
+              </div>
+              
+              <div class="text-right">
+                  <button id="prevVarietyBtn" class="btn btn-green mr-2">Previous</button>
+                  <button id="nextVarietyBtn" class="btn btn-green">Next</button>
+              </div>
+          </div>
+      </div>
+  `);$(document).ready(function(){getCrop().then(function(e){let t=$("#cropId");t.empty();t.append('<option value="" disabled selected>Select Associated Crop</option>');e.forEach(function(e){t.append('<option value="'+e.cropId+'">'+e.cropName+"</option>")})})["catch"](function(e){console.error("Error fetching crops:",e)})});initializeMethodsCropVariety()}function initializeBarangayView(){$("#maintenance-content").html(`
+  <div class="row d-flex justify-content-between align-items-start mt-5">
+    <div class="col-md-4">
+      <form id="barangayForm" class="form-spacing">
+        <input type="hidden" class="form-control" id="barangayId" name="barangayId">
+        <div class="mb-3">
+          <input placeholder="Barangay" type="text" class="form-control" id="barangayName" name="barangayName" required>
+        </div>
+        <button type="button" class="btn btn-custom" id="submitBtn">Add Barangay</button>
+        <button type="button" class="btn btn-custom mt-2" id="cancelBtn" style="display: none;">Cancel</button>
+      </form>
+    </div>
+    <div class="col-md-8">
+      <div class="d-flex justify-content-end align-items-center mb-2 ">
+        <button id="editBtn" class="btn btn-warning" style="margin-right: 10px;" disabled>Edit</button>
+        <button id="deleteBtn" class="btn btn-danger" disabled>Delete</button>
+      </div>
+      <div class="table-responsive">
+        <table id="barangayTable" class="table table-custom text-center">
+          <thead>
+            <tr style="background-color: #2774E9; color: white;">
+              <th scope="col">Barangay</th>
+              <th scope="col">Coordinates</th>
+            </tr>
+          </thead>
+          <tbody id="barangayTableBody">
+            <!-- Table rows will be dynamically added here -->
+          </tbody>
+        </table>
+      </div>
+      <div class="text-right">
+        <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
+        <button id="nextBtn" class="btn btn-green">Next</button>
+      </div>
+    </div>
+  </div>
+`);initializeMethodsBarangay()}function initializeFarmerView(){$("#maintenance-content").html(`
+    <div class="row d-flex justify-content-between align-items-start mt-5">
+      <div class="col-md-4">
+        <form id="farmerForm" class="form-spacing">
+          <input type="hidden" class="form-control" id="farmerId" name="farmerId">
+          
+          <div class="mb-3">
+            <select style='width: 100%;' id="barangay-option" class="form-control" name="barangayId" required>
+              <!-- Options will be populated dynamically -->
+            </select>
+          </div>
+          
+          <div class="mb-3">
+            <input placeholder="Farmer Name" type="text" class="form-control" id="farmerName" name="farmerName" required>
+          </div>
+          
+          <div class="mb-3">
+            <input placeholder="Field Area" type="number" step="0.01" class="form-control" id="fieldArea" name="fieldArea">
+          </div>
+          
+          <div class="mb-3">
+            <select style='width: 100%;' id="fieldType" class="form-control" name="fieldType" required>
+              <option value="" disabled selected>Select Field Type</option>
+              <option value='Vegetables'>Vegetables</option>
+              <option value='Rice'>Rice</option>
+              <option value='Fruit Trees'>Fruit Trees</option>
+              <option value='OA'>OA</option>
+              <option value='Corn'>Corn</option>
+            </select>
+          </div>
+          
+          <div class="mb-3">
+            <input placeholder="Phone Number (optional)" type="text" class="form-control" id="phoneNumber" name="phoneNumber">
+          </div>
+          
+          <button type="button" class="btn btn-custom" id="submitBtn">Add Farmer</button>
+          <button type="button" class="btn btn-custom mt-2" id="cancelBtn" style="display: none;">Cancel</button>
+        </form>
+      </div>
+      
+      <div class="col-md-8 actionBtn">
+        <div class="d-flex justify-content-end align-items-center mb-2 ">
+          <button id="editBtn" class="btn btn-warning" style="margin-right: 10px;" disabled>Edit</button>
+          <button id="deleteBtn" class="btn btn-danger" disabled>Delete</button>
+        </div>
+        
+        <div class="table-responsive">
+          <table id="farmerTable" class="table table-custom text-center">
+            <thead>
+              <tr style="background-color: #2774E9; color: white;">
+                <th scope="col">Barangay</th>
+                <th scope="col">Farmer Name</th>
+                <th scope="col">Field Area</th>
+                <th scope="col">Field Type</th>
+                <th scope="col">Phone Number</th>
+              </tr>
+            </thead>
+            <tbody id="farmerTableBody">
+              <!-- Table rows will be dynamically added here -->
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="text-right">
+          <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
+          <button id="nextBtn" class="btn btn-green">Next</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="text-center mt-3">
+      <button id="downloadBtn" class="download-btn btn btn-primary">Download Farmers</button>
+    </div>
+  `);getBarangayNames();initializeMethodsFarmer()}function initializeRiceProductionView(){$("#maintenance-content").html(`
+  <div class="row d-flex justify-content-between align-items-start mt-5">
+    <div class="col-md-4">
+      <form id="recordForm" enctype="multipart/form-data" class="form-spacing">
+        <input type="hidden" class="form-control" id="recordId" name="recordId">
+        <input type="hidden" class="form-control" id="userId" name="userId">
+
+        <div class="mb-3">
+          <div class="input-group" id="seasonPicker" style="width: 100%;">
+            <select id="seasonSelect" class="form-control" required>
+              <option value="dry">Dry</option>
+              <option value="wet">Wet</option>
+            </select>
+            <span class="input-group-append">
+              <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+            </span>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <div class="input-group" id="yearPicker" style="width: 100%;">
+            <select id="yearSelect" class="form-control" required>
+              <!-- Options will be added by jQuery -->
+            </select>
+            <span class="input-group-append">
+              <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+            </span>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label id="lblUpload">Upload File:</label>
+          <div class="input-group" style="width: 100%;">
+            <input type="file" class="form-control" id="fileRecord" name="fileRecord" accept=".xls, .xlsx" required>
+            <div class="input-group-append">
+              <label class="input-group-text" for="fileRecord" id="btnUpload">
+                <i class="fas fa-upload"></i>
+              </label>
+            </div>
+          </div>
+        </div>
+        
+        <button type="button" class="btn btn-custom" id="submitBtn">Add Record</button>
+        <button type="button" class="btn btn-custom mt-2" id="cancelBtn" style="display: none;">Cancel</button>
+      </form>
+    </div>
+    
+    <div class="col-md-8 actionBtn">
+      <div class="d-flex justify-content-end align-items-center mb-2">
+        <button id="infoBtn" class="btn btn-info" style="margin-right: 10px;">
+          <i class="fas fa-info-circle"></i>
+        </button>
+        <button id="editBtn" class="btn btn-warning" style="margin-right: 10px;" disabled>Edit</button>
+        <button id="deleteBtn" class="btn btn-danger" disabled>Delete</button>
+      </div>
+      
+      <div class="table-responsive">
+        <table id="recordTable" class="table table-custom text-center">
+          <thead>
+            <tr style="background-color: #2774E9; color: white;">
+              <th scope="col">File Name</th>
+              <th scope="col">File Size</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody id="recordTableBody">
+            <!-- Table rows will be dynamically added here -->
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="text-right">
+        <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
+        <button id="nextBtn" class="btn btn-green">Next</button>
+      </div>
+    </div>
+  </div>
+`);$(document).ready(function(){$("#infoBtn").click(function(){let e=`
+<p>To upload your records successfully, please follow the instructions below using the provided template:</p>
+
+<ol>
+<li><strong>Download the Template:</strong><br>
+Obtain the file <a href="components/template/RiceProduction_Template.xlsx" download>RiceProduction_Template.xlsx</a>. This template will guide you in entering the necessary data.</li>
+
+<li><strong>Gather Your Data:</strong><br>
+Retrieve the data from your reports and prepare it for entry into the template. The data should include the following fields:
+  <ul>
+    <li><strong>Barangay:</strong> The local administrative division where the production takes place.</li>
+    <li><strong>Commodity:</strong> The type of crop or product being recorded.</li>
+    <li><strong>Area Planted (ha):</strong> The total area planted with the crop, measured in hectares.</li>
+    <li><strong>Month Harvested:</strong> The month when the crop was harvested.</li>
+    <li><strong>Volume of Production (MT):</strong> The total volume of the commodity produced, measured in metric tons.</li>
+    <li><strong>Average Yield (MT):</strong> The average yield calculated from area planted and volume of production.</li>
+  </ul>
+</li>
+
+<li><strong>Enter Data into the Template:</strong><br>
+Open the <a href="components/template/RiceProduction_Template.xlsx" download>RiceProduction_Template.xlsx</a> and enter your data into the appropriate columns based on the definitions provided above. Ensure accuracy to avoid errors in the data upload process.</li>
+
+<li><strong>Save and Upload:</strong><br>
+After filling out the template, save the file with your updated data. Upload this file to the designated upload area or system.</li>
+
+<li><strong>Verify Submission:</strong><br>
+Confirm that your file was uploaded correctly and check for any validation messages or errors that may require correction.</li>
+</ol>
+
+<p>By adhering to these instructions and utilizing the provided template, you ensure that your data is recorded accurately and efficiently.</p>
+`;Dialog.showInfoModal(e)})});initializeMethodsRecord("riceProduction");loadMonthYear()}function initializeHVCProductionView(){$("#maintenance-content").html(`
+    <div class="row d-flex justify-content-between align-items-start mt-5">
+      <div class="col-md-4">
+        <form id="recordForm" enctype="multipart/form-data" class="form-spacing">
+          <input type="hidden" class="form-control" id="recordId" name="recordId">
+          <input type="hidden" class="form-control" id="userId" name="userId">
+          
+          <div class="mb-3">
+            <div class="input-group" id="monthPicker" style="width: 100%;">
+              <select class="form-control" required>
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
+              </select>
+              <span class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+              </span>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <div class="input-group" id="yearPicker" style="width: 100%;">
+              <select id="yearSelect" class="form-control" required>
+                <!-- Options will be added by jQuery -->
+              </select>
+              <span class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+              </span>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <div class="input-group" id="seasonPicker" style="width: 100%;">
+              <select id="seasonSelect" class="form-control" required>
+                <option value="dry">Dry</option>
+                <option value="wet">Wet</option>
+              </select>
+              <span class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+              </span>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label id="lblUpload">Upload File:</label>
+            <div class="input-group" style="width: 100%;">
+              <input type="file" class="form-control" id="fileRecord" name="fileRecord" accept=".xls, .xlsx" required>
+              <div class="input-group-append">
+                <label class="input-group-text" for="fileRecord" id="btnUpload">
+                  <i class="fas fa-upload"></i>
+                </label>
+              </div>
+            </div>
+          </div>
+          
+          <button type="button" class="btn btn-custom" id="submitBtn">Add Record</button>
+          <button type="button" class="btn btn-custom mt-2" id="cancelBtn" style="display: none;">Cancel</button>
+        </form>
+      </div>
+      
+      <div class="col-md-8 actionBtn">
+        <div class="d-flex justify-content-end align-items-center mb-2">
+          <button id="infoBtn" class="btn btn-info" style="margin-right: 10px;">
+            <i class="fas fa-info-circle"></i>
+          </button>
+          <button id="editBtn" class="btn btn-warning" style="margin-right: 10px;" disabled>Edit</button>
+          <button id="deleteBtn" class="btn btn-danger" disabled>Delete</button>
+        </div>
+        
+        <div class="table-responsive">
+          <table id="recordTable" class="table table-custom text-center">
+            <thead>
+              <tr style="background-color: #2774E9; color: white;">
+                <th scope="col">File Name</th>
+                <th scope="col">File Size</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody id="recordTableBody">
+              <!-- Table rows will be dynamically added here -->
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="text-right">
+          <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
+          <button id="nextBtn" class="btn btn-green">Next</button>
+        </div>
+      </div>
+    </div>
+  `);$(document).ready(function(){$("#infoBtn").click(function(){let e=`
+<p>To upload your records successfully, please follow the instructions below using the provided template:</p>
+
+<ol>
+  <li><strong>Download the Template:</strong><br>
+  Obtain the file <a href="components/template/Production_Template.xlsx" download>Production_Template.xlsx</a>. This template will guide you in entering the necessary data.</li>
+
+  <li><strong>Gather Your Data:</strong><br>
+  Retrieve the data from your reports and prepare it for entry into the template. The data should include the following fields:
+    <ul>
+      <li><strong>Barangay:</strong> The local administrative division where the production takes place.</li>
+      <li><strong>Commodity:</strong> The type of crop or product being recorded.</li>
+      <li><strong>Variety:</strong> The specific variety or type of the commodity.</li>
+      <li><strong>Area Planted (ha):</strong> The total area planted with the crop, measured in hectares.</li>
+      <li><strong>Month Planted:</strong> The month when planting of the crop started.</li>
+      <li><strong>Month Harvested:</strong> The month when the crop was harvested.</li>
+      <li><strong>Volume of Production (MT):</strong> The total volume of the commodity produced, measured in metric tons.</li>
+      <li><strong>Cost of Production (per ha):</strong> The cost incurred for producing the crop per hectare.</li>
+      <li><strong>Farm Gate Price (per kg):</strong> The price at which the commodity is sold at the farm gate, per kilogram.</li>
+      <li><strong>Volume Sold (MT):</strong> The total volume of the commodity sold, measured in metric tons.</li>
+    </ul>
+  </li>
+
+  <li><strong>Enter Data into the Template:</strong><br>
+  Open the <a href="components/template/Production_Template.xlsx" download>Production_Template.xlsx</a> and enter your data into the appropriate columns based on the definitions provided above. Ensure accuracy to avoid errors in the data upload process.</li>
+
+  <li><strong>Save and Upload:</strong><br>
+  After filling out the template, save the file with your updated data. Upload this file to the designated upload area or system.</li>
+
+  <li><strong>Verify Submission:</strong><br>
+  Confirm that your file was uploaded correctly and check for any validation messages or errors that may require correction.</li>
+</ol>
+
+<p>By adhering to these instructions and utilizing the provided template, you ensure that your data is recorded accurately and efficiently.</p>
+`;Dialog.showInfoModal(e)})});initializeMethodsRecord("production");loadMonthYear()}function initializePriceMonitoringView(){$("#maintenance-content").html(`
+        <div class="row d-flex justify-content-between align-items-start mt-5">
+          <div class="col-md-4">
+            <form id="recordForm" enctype="multipart/form-data" class="form-spacing">
+              <input type="hidden" class="form-control" id="recordId" name="recordId">
+              <input type="hidden" class="form-control" id="userId" name="userId">
+              
+              <div class="mb-3">
+                <div class="input-group" id="monthPicker" style="width: 100%;">
+                  <select class="form-control" required>
+                    <option value="January">January</option>
+                    <option value="February">February</option>
+                    <option value="March">March</option>
+                    <option value="April">April</option>
+                    <option value="May">May</option>
+                    <option value="June">June</option>
+                    <option value="July">July</option>
+                    <option value="August">August</option>
+                    <option value="September">September</option>
+                    <option value="October">October</option>
+                    <option value="November">November</option>
+                    <option value="December">December</option>
+                  </select>
+                  <span class="input-group-append">
+                    <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                  </span>
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <div class="input-group" id="yearPicker" style="width: 100%;">
+                  <select id="yearSelect" class="form-control" required>
+                    <!-- Options will be added by jQuery -->
+                  </select>
+                  <span class="input-group-append">
+                    <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                  </span>
+                </div>
+              </div>
+
+            <div class="mb-3">
+              <div class="input-group" id="seasonPicker" style="width: 100%;">
+                <select id="seasonSelect" class="form-control" required>
+                  <option value="dry">Dry</option>
+                  <option value="wet">Wet</option>
+                </select>
+                <span class="input-group-append">
+                  <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                </span>
+              </div>
+            </div>
+              
+              <div class="mb-3">
+                <label id="lblUpload">Upload File:</label>
+                <div class="input-group" style="width: 100%;">
+                  <input type="file" class="form-control" id="fileRecord" name="fileRecord" accept=".xls, .xlsx" required>
+                  <div class="input-group-append">
+                    <label class="input-group-text" for="fileRecord" id="btnUpload">
+                      <i class="fas fa-upload"></i>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              
+              <button type="button" class="btn btn-custom" id="submitBtn">Add Record</button>
+              <button type="button" class="btn btn-custom mt-2" id="cancelBtn" style="display: none;">Cancel</button>
+            </form>
+          </div>
+          
+          <div class="col-md-8 actionBtn">
+            <div class="d-flex justify-content-end align-items-center mb-2 ">
+              <button id="infoBtn" class="btn btn-info" style="margin-right: 10px;">
+                <i class="fas fa-info-circle"></i>
+              </button>
+              <button id="editBtn" class="btn btn-warning" style="margin-right: 10px;" disabled>Edit</button>
+              <button id="deleteBtn" class="btn btn-danger" disabled>Delete</button>
+            </div>
+            
+            <div class="table-responsive">
+              <table id="recordTable" class="table table-custom text-center">
+                <thead>
+                  <tr style="background-color: #2774E9; color: white;">
+                    <th scope="col">File Name</th>
+                    <th scope="col">File Size</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="recordTableBody">
+                  <!-- Table rows will be dynamically added here -->
+                </tbody>
+              </table>
+            </div>
+            
+            <div class="text-right">
+              <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
+              <button id="nextBtn" class="btn btn-green">Next</button>
+            </div>
+          </div>
+        </div>
+      `);$(document).ready(function(){$("#infoBtn").click(function(){let e=`
+  <p>To upload your price records successfully, please follow the instructions below using the provided template:</p>
+
+<ol>
+  <li><strong>Download the Template:</strong><br>
+  Obtain the file <a href="components/template/Price_Template.xlsx" download>Price_Template.xlsx</a>. This template will guide you in entering the necessary data.</li>
+
+  <li><strong>Gather Your Data:</strong><br>
+  Retrieve the price data from your reports and prepare it for entry into the template. The data should include the following fields:
+    <ul>
+      <li><strong>Commodity:</strong> The type of crop or product for which the price is recorded.</li>
+      <li><strong>Farm Gate Price (per kg):</strong> The price at which the commodity is sold at the farm gate, per kilogram.</li>
+    </ul>
+  </li>
+
+  <li><strong>Enter Data into the Template:</strong><br>
+  Open the <a href="components/template/Price_Template.xlsx" download>Price_Template.xlsx</a> and enter your data into the appropriate columns based on the definitions provided above. Ensure accuracy to avoid errors in the data upload process.</li>
+
+  <li><strong>Save and Upload:</strong><br>
+  After filling out the template, save the file with your updated data. Upload this file to the designated upload area or system.</li>
+
+  <li><strong>Verify Submission:</strong><br>
+  Confirm that your file was uploaded correctly and check for any validation messages or errors that may require correction.</li>
+</ol>
+
+<p>By adhering to these instructions and utilizing the provided template, you ensure that your price data is recorded accurately and efficiently.</p>
+`;Dialog.showInfoModal(e)})});initializeMethodsRecord("price");loadMonthYear()}function initializePestReportsView(){$("#maintenance-content").html(`
+      <div class="row d-flex justify-content-between align-items-start mt-5">
+        <div class="col-md-4">
+          <form id="recordForm" enctype="multipart/form-data" class="form-spacing">
+            <input type="hidden" class="form-control" id="recordId" name="recordId">
+            <input type="hidden" class="form-control" id="userId" name="userId">
+            
+            <div class="mb-3">
+              <div class="input-group" id="monthPicker" style="width: 100%;">
+                <select class="form-control" required>
+                  <option value="January">January</option>
+                  <option value="February">February</option>
+                  <option value="March">March</option>
+                  <option value="April">April</option>
+                  <option value="May">May</option>
+                  <option value="June">June</option>
+                  <option value="July">July</option>
+                  <option value="August">August</option>
+                  <option value="September">September</option>
+                  <option value="October">October</option>
+                  <option value="November">November</option>
+                  <option value="December">December</option>
+                </select>
+                <span class="input-group-append">
+                  <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                </span>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <div class="input-group" id="yearPicker" style="width: 100%;">
+                <select id="yearSelect" class="form-control" required>
+                  <!-- Options will be added by jQuery -->
+                </select>
+                <span class="input-group-append">
+                  <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                </span>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <div class="input-group" id="seasonPicker" style="width: 100%;">
+                <select id="seasonSelect" class="form-control" required>
+                  <option value="dry">Dry</option>
+                  <option value="wet">Wet</option>
+                </select>
+                <span class="input-group-append">
+                  <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                </span>
+              </div>
+            </div>
+              
+            <div class="mb-3">
+              <label id="lblUpload">Upload File:</label>
+              <div class="input-group" style="width: 100%;">
+                <input type="file" class="form-control" id="fileRecord" name="fileRecord" accept=".xls, .xlsx" required>
+                <div class="input-group-append">
+                  <label class="input-group-text" for="fileRecord" id="btnUpload">
+                    <i class="fas fa-upload"></i>
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <button type="button" class="btn btn-custom" id="submitBtn">Add Record</button>
+            <button type="button" class="btn btn-custom mt-2" id="cancelBtn" style="display: none;">Cancel</button>
+          </form>
+        </div>
+        
+        <div class="col-md-8 actionBtn">
+          <div class="d-flex justify-content-end align-items-center mb-2 ">
+            <button id="infoBtn" class="btn btn-info" style="margin-right: 10px;">
+              <i class="fas fa-info-circle"></i>
+            </button>
+            <button id="editBtn" class="btn btn-warning" style="margin-right: 10px;" disabled>Edit</button>
+            <button id="deleteBtn" class="btn btn-danger" disabled>Delete</button>
+          </div>
+          
+          <div class="table-responsive">
+            <table id="recordTable" class="table table-custom text-center">
+              <thead>
+                <tr style="background-color: #2774E9; color: white;">
+                  <th scope="col">File Name</th>
+                  <th scope="col">File Size</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody id="recordTableBody">
+                <!-- Table rows will be dynamically added here -->
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="text-right">
+            <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
+            <button id="nextBtn" class="btn btn-green">Next</button>
+          </div>
+        </div>
+      </div>
+    `);$(document).ready(function(){$("#infoBtn").click(function(){let e=`
+<p>To upload your pest and disease records successfully, please follow the instructions below using the provided template:</p>
+
+<ol>
+  <li><strong>Download the Template:</strong><br>
+  Obtain the file <a href="components/template/Pest_and_Disease_Template.xlsx" download>Pest_and_Disease_Template.xlsx</a>. This template will guide you in entering the necessary data.</li>
+
+  <li><strong>Gather Your Data:</strong><br>
+  Retrieve the pest and disease data from your reports and prepare it for entry into the template. The data should include the following fields:
+    <ul>
+      <li><strong>Farm Location:</strong> The location where the crops are planted.</li>
+      <li><strong>Crops Planted:</strong> The type of crops that are being monitored.</li>
+      <li><strong>Growth Stage:</strong> The current growth stage of the crops.</li>
+      <li><strong>INSECT PEST:</strong> Details about any insect pests observed.</li>
+      <li><strong>Insect Pest Observed:</strong> The specific insect pest observed.</li>
+      <li><strong>Total no. of Trees/Plants Planted:</strong> The total number of trees or plants planted.</li>
+      <li><strong>Total no. of Trees/Plants Affected/Damaged:</strong> The total number of trees or plants affected or damaged by the pest.</li>
+      <li><strong>DISEASE:</strong> Details about any diseases observed.</li>
+      <li><strong>Disease Observed:</strong> The specific disease observed.</li>
+      <li><strong>Total no. of Trees/Plants Planted:</strong> The total number of trees or plants planted affected by the disease.</li>
+      <li><strong>Total no. of Trees/Plants Affected/Damaged:</strong> The total number of trees or plants affected or damaged by the disease.</li>
+    </ul>
+  </li>
+
+  <li><strong>Enter Data into the Template:</strong><br>
+  Open the <a href="components/template/Pest_and_Disease_Template.xlsx" download>Pest_and_Disease_Template.xlsx</a> and enter your data into the appropriate columns based on the definitions provided above. Ensure accuracy to avoid errors in the data upload process.</li>
+
+  <li><strong>Save and Upload:</strong><br>
+  After filling out the template, save the file with your updated data. Upload this file to the designated upload area or system.</li>
+
+  <li><strong>Verify Submission:</strong><br>
+  Confirm that your file was uploaded correctly and check for any validation messages or errors that may require correction.</li>
+</ol>
+
+<p>By adhering to these instructions and utilizing the provided template, you ensure that your pest and disease data is recorded accurately and efficiently.</p>
+`;Dialog.showInfoModal(e)})});initializeMethodsRecord("pestDisease");loadMonthYear()}function initializeDamageReportsView(){$("#maintenance-content").html(`
+    <div class="row d-flex justify-content-between align-items-start mt-5">
+      <div class="col-md-4">
+        <form id="recordForm" enctype="multipart/form-data" class="form-spacing">
+          <input type="hidden" class="form-control" id="recordId" name="recordId">
+          <input type="hidden" class="form-control" id="userId" name="userId">
+
+
+        <div class="mb-3">
+          <div class="input-group" id="nameInputGroup" style="width: 100%;">
+            <input type="text" id="nameInput" class="form-control" placeholder="Enter Event Name" required>
+          </div>
+        </div>
+          
+          <div class="mb-3">
+            <div class="input-group" id="monthPicker" style="width: 100%;">
+              <select class="form-control" required>
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
+              </select>
+              <span class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+              </span>
+            </div>
+          </div>
+
+
+          <div class="mb-3">
+              <div class="input-group" id="yearPicker" style="width: 100%;">
+                <select id="yearSelect" class="form-control" required>
+                  <!-- Options will be added by jQuery -->
+                </select>
+                <span class="input-group-append">
+                  <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                </span>
+              </div>
+          </div>
+
+
+          <div class="mb-3">
+            <div class="input-group" id="seasonPicker" style="width: 100%;">
+              <select id="seasonSelect" class="form-control" required>
+                <option value="dry">Dry</option>
+                <option value="wet">Wet</option>
+              </select>
+              <span class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+              </span>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label id="lblUpload">Upload File:</label>
+            <div class="input-group" style="width: 100%;">
+              <input type="file" class="form-control" id="fileRecord" name="fileRecord" accept=".xls, .xlsx" required>
+              <div class="input-group-append">
+                <label class="input-group-text" for="fileRecord" id="btnUpload">
+                  <i class="fas fa-upload"></i>
+                </label>
+              </div>
+            </div>
+          </div>
+          
+          <button type="button" class="btn btn-custom" id="submitBtn">Add Record</button>
+          <button type="button" class="btn btn-custom mt-2" id="cancelBtn" style="display: none;">Cancel</button>
+        </form>
+      </div>
+      
+      <div class="col-md-8 actionBtn">
+        <div class="d-flex justify-content-end align-items-center mb-2 ">
+          <button id="infoBtn" class="btn btn-info" style="margin-right: 10px;">
+            <i class="fas fa-info-circle"></i>
+          </button>
+          <button id="editBtn" class="btn btn-warning" style="margin-right: 10px;" disabled>Edit</button>
+          <button id="deleteBtn" class="btn btn-danger" disabled>Delete</button>
+        </div>
+        
+        <div class="table-responsive">
+          <table id="recordTable" class="table table-custom text-center">
+            <thead>
+              <tr style="background-color: #2774E9; color: white;">
+                <th scope="col">File Name</th>
+                <th scope="col">File Size</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody id="recordTableBody">
+              <!-- Table rows will be dynamically added here -->
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="text-right">
+          <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
+          <button id="nextBtn" class="btn btn-green">Next</button>
+        </div>
+      </div>
+    </div>
+  `);$(document).ready(function(){$("#infoBtn").click(function(){let e=`
+<p style="margin-bottom: 15px;">To upload your damage reports successfully, please follow the instructions below using the provided template:</p>
+
+<ol style="margin-bottom: 15px;">
+  <li><strong>Download the Template:</strong><br>
+  Obtain the file <a href="components/template/Damage_Report_Template.xlsx" download>Damage_Report_Template.xlsx</a>. This template will guide you in entering the necessary data.</li>
+
+  <li><strong>Gather Your Data:</strong><br>
+  Retrieve the data from your reports and prepare it for entry into the template. The data should include the following fields:</li>
+  <ul style="margin-bottom: 15px;">
+    <li><strong>Barangay:</strong> The local administrative division where the damage occurred.</li>
+    <li><strong>Commodity:</strong> The type of crop or product that was affected by the damage.</li>
+    <li><strong>Variety:</strong> The specific variety or type of the commodity that was affected.</li>
+    <li><strong>Number of Farmers Affected:</strong> The total number of farmers affected by the damage.</li>
+    <li><strong>Area Affected (ha) - Total:</strong> The total area affected by the damage, measured in hectares.</li>
+    <li><strong>Yield Loss (%):</strong> The percentage of yield loss due to the damage.</li>
+    <li><strong>Grand Total Value:</strong> The total financial value of the damage, calculated based on the yield loss and area affected.</li>
+  </ul>
+
+  <li><strong>Enter Data into the Template:</strong><br>
+  Open <a href="components/template/Damage_Report_Template.xlsx" download>Damage_Report_Template.xlsx</a> and enter your data into the appropriate columns based on the definitions provided above. Ensure accuracy to avoid errors in the data upload process.</li>
+
+  <li><strong>Save and Upload:</strong><br>
+  After filling out the template, save the file with your updated data. You will then upload this file to the designated upload area or system.</li>
+
+  <li><strong>Verify Submission:</strong><br>
+  Confirm that your file was uploaded correctly and check for any validation messages or errors that may require correction.</li>
+</ol>
+
+<p style="margin-bottom: 15px;">By adhering to these instructions and utilizing the provided template, you ensure that your damage reports are recorded accurately and efficiently.</p>
+`;Dialog.showInfoModal(e)})});initializeMethodsRecord("damage");loadMonthYear()}function initializeSoilHealthView(){$("#maintenance-content").html(`
+    <div class="row d-flex justify-content-between align-items-start mt-5">
+      <div class="col-md-4">
+        <form id="recordForm" enctype="multipart/form-data" class="form-spacing">
+          <input type="hidden" class="form-control" id="recordId" name="recordId">
+          <input type="hidden" class="form-control" id="userId" name="userId">
+          
+          <div class="mb-3">
+            <div class="input-group" id="monthPicker" style="width: 100%;">
+              <select class="form-control" required>
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
+              </select>
+              <span class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+              </span>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <div class="input-group" id="yearPicker" style="width: 100%;">
+              <select id="yearSelect" class="form-control" required>
+                <!-- Options will be added by jQuery -->
+              </select>
+              <span class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+              </span>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <div class="input-group" id="seasonPicker" style="width: 100%;">
+              <select id="seasonSelect" class="form-control" required>
+                <option value="dry">Dry</option>
+                <option value="wet">Wet</option>
+              </select>
+              <span class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+              </span>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label id="lblUpload">Upload File:</label>
+            <div class="input-group" style="width: 100%;">
+              <input type="file" class="form-control" id="fileRecord" name="fileRecord" accept=".xls, .xlsx" required>
+              <div class="input-group-append">
+                <label class="input-group-text" for="fileRecord" id="btnUpload">
+                  <i class="fas fa-upload"></i>
+                </label>
+              </div>
+            </div>
+          </div>
+          
+          <button type="button" class="btn btn-custom" id="submitBtn">Add Record</button>
+          <button type="button" class="btn btn-custom mt-2" id="cancelBtn" style="display: none;">Cancel</button>
+        </form>
+      </div>
+      
+      <div class="col-md-8 actionBtn">
+        <div class="d-flex justify-content-end align-items-center mb-2 ">
+          <button id="infoBtn" class="btn btn-info" style="margin-right: 10px;">
+            <i class="fas fa-info-circle"></i>
+          </button>
+          <button id="editBtn" class="btn btn-warning" style="margin-right: 10px;" disabled>Edit</button>
+          <button id="deleteBtn" class="btn btn-danger" disabled>Delete</button>
+        </div>
+        
+        <div class="table-responsive">
+          <table id="recordTable" class="table table-custom text-center">
+            <thead>
+              <tr style="background-color: #2774E9; color: white;">
+                <th scope="col">File Name</th>
+                <th scope="col">File Size</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody id="recordTableBody">
+              <!-- Table rows will be dynamically added here -->
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="text-right">
+          <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
+          <button id="nextBtn" class="btn btn-green">Next</button>
+        </div>
+      </div>
+    </div>
+  `);$(document).ready(function(){$("#infoBtn").click(function(){let e=`
+<p>To upload your soil health records successfully, please follow the instructions below using the provided template:</p>
+
+<ol>
+  <li><strong>Download the Template:</strong><br>
+  Obtain the file <a href="components/template/Soil_Health_Template.xlsx" download>Soil_Health_Template.xlsx</a>. This template will guide you in entering the necessary data.</li>
+
+  <li><strong>Gather Your Data:</strong><br>
+  Retrieve the soil health data from your reports and prepare it for entry into the template. The data should include the following fields:
+    <ul>
+      <li><strong>Barangay:</strong> The local administrative division where the soil is tested.</li>
+      <li><strong>Field Type:</strong> The type of field or crop area being assessed.</li>
+      <li><strong>Soil Test Results:</strong> The results of the soil tests including:
+        <ul>
+          <li><strong>Nitrogen (as Organic Matter):</strong> The amount of nitrogen present in the soil as organic matter.</li>
+          <li><strong>Phosphorus:</strong> The amount of phosphorus present in the soil.</li>
+          <li><strong>Potassium:</strong> The amount of potassium present in the soil.</li>
+          <li><strong>pH:</strong> The acidity or alkalinity of the soil.</li>
+        </ul>
+      </li>
+      <li><strong>General Fertility Rating:</strong> The overall fertility rating of the soil based on test results.</li>
+      <li><strong>Recommendations:</strong> Suggested actions or amendments based on soil test results to improve soil health.</li>
+    </ul>
+  </li>
+
+  <li><strong>Enter Data into the Template:</strong><br>
+  Open the <a href="components/template/Soil_Health_Template.xlsx" download>Soil_Health_Template.xlsx</a> and enter your data into the appropriate columns based on the definitions provided above. Ensure accuracy to avoid errors in the data upload process.</li>
+
+  <li><strong>Save and Upload:</strong><br>
+  After filling out the template, save the file with your updated data. Upload this file to the designated upload area or system.</li>
+
+  <li><strong>Verify Submission:</strong><br>
+  Confirm that your file was uploaded correctly and check for any validation messages or errors that may require correction.</li>
+</ol>
+
+<p>By adhering to these instructions and utilizing the provided template, you ensure that your soil health data is recorded accurately and efficiently.</p>
+`;Dialog.showInfoModal(e)})});initializeMethodsRecord("soilHealth");loadMonthYear()}export{initializeMaintenanceMenu};
