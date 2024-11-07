@@ -312,6 +312,16 @@
                     Dialog.showInfoModal(htmlScript);
                 });
             });
+
+        window.showPreview = () => {
+            var imageAlt = document.getElementById("modal-image").alt;
+            if (imageAlt !== "") {
+                $("#imageModal").modal("show");
+            } else {
+                Dialog.showMessageDialog("Preview", "Please select an image to preview!");
+            }
+        }
+            
         </script>
         <script src="../../js/sendConcern.js"></script>
     </body>

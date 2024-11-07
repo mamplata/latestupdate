@@ -1,4 +1,4 @@
-import{user}from"../HeaderSidebar.js";export default function initDashboard(){let o=[];function t(){return $.ajax({url:"/api/concerns",method:"GET"}).done(function(e){o=e;a()}).fail(function(e){console.error("Error fetching content:",e)})}function a(e=""){let t=l(e);let r=$("#contentTable");r.empty();t.forEach(e=>{let t;switch(e.status.toLowerCase()){case"read":t="badge bg-secondary";break;case"unread":t="badge bg-danger";break;case"resolved":t="badge bg-success";break;default:t="badge bg-light text-dark"}let o=`<tr data-index="${e.concernId}">
+import{user}from"../HeaderSidebar.js";import Dialog from"../helpers/Dialog.js";window.Dialog=Dialog;export default function initDashboard(){let o=[];function t(){return $.ajax({url:"/api/concerns",method:"GET"}).done(function(e){o=e;a()}).fail(function(e){console.error("Error fetching content:",e)})}function a(e=""){let t=l(e);let r=$("#contentTable");r.empty();t.forEach(e=>{let t;switch(e.status.toLowerCase()){case"read":t="badge bg-secondary";break;case"unread":t="badge bg-danger";break;case"resolved":t="badge bg-success";break;default:t="badge bg-light text-dark"}let o=`<tr data-index="${e.concernId}">
               <td>${e.title}</td>
               <td><span class="${t}">${e.status}</span></td>
           </tr>`;r.append(o)});$("#contentTable").on("click","tr",function(){let e=$(this).data("index");s(e)})}function n(t){return o.find(e=>e.concernId===t)||{}}window.adminConcern=function(e){$(document).ready(function(){$("#main-content").html(`
@@ -71,7 +71,7 @@ import{user}from"../HeaderSidebar.js";export default function initDashboard(){le
                       </table>
                   </div>
               </div>
-          `);$("#search").on("input",function(){let e=$("#search").val();a(e)});$("#clearSearchBtn").on("click",function(){$("#search").val("");a("")});t()})};function s(e){let t=n(e);if(t.status==="unread"){$.ajax({url:`/api/concerns/${e}/status`,method:"PUT",contentType:"application/json",data:JSON.stringify({status:"1"}),success:function(){},error:function(e){console.error("Error updating status:",e)}})}let o=t.attachment?`<img class="img-fluid rounded" src="${t.attachment}" alt="Image" style="max-width: 300px;">`:"";let r=t.status==="resolved"?'<span class="badge bg-success">Resolved</span>':'<span class="badge bg-danger">Unresolved</span>';$("#main-content").html(`
+          `);$("#search").on("input",function(){let e=$("#search").val();a(e)});$("#clearSearchBtn").on("click",function(){$("#search").val("");a("")});t()})};function s(e){let t=n(e);if(t.status==="unread"){$.ajax({url:`/api/concerns/${e}/status`,method:"PUT",contentType:"application/json",data:JSON.stringify({status:"1"}),success:function(){console.log("Status updated to read.")},error:function(e){console.error("Error updating status:",e)}})}let o=t.attachment?`<img class="img-fluid rounded" src="${t.attachment}" alt="Image" style="max-width: 300px;">`:"";let r=t.status==="resolved"?'<span class="badge bg-success">Resolved</span>':'<span class="badge bg-danger">Unresolved</span>';$("#main-content").html(`
         <style>
           .card {
             margin: 1rem 0;
@@ -119,13 +119,18 @@ import{user}from"../HeaderSidebar.js";export default function initDashboard(){le
         </div>
 
         <script>
-          function deleteConcern(concernId) {
-            if (confirm('Are you sure you want to delete this concern?')) {
+          
+          async function deleteConcern(concernId) {
+              const res = await Dialog.confirmDialog(
+                  "Delete Concern",
+                  "Are you sure you want to delete this concern?"
+              );
+              if (res.operation === Dialog.OK_OPTION) {
               $.ajax({
                 url: '/api/concerns/${e}',  // Laravel API endpoint with ID
                 method: 'DELETE',
                 success: function() {
-                  alert('Concern deleted successfully.');
+                  Dialog.showMessageDialog("Delete", "Concern deleted successfully!");
                   adminConcern(); // Refresh the list after deletion
                 },
                 error: function(xhr) {
@@ -135,15 +140,19 @@ import{user}from"../HeaderSidebar.js";export default function initDashboard(){le
             }
           }
 
-          function resolveConcern(concernId) {
-            if (confirm('Are you sure you want to mark this concern as resolved?')) {
+          async function resolveConcern(concernId) {
+              const res = await Dialog.confirmDialog(
+                  "Resolve Concern",
+                  "Are you sure you want to resolve this concern?"
+              );
+              if (res.operation === Dialog.OK_OPTION) {
               $.ajax({
                 url: '/api/concerns/${e}/status',  // Update the status endpoint
                 method: 'PUT',
                 contentType: 'application/json',
                 data: JSON.stringify({ status: '2' }),  // Set status to '2' for "resolved"
                 success: function() {
-                  alert('Concern marked as resolved.');
+                  Dialog.showMessageDialog("Resolved", "Concern marked as resolved!");
                   adminConcern(); // Refresh the list after resolution
                 },
                 error: function(xhr) {
@@ -277,23 +286,24 @@ import{user}from"../HeaderSidebar.js";export default function initDashboard(){le
           </div>
         </div>
         <script>
-              function showPreview() {
-                var imageSrc = document.getElementById('modal-image').alt;
-                if (imageSrc !== '') {
-                  $('#imageModal').modal('show'); // Show the modal if there is a valid image src
-                } else {
-                  alert('Please select an image to preview.');
-                }
-              }
+    function showPreview() {
+        var imageSrc = document.getElementById('modal-image').alt;
+        if (imageSrc !== '') {
+            $('#imageModal').modal('show'); // Show the modal if there is a valid image src
+        } else {
+          Dialog.showMessageDialog("Preview", "Please select an image to preview!");
+        }
+    }
 
-              function previewImage(event) {
-                var reader = new FileReader();
-                reader.onload = function() {
-                  var output = document.getElementById('modal-image');
-                  output.src = reader.result;
-                  output.alt = 'Image Preview';
-                };
-                reader.readAsDataURL(event.target.files[0]);
-              }
-        </script>
-      `);$(document).ready(function(){$("#btnCloseModal").on("click",function(){$("#imageModal").modal("hide")})});$(document).ready(function(){$("#uploadForm").on("submit",function(e){e.preventDefault();let r=$("#title").val();let a=$("#content").val();let t=$("#attachment")[0].files[0];let n="";if(t){let e=new FileReader;e.onload=function(e){let o=new Image;o.src=e.target.result;o.onload=function(){let e=document.createElement("canvas");let t=e.getContext("2d");e.width=o.width;e.height=o.height;t.drawImage(o,0,0);n=e.toDataURL("image/webp");s(r,a,n)}};e.readAsDataURL(t)}else{s(r,a)}});function s(e,t,o=" "){const r=user?user.firstName+" "+user.lastName:"Unknown User";$.ajax({url:"/api/concerns",method:"POST",data:{name:r,title:e,content:t,attachment:o},success:function(e){$("#uploadForm")[0].reset();$("#modal-image").attr("alt","");$("#modal-image").attr("src","").hide();a();toastr.success("Form submitted successfully!","Success",{timeOut:5e3,positionClass:"toast-top-center",toastClass:"toast-success-custom"})},error:function(e){console.error("Error saving content:",e);toastr.error("Something went wrong.","Error",{timeOut:5e3,positionClass:"toast-center-center",toastClass:"toast-error-custom"})}})}a()})})}$(document).ready(function(){if(user.role==="admin"){adminConcern()}else if(user.role==="agriculturist"){r()}})}
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var output = document.getElementById('modal-image');
+            output.src = reader.result;
+            output.alt = 'Image Preview';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+
+      `);$(document).ready(function(){$("#btnCloseModal").on("click",function(){$("#imageModal").modal("hide")})});$(document).ready(function(){$("#uploadForm").on("submit",function(e){e.preventDefault();let r=$("#title").val();let a=$("#content").val();let t=$("#attachment")[0].files[0];let n="";if(t){let e=new FileReader;e.onload=function(e){let o=new Image;o.src=e.target.result;o.onload=function(){let e=document.createElement("canvas");let t=e.getContext("2d");e.width=o.width;e.height=o.height;t.drawImage(o,0,0);n=e.toDataURL("image/webp");s(r,a,n)}};e.readAsDataURL(t)}else{s(r,a)}});function s(e,t,o=" "){const r=user?user.firstName+" "+user.lastName:"Unknown User";$.ajax({url:"/api/concerns",method:"POST",data:{name:r,title:e,content:t,attachment:o},success:function(e){$("#uploadForm")[0].reset();$("#modal-image").attr("alt","");$("#modal-image").attr("src","").hide();a();console.log(e);toastr.success("Form submitted successfully!","Success",{timeOut:5e3,positionClass:"toast-top-center",toastClass:"toast-success-custom"})},error:function(e){console.error("Error saving content:",e);toastr.error("Something went wrong.","Error",{timeOut:5e3,positionClass:"toast-center-center",toastClass:"toast-error-custom"})}})}a()})})}$(document).ready(function(){if(user.role==="admin"){adminConcern()}else if(user.role==="agriculturist"){r()}})}
