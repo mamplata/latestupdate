@@ -239,7 +239,7 @@ import{initializeMethodsCrop}from"../classes/Crop.js";import{getCrop}from"../../
           </div>
           
           <div class="mb-3">
-            <input placeholder="Field Area" type="number" step="0.01" class="form-control" id="fieldArea" name="fieldArea">
+            <input placeholder="Field Area" type="number" step="0.01" class="form-control" id="fieldArea" name="fieldArea" required>
           </div>
           
           <div class="mb-3">

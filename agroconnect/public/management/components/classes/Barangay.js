@@ -1,17 +1,420 @@
-import Dialog from"../helpers/Dialog.js";let barangays=[];class Barangay{constructor(a,e,n){this.barangayId=a;this.barangayName=e;this.coordinates=n}createBarangay(e){const a=barangays.find(a=>a.barangayName===e.barangayName);if(a){alert("Barangay already exists");return}fetch("/api/barangays",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(e)}).then(a=>a.json()).then(a=>{})["catch"](a=>{console.error("Error:",a)})}updateBarangay(e){const a=barangays.find(a=>a.barangayName===e.barangayName);if(a&&a.barangayId!==e.barangayId){alert("Barangay already exists");return}barangays=barangays.map(a=>a.barangayId===e.barangayId?{...a,...e}:barangays);fetch(`/api/barangays/${e.barangayId}`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(e)}).then(a=>a.json()).then(a=>{})["catch"](a=>{console.error("Error:",a)})}removeBarangay(e){fetch(`/api/barangays/${e}`,{method:"DELETE",headers:{"Content-Type":"application/json"}}).then(a=>{if(a.status===204){barangays=barangays.filter(a=>a.barangayId!==a);}else if(a.status===404){console.error(`Barangay with ID ${e} not found.`)}else{console.error(`Failed to delete barangay with ID ${e}.`)}})["catch"](a=>{console.error("Error:",a)})}}function getBarangay(){$.ajaxSetup({headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content")}});$.ajax({url:"/api/barangays",method:"GET",success:function(a){let e=a;barangays=e;},error:function(a,e,n){console.error("Error fetching barangays:",n)}})}getBarangay();async function fetchCoordinates(a){a=`${a}, Cabuyao, Laguna, Philippines`;const e=await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(a)}`);const n=await e.json();if(n&&n.length>0){return[parseFloat(n[0].lat),parseFloat(n[0].lon)]}return null}async function getCoordinates(a){const e=await fetchCoordinates(a);if(e){const n=`${e[0]},${e[1]}`;return n}else{return"Location not found."}}function searchBarangay(e){const a=barangays.filter(a=>a.barangayName.toLowerCase().includes(e.toLowerCase()));return a}function initializeMethodsBarangay(){var o=null;var l=5;var s=1;var n=null;var e=false;async function i(a=null){await new Promise(a=>setTimeout(a,1e3));$("#barangayTableBody").empty();var e=(s-1)*l;var n=e+l;if(a){const o=searchBarangay(a);if(o.length>0){o.forEach(a=>{$("#barangayTableBody").append(`
-                <tr data-index=${a.barangayId}>
-                  <td style="display: none;">${a.barangayId}</td>
-                  <td>${a.barangayName}</td>
-                  <td>${a.coordinates}</td>
+import Dialog from "../helpers/Dialog.js";
+
+// Barangay.js
+let barangays = [];
+
+class Barangay {
+    constructor(barangayId, barangayName, coordinates) {
+        this.barangayId = barangayId;
+        this.barangayName = barangayName;
+        //get from leaflet
+        this.coordinates = coordinates;
+    }
+
+    createBarangay(barangay) {
+        const existingBarangay = barangays.find(
+            (b) => b.barangayName === barangay.barangayName
+        );
+        if (existingBarangay) {
+            alert("Barangay already exists");
+            return;
+        }
+
+        fetch("/api/barangays", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(barangay),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
+
+    updateBarangay(updatedBarangay) {
+        const existingBarangay = barangays.find(
+            (b) => b.barangayName === updatedBarangay.barangayName
+        );
+
+        if (
+            existingBarangay &&
+            existingBarangay.barangayId !== updatedBarangay.barangayId
+        ) {
+            alert("Barangay already exists");
+            return;
+        }
+
+        barangays = barangays.map((barangay) =>
+            barangay.barangayId === updatedBarangay.barangayId
+                ? { ...barangay, ...updatedBarangay }
+                : barangays
+        );
+
+        fetch(`/api/barangays/${updatedBarangay.barangayId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedBarangay),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
+
+    removeBarangay(barangayId) {
+        fetch(`/api/barangays/${barangayId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => {
+                if (response.status === 204) {
+                    barangays = barangays.filter(
+                        (barangay) => barangay.barangayId !== barangay
+                    );
+                    
+                } else if (response.status === 404) {
+                    console.error(`Barangay with ID ${barangayId} not found.`);
+                } else {
+                    console.error(
+                        `Failed to delete barangay with ID ${barangayId}.`
+                    );
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
+}
+
+function getBarangay() {
+    // Fetch barangays from Laravel backend
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+
+    // Fetch barangays from Laravel backend
+    $.ajax({
+        url: "/api/barangays", // Endpoint to fetch barangays
+        method: "GET",
+        success: function (response) {
+            // Assuming response is an array of barangays
+            let barangay = response;
+
+            barangays = barangay;
+          
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching barangays:", error);
+        },
+    });
+}
+
+getBarangay();
+
+async function fetchCoordinates(locationName) {
+    locationName = `${locationName}, Cabuyao, Laguna, Philippines`;
+ 
+    const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+            locationName
+        )}`
+    );
+    const data = await response.json();
+    if (data && data.length > 0) {
+        return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+    }
+    return null;
+}
+
+async function getCoordinates(locationName) {
+    const coordinates = await fetchCoordinates(locationName);
+    if (coordinates) {
+        const formattedCoordinates = `${coordinates[0]},${coordinates[1]}`;
+       
+        return formattedCoordinates;
+    } else {
+    
+        return "Location not found.";
+    }
+}
+
+function searchBarangay(barangayName) {
+    const foundBarangays = barangays.filter((barangay) =>
+        barangay.barangayName.toLowerCase().includes(barangayName.toLowerCase())
+    );
+    return foundBarangays;
+}
+
+function initializeMethodsBarangay() {
+    var selectedRow = null;
+    var pageSize = 5;
+    var currentPage = 1;
+    var barangay = null;
+    var isEdit = false;
+
+    async function displayBarangays(barangayName = null) {
+        // Simulate a delay of 1 second
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        $("#barangayTableBody").empty();
+
+        var startIndex = (currentPage - 1) * pageSize;
+        var endIndex = startIndex + pageSize;
+        if (barangayName) {
+            // Display a single barangay if barangayName is provided
+            const foundbarangays = searchBarangay(barangayName);
+            if (foundbarangays.length > 0) {
+                foundbarangays.forEach((barangay) => {
+                    $("#barangayTableBody").append(`
+                <tr data-index=${barangay.barangayId}>
+                  <td style="display: none;">${barangay.barangayId}</td>
+                  <td>${barangay.barangayName}</td>
+                  <td>${barangay.coordinates}</td>
                 </tr>
-              `)})}else{$("#barangayTableBody").append(`
+              `);
+                });
+            } else {
+                // Handle case where barangayName is not provided
+                $("#barangayTableBody").append(`
               <tr>
                 <td colspan="4">barangay not found!</td>
               </tr>
-            `)}}else{for(var t=e;t<n;t++){if(t>=barangays.length){break}var r=barangays[t];$("#barangayTableBody").append(`
-            <tr data-index=${r.barangayId}>
-              <td style="display: none;">${r.barangayId}</td>
-              <td>${r.barangayName}</td>
-              <td>${r.coordinates}</td>
+            `);
+            }
+        } else {
+            // Display paginated barangays if no barangayName is provided
+            for (var i = startIndex; i < endIndex; i++) {
+                if (i >= barangays.length) {
+                    break;
+                }
+                var barangay = barangays[i];
+                $("#barangayTableBody").append(`
+            <tr data-index=${barangay.barangayId}>
+              <td style="display: none;">${barangay.barangayId}</td>
+              <td>${barangay.barangayName}</td>
+              <td>${barangay.coordinates}</td>
             </tr>
-          `)}}}i();$("#search").on("input",function(){let a=$("#search").val();i(a)});$("#prevBtn").click(function(){if(s>1){s--;i()}});$("#nextBtn").click(function(){var a=Math.ceil(barangays.length/l);if(s<a){s++;i()}});$("#submitBtn").click(function(a){a.preventDefault();var n=Number($("#barangayId").val());var t=$("#barangayName").val();if(o!==null&&e){getCoordinates(t).then(a=>{r=a;if(r==="Location not found."){alert("Unknown location in Cabuyao");return}let e=new Barangay(n,t,r);e.updateBarangay(e);getBarangay();i()});o=null;$("#submitBtn").text("Add barangay");$("#cancelBtn").hide();d();e=false}else{var r="";getCoordinates(t).then(a=>{r=a;if(r==="Location not found."){alert("Unknown location in Cabuyao");return}let e=new Barangay(n,t,r);e.createBarangay(e);getBarangay();i()})}$("#barangayForm")[0].reset();o=null;$("#barangayTableBody tr").removeClass("selected-row");$("#editBtn").prop("disabled",true);$("#deleteBtn").prop("disabled",true)});function d(){$("#editBtn").prop("disabled",true);$("#deleteBtn").prop("disabled",true);o=null;$("#barangayTableBody tr").removeClass("selected-row")}$("#editBtn").click(async function(){const a=await Dialog.confirmDialog("Confirm Edit","Are you sure you want to edit this barangay's details?");if(a.operation===1){$("#editModal").modal("hide");$("#cancelBtn").show();$("#barangayId").val(n.barangayId);$("#barangayName").val(n.barangayName);$("#submitBtn").text("Update Barangay");e=true}$("#barangayTableBody tr").removeClass("selected-row");$("#editBtn").prop("disabled",true);$("#deleteBtn").prop("disabled",true)});$("#cancelEdit").click(function(){d()});$("#cancelBtn").click(function(){o=null;$("#barangayForm")[0].reset();$("#submitBtn").text("Add Barangay");$("#cancelBtn").hide();$("#barangayTableBody tr").removeClass("selected-row");$("#editBtn").prop("disabled",true);$("#deleteBtn").prop("disabled",true)});$("#deleteBtn").click(async function(){const a=await Dialog.confirmDialog("Confirm Deletion","Are you sure you want to delete this barangay?");if(a.operation===1){$("#deleteModal").modal("hide");let a=new Barangay;a.removeBarangay(n.barangayId);getBarangay();i();d()}else{$("#editBtn").prop("disabled",true);$("#deleteBtn").prop("disabled",true)}});$("#cancelDelete").click(function(){d()});$("#barangayTableBody").on("click","tr",function(){var a=$(this);var e=a.data("index");n=barangays.find(a=>a.barangayId===e);o=e;if(o!==null){$("#barangayTableBody tr").removeClass("selected-row");$("#barangayTableBody tr").filter(function(){return parseInt($(this).find("td:eq(0)").text(),10)===o}).addClass("selected-row");$("#editBtn").prop("disabled",false);$("#deleteBtn").prop("disabled",false)}else{$("#barangayTableBody tr").removeClass("selected-row")}})}export{Barangay,getBarangay,searchBarangay,barangays,initializeMethodsBarangay};
+          `);
+            }
+        }
+    }
+
+    // Display initial barangays
+    displayBarangays();
+
+    $("#search").on("input", function () {
+        let barangayName = $("#search").val();
+        displayBarangays(barangayName);
+    });
+
+    // Pagination: Previous button click handler
+    $("#prevBtn").click(function () {
+        if (currentPage > 1) {
+            currentPage--;
+            displayBarangays();
+        }
+    });
+
+    // Pagination: Next button click handler
+    $("#nextBtn").click(function () {
+        var totalPages = Math.ceil(barangays.length / pageSize);
+        if (currentPage < totalPages) {
+            currentPage++;
+            displayBarangays();
+        }
+    });
+
+    // Form submission handler (Add or Update barangay)
+    $("#submitBtn").click(function (event) {
+        event.preventDefault();
+
+        const form = document.getElementById('barangayForm');
+        
+        // Check if form is valid
+        if (!form.checkValidity()) {
+            // If form is invalid, show the built-in validation messages
+            form.reportValidity();
+            return;
+        }
+
+        var barangayId = Number($("#barangayId").val());
+        var barangayName = $("#barangayName").val();
+        if (selectedRow !== null && isEdit) {
+            // Update existing barangay
+            getCoordinates(barangayName).then((result) => {
+                coordinates = result;
+                if (coordinates === "Location not found.") {
+                    toastr.success("Unknown Location in Cabuyao", "Invalid", {
+                      timeOut: 5000, // 5 seconds
+                      positionClass: "toast-top-center",
+                      toastClass: "toast-warning",
+                  });
+                    return;
+                }
+                let barangay = new Barangay(
+                    barangayId,
+                    barangayName,
+                    coordinates
+                );
+                barangay.updateBarangay(barangay);
+                getBarangay();
+                displayBarangays();
+            });
+            selectedRow = null;
+            $("#submitBtn").text("Add barangay");
+            $("#cancelBtn").hide();
+            resetFields();
+            isEdit = false;
+        } else {
+            var coordinates = "";
+            getCoordinates(barangayName).then((result) => {
+                coordinates = result;
+                if (coordinates === "Location not found.") {
+                    toastr.success("Unknown Location in Cabuyao", "Invalid", {
+                      timeOut: 5000, // 5 seconds
+                      positionClass: "toast-top-center",
+                      toastClass: "toast-warning",
+                  });
+                    return;
+                }
+                let barangay = new Barangay(
+                    barangayId,
+                    barangayName,
+                    coordinates
+                );
+                barangay.createBarangay(barangay);
+                getBarangay();
+                displayBarangays();
+            });
+        }
+
+        // Clear form fields after submission
+        $("#barangayForm")[0].reset();
+        selectedRow = null;
+        $("#barangayTableBody tr").removeClass("selected-row");
+        $("#editBtn").prop("disabled", true);
+        $("#deleteBtn").prop("disabled", true);
+    });
+
+    function resetFields() {
+        // Reset UI states
+        $("#editBtn").prop("disabled", true);
+        $("#deleteBtn").prop("disabled", true);
+        selectedRow = null;
+        $("#barangayTableBody tr").removeClass("selected-row");
+    }
+
+    $("#editBtn").click(async function () {
+        // Open the confirmation dialog
+        const result = await Dialog.confirmDialog(
+            "Confirm Edit",
+            "Are you sure you want to edit this barangay's details?"
+        );
+
+        // Check if the user clicked OK
+        if (result.operation === 1) {
+            $("#editModal").modal("hide");
+            $("#cancelBtn").show();
+            $("#barangayId").val(barangay.barangayId);
+            $("#barangayName").val(barangay.barangayName);
+            $("#submitBtn").text("Update Barangay");
+            isEdit = true;
+        }
+        $("#barangayTableBody tr").removeClass("selected-row");
+        $("#editBtn").prop("disabled", true);
+        $("#deleteBtn").prop("disabled", true);
+    });
+
+    // Cancel button click handler
+    $("#cancelEdit").click(function () {
+        resetFields();
+    });
+
+    // Cancel button click handler
+    $("#cancelBtn").click(function () {
+        selectedRow = null;
+        $("#barangayForm")[0].reset();
+        $("#submitBtn").text("Add Barangay");
+        $("#cancelBtn").hide();
+        $("#barangayTableBody tr").removeClass("selected-row");
+        $("#editBtn").prop("disabled", true);
+        $("#deleteBtn").prop("disabled", true);
+    });
+
+    // Delete button click handler
+    $("#deleteBtn").click(async function () {
+        // Open the confirmation dialog
+        const result = await Dialog.confirmDialog(
+            "Confirm Deletion",
+            "Are you sure you want to delete this barangay?"
+        );
+
+        // Check if the user clicked OK
+        if (result.operation === 1) {
+            // Close the modal
+            $("#deleteModal").modal("hide");
+
+            // Proceed with deletion
+            let barangayToDelete = new Barangay();
+            barangayToDelete.removeBarangay(barangay.barangayId);
+            getBarangay();
+            displayBarangays();
+            resetFields();
+        } else {
+            // If Cancel is clicked, do nothing or add additional handling if needed
+          
+            $("#editBtn").prop("disabled", true);
+            $("#deleteBtn").prop("disabled", true);
+        }
+    });
+
+    $("#cancelDelete").click(function () {
+        resetFields();
+    });
+
+    // Row click handler (for selecting rows)
+    $("#barangayTableBody").on("click", "tr", function () {
+        var $this = $(this);
+        var barangayId = $this.data("index");
+        barangay = barangays.find((u) => u.barangayId === barangayId);
+        selectedRow = barangayId;
+        // Highlight selected row
+        if (selectedRow !== null) {
+            $("#barangayTableBody tr").removeClass("selected-row");
+            $("#barangayTableBody tr")
+                .filter(function () {
+                    return (
+                        parseInt($(this).find("td:eq(0)").text(), 10) ===
+                        selectedRow
+                    );
+                })
+                .addClass("selected-row");
+            $("#editBtn").prop("disabled", false);
+            $("#deleteBtn").prop("disabled", false);
+        } else {
+            $("#barangayTableBody tr").removeClass("selected-row");
+        }
+    });
+}
+
+export {
+    Barangay,
+    getBarangay,
+    searchBarangay,
+    barangays,
+    initializeMethodsBarangay,
+};
