@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\RateLimiter;
 
 class UserController extends Controller
 {
@@ -100,23 +101,39 @@ class UserController extends Controller
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
-
+    
+        // Define rate limiter key for the username
+        $key = 'login.' . $request->username;
+    
+        // Check if the user has exceeded the maximum login attempts
+        if (RateLimiter::tooManyAttempts($key, 5)) {  // 5 attempts limit
+            $seconds = RateLimiter::availableIn($key); // Get time remaining for the lockout
+            throw ValidationException::withMessages([
+                'username' => ['Too many login attempts. Please try again in ' . $seconds . ' seconds.'],
+            ]);
+        }
+    
         // Find the user by username
         $user = User::where('username', $request->username)->first();
-
+    
         // Check if user exists and password is correct
         if (!$user || !Hash::check($request->password, $user->password)) {
+            // Increment the failed login attempts
+            RateLimiter::hit($key, 60); // Lockout period of 1 minute (60 seconds)
             throw ValidationException::withMessages([
                 'username' => ['The provided credentials are incorrect.'],
             ]);
         }
-
+    
+        // Reset the login attempts after a successful login
+        RateLimiter::clear($key);
+    
         // Create a new token
         $token = $user->createToken('Personal Access Token', [], now()->addDays(7))->plainTextToken;
-
+    
         // Set a session cookie to store the token (no expiration set, so it will expire when the browser is closed)
         $cookie = cookie('auth_token', $token, 0, null, null, false, true); // HttpOnly = true
-
+    
         // Return the user and token information with the cookie
         return response()->json([
             'user' => $user,
