@@ -36,6 +36,10 @@
                 color: #000;
             }
 
+            .modal {
+                z-index: 9999;
+            }
+
             .bg {
                 background-image: url("../../img/contact.webp");
                 background-size: cover;
@@ -66,10 +70,6 @@
             .card-body {
                 padding: 0;
             }
-            #modal-image {
-                max-width: 300px;
-                height: auto;
-            }
         </style>
     </head>
     <body>
@@ -78,7 +78,7 @@
         </div>
         <div class="main-content">
             <div class="container-fluid">
-                <div class="row">
+                <div class="row cont">
                     <div class="col-md-12">
                         <div class="card w-100 bg-white">
                             <div
@@ -99,7 +99,7 @@
                                 <div class="btn-container text-center">
                                     <button
                                         type="button"
-                                        class="btn btn-custom"
+                                        class="btn btn-custom btn-contact"
                                         onclick="sendConcern()"
                                     >
                                         Send Feedback
@@ -229,7 +229,7 @@
             aria-labelledby="imageModalLabel"
             aria-hidden="true"
         >
-            <div class="modal-dialog modal-dialog-centered w-50">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="imageModalLabel">
