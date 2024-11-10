@@ -26,7 +26,7 @@ $(document).ready(function () {
     $(document).ready(function () {
         showLoadingScreen();
     });
-    
+
     // Show loading screen on URL change (for SPA)
     $(window).on("popstate", function () {
         showLoadingScreen();
@@ -90,11 +90,11 @@ $(document).ready(function () {
                 user = response.user;
                 load();
             } else {
-                window.location.href = "/management/login";
+                window.location.href = "/management-login";
             }
         } catch (error) {
             console.error("An error occurred:", error);
-            window.location.href = "/management/login";
+            window.location.href = "/management-login";
         }
     }
 
@@ -123,7 +123,7 @@ $(document).ready(function () {
         }
 
         $("head").prepend(`
-            <link rel="icon" href="../../../img/logo.png" type="image/png">   
+            <link rel="icon" href="../../../img/logo.webp" type="image/png">   
         `);
         $("body").prepend(`
             <div class="wrapper">
@@ -135,7 +135,7 @@ $(document).ready(function () {
                             <button class="navbar-toggler d-md-none mr-3" type="button" data-toggle="collapse" data-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
                                 <span class="navbar-toggler-icon"><i class="fas fa-bars"></i></span>
                             </button>
-                            <img src="../img/logo.png" alt="Logo" class="header-logo d-none d-md-block">
+                            <img src="../img/logo.webp" alt="Logo" class="header-logo d-none d-md-block">
                             <h3 id="appName" class="pl-3 d-none d-md-block">AgroConnect Cabuyao</h3> <!-- Hidden on small screens -->
                         </div>
                         <div class="pr-4 d-flex align-items-center">
@@ -157,7 +157,7 @@ $(document).ready(function () {
                         </button>
                         <!-- Logo for small screens -->
                         <div class="d-md-none text-center my-3">
-                            <img src="../img/logo.png" alt="Logo" class="sidebar-logo">
+                            <img src="../img/logo.webp" alt="Logo" class="sidebar-logo">
                         </div>
                         <div>
                             <ul class="nav flex-column mt-4" id="sidebar-links">
@@ -360,7 +360,7 @@ $(document).ready(function () {
                             );
                             // Redirect after a short delay to let the toast show
                             setTimeout(function () {
-                                window.location.href = "/management/login"; // Redirect to login page
+                                window.location.href = "/management-login"; // Redirect to login page
                             }, 1500); // Adjust delay as needed
                         } else {
                             toastr.error(
