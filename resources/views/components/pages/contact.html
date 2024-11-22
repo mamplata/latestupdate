@@ -29,17 +29,21 @@
         <style>
             .form-control {
                 padding-left: 20px;
+                text-align: left !important;
                 background-color: #f5f5f5;
                 border-radius: 5px;
                 text-align: center;
-                font-weight: 600;
+                font-weight: normal;
                 color: #000;
             }
 
             .modal {
-                z-index: 9999;
+                z-index: 2;
             }
-
+            
+            .modal-backdrop {
+                z-index: 1;
+            }
             .bg {
                 background-image: url("../../img/contact.webp");
                 background-size: cover;
@@ -47,6 +51,20 @@
                 height: 33rem;
                 color: white; /* Adjust text color as needed for visibility */
                 position: relative;
+            }
+            
+            .small-screen-card {
+                display: none; /* Hide small screen view by default */
+            }
+            
+            @media (max-width: 992px) { /* Bootstrap lg breakpoint */
+                .bg {
+                    display: none; /* Hide the large screen view background */
+                }
+            
+                .small-screen-card {
+                    display: block; /* Display the small screen view */
+                }
             }
             .card-body .btn-container {
                 position: absolute;
@@ -58,9 +76,7 @@
                 margin: 3.25rem;
                 margin-top: 2rem;
             }
-            .modal-dialog {
-                max-width: 90%;
-            }
+   
             .modal-content {
                 max-width: 100%;
             }
@@ -70,47 +86,128 @@
             .card-body {
                 padding: 0;
             }
+           
+            @media (max-width: 769px) {
+                .btn-custom .btn-contact {
+                    padding 0 15px !important;
+                }  
+            }
+            
+            .cont {
+                margin: 2rem 0;
+            }
+            
+                  
+            .icon-circle {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                background-color: white;
+                color: black;
+                border-radius: 50%;
+                width: 30px;
+                height: 30px;
+                margin-right: 8px;
+            }
+        
+            .icon-circle i {
+                font-size: 14px;
+            }
+
+                        
         </style>
     </head>
     <body>
-        <div class="header-container">
+        <header class="header-container">
             <!-- Your header content or component -->
-        </div>
-        <div class="main-content">
+        </header>
+<main class="main-content mx-0 w-100">
             <div class="container-fluid">
-                <div class="row cont">
-                    <div class="col-md-12">
-                        <div class="card w-100 bg-white">
-                            <div
-                                id="pageTitle"
-                                class="container-fluid text-white d-flex justify-content-center align-items-center py-2 position-relative"
+            <div class="row cont">
+                <div class="col-md-12">
+                    <div class="card w-100 bg-white">
+                        <div
+                            id="pageTitle"
+                            class="container-fluid text-white d-flex justify-content-center align-items-center py-2 position-relative"
+                        >
+                            <h2 class="w-100 text-center">Send Feedback</h2>
+                            <button
+                                id="infoBtn"
+                                class="btn btn-info position-absolute"
+                                style="right: 10px"
                             >
-                                <h2 class="w-100 text-center">Send Feedback</h2>
+                                <i class="fas fa-info-circle"></i>
+                            </button>
+                        </div>
+                        <div class="bg card-body">
+                            <!-- Button container -->
+                            <div class="btn-container text-center">
                                 <button
-                                    id="infoBtn"
-                                    class="btn btn-info position-absolute"
-                                    style="right: 10px"
+                                    type="button"
+                                    class="btn btn-custom btn-contact mt-5"
+                                    onclick="sendConcern()"
                                 >
-                                    <i class="fas fa-info-circle"></i>
+                                    Report Problem
                                 </button>
-                            </div>
-                            <div class="bg card-body">
-                                <!-- Button container -->
-                                <div class="btn-container text-center">
-                                    <button
-                                        type="button"
-                                        class="btn btn-custom btn-contact"
-                                        onclick="sendConcern()"
-                                    >
-                                        Send Feedback
-                                    </button>
-                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <!-- Small screen view -->
+                    <div class="card w-100 d-lg-none small-screen-card" style="background-color: #d4edda; color: black;">
+                        <div class="p-3">
+                            <h2 class="text-sm-center font-weight-bold">
+                                <span class="icon-circle">
+                                    <i class="fas fa-tractor"></i>
+                                </span>
+                                Cabuyao City Agriculture Office
+                            </h2>
+                            <p class="text-sm-center">
+                                <span class="icon-circle">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </span>
+                                Office Address: 3/F Cabuyao Retail Plaza, J.P. Rizal St., Brgy. Dos, City of Cabuyao, Laguna
+                            </p>
+                            <div class="w-100 d-flex justify-content-center align-items-center">
+                                <div class="d-flex flex-column justify-content-start align-items-start">
+                                      <p>
+                                        <span class="icon-circle">
+                                            <i class="fab fa-facebook"></i>
+                                        </span>
+                                        Facebook: @cabuyaoagricultureoffice
+                                        </p>
+                                        <p>
+                                            <span class="icon-circle">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
+                                            Email: agricabuyao@gmail.com
+                                        </p>
+                                        <p>
+                                            <span class="icon-circle">
+                                                <i class="fas fa-phone"></i>
+                                            </span>
+                                            Contact Number: (049) 503 7796
+                                        </p>
+                                </div>
+                            </div>
+                            <div class="text-center mt-3">
+                                <button
+                                    type="button"
+                                    class="btn btn-custom btn-contact"
+                                    onclick="sendConcern()"
+                                >
+                                    Report Problem
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
             </div>
         </div>
+    </div>
+</main>
+
+
+
         <div class="footer-container">
             <!-- Your footer content or component -->
         </div>
@@ -200,7 +297,7 @@
                                 <div class="col-sm-10 offset-sm-2">
                                     <button
                                         type="submit"
-                                        class="btn btn-custom"
+                                        class="btn btn-custom btn-contact w-100"
                                     >
                                         Submit
                                     </button>

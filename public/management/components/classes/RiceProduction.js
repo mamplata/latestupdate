@@ -5,7 +5,7 @@ import Dialog from"../helpers/Dialog.js";import{addDownload,getYearRange}from"..
                         <td>${c.areaPlanted}</td>
                         <td>${c.monthHarvested}</td>
                         <td>${c.volumeProduction.toFixed(2)}</td>
-                        <td>₱${c.averageYield.toFixed(2)}</td>
+                        <td>${c.averageYield.toFixed(2)}</td>
                         <td>${c.season}</td>
                         <td>${c.year}</td>
                     </tr>

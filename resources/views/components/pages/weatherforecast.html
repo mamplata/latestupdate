@@ -67,11 +67,6 @@
                 justify-content: space-between;
             }
 
-            .container-fluid {
-                padding-left: 15px;
-                padding-right: 15px;
-            }
-
             .bg {
                 position: relative;
                 overflow: hidden;
@@ -92,15 +87,20 @@
                 position: relative;
                 z-index: 2;
             }
+            
+            .cont {
+                margin: 2rem 0;
+            }
         </style>
     </head>
 
     <body>
-        <div class="header-container">
+        <header class="header-container">
             <!-- Include your header content or component here -->
-        </div>
+        </header>
 
-        <div class="main-content cont">
+        <main class="main-content mx-0 w-100">
+            <div class="cont">
             <div class="container-fluid">
                 <div class="card w-100 bg-white">
                     <div
@@ -116,7 +116,7 @@
                             <i class="fas fa-info-circle"></i>
                         </button>
                     </div>
-                    <div class="bg container-fluid rounded p-5">
+                    <div class="bg container-fluid rounded-bottom p-5">
                         <div class="content">
                             <h1 class="mb-4">
                                 5-Day Forecast for Cabuyao, Laguna, Philippines
@@ -137,7 +137,8 @@
                     </div>
                 </div>
             </div>
-        </div>
+            </div>
+        </main>
 
         <div class="footer-container">
             <!-- Include your footer content or component here -->

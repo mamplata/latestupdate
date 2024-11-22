@@ -2,23 +2,63 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
 :root {
-    --font-size-base: 16px; /* Default Base font size */
-    --font-size-small: calc(var(--font-size-base) / 1.333); /* Small */
-    --font-size-medium: calc(var(--font-size-base) * 1.333); /* Medium */
-    --font-size-large: calc(var(--font-size-medium) * 1.333); /* Large */
-    --font-size-xlarge: calc(var(--font-size-large) * 1.333); /* Extra Large */
+    --font-size-base: 18px;
     --color-text: #1f2b15; /* Text color */
-    --color-background: #fffff6; /* Background color */
+    --color-background: #f5f5f5; /* Background color */
     --color-primary: #008d00; /* Primary color */
     --color-secondary: #baa863; /* Secondary color */
     --color-accent: #e0de6d; /* Accent color */
     --color-card: #dbf4cd;
 }
 
+header.header-container {
+    background-color: #008000; 
+    display: flex;
+}
+
+
+#header1 {
+    font-size: 43px; 
+}
+
+#header2 {
+    font-size: 40px; 
+}
+
+.features-list li {
+    font-size: 20px !important; 
+}
+
+option {
+    color: #000 !important;
+    background-color: #fff !important;
+}
+
+ul {
+    padding-left: 0 !important;
+}
+
 /* Small screens (phones) */
 @media (max-width: 480px) {
+    
     :root {
-        --font-size-base: 12px;
+    --font-size-base: 16px;
+    }
+    
+    #header1 {
+        font-size: 35px; 
+    }
+    
+    #header2 {
+        font-size: 25px; 
+    }
+    
+    .mobile-screen-menu {
+        width: 100%;
+    }
+    
+    .main-content {
+        margin-bottom: 2rem !important;
     }
 
     .btn-custom:not(.btn-contact) {
@@ -52,13 +92,14 @@
     .s-trend, .y-trend {
         height: 300px !important;
     }
+    
+    .mt-only-5 {
+    margin-top: 20px !important;
+    }
 }
 
 /* Medium screens (tablets) */
-@media (min-width: 481px) and (max-width: 768px) {
-    :root {
-        --font-size-base: 13px;
-    }
+@media (min-width: 481px) and (max-width: 990px) {
 
     .btn-custom:not(.btn-contact) {
         width: 100% !important;
@@ -69,6 +110,10 @@
         width: 80% !important;
         margin-bottom: 2rem !important;
     }    
+    
+    .mobile-screen-menu {
+        width: 100%;
+    }
 
     .btn {
         margin: 0 !important;
@@ -78,50 +123,55 @@
     #interpretation {
         margin: 0 !important;
     }
+    
+    .main-content {
+        margin-bottom: 2rem !important;
+    }
 
     .cont {
         margin: 0 !important;
         margin-top: 2rem !important;
     }
+    
+    .mt-only-5 {
+        margin-top: 20px !important;
+    }
+    
+}
+
+@media screen and (min-width: 667px) and (max-width: 767px) {
+    .fa-ul {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 3rem;
+        line-height: 1rem;
+    }
+    
+    .mobile-screen-menu {
+        width: 100%;
+    }
+    
 }
 
 /* Large screens (desktops) */
 @media (min-width: 769px) {
-    :root {
-        --font-size-base: 14px;
-    }
 
     .btn-custom:not(.btn-contact) {
         width: 30% !important;
     }
-}
-
-/* Extra-large screens (large desktops) */
-@media (min-width: 1200px) {
-    :root {
-        --font-size-base: 16px;
-    }
+    
+    .btn-custom .btn-contact {
+        padding 0 10px !important;
+    }  
 }
 
 body {
-    font-size: var(--font-size-base);
+    font-size: 16px;
     line-height: 1.5; /* Adjust line height for readability */
 }
 
-.small {
-    font-size: var(--font-size-small);
-}
-
-.medium-s {
-    font-size: var(--font-size-medium);
-}
-
-.large {
-    font-size: var(--font-size-large);
-}
-
-.xlarge {
-    font-size: var(--font-size-xlarge);
+p {
+  font-size: var(--font-size-base); 
 }
 
 * {
@@ -139,7 +189,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: var(--color-background);
+    background-color: var(--color-background)!important;
     color: var(--color-text);
 }
 
@@ -365,11 +415,11 @@ h2 {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 1); /* Light golden semi-transparent background */
+    background-color: rgba(255, 255, 255, 1); 
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999; /* Ensure it covers other content */
+    z-index: 3;
 }
 
 .spinner-container {
@@ -378,17 +428,12 @@ h2 {
 
 .loading-message {
     margin-top: 15px; /* Space between spinner and message */
-    font-size: var(--font-size-large);
+    font-size: 30px;
     color: #856404; /* Dark golden color for text */
 }
 
 .spinner-grow {
     color: #FFC107; /* Golden color for the spinner */
-}
-
-/* Enable scroll snapping on the body or main container */
-body {
-    scroll-behavior: smooth; /* Smooth scrolling effect */
 }
 
 /* Each section will snap to the center when in proximity */
@@ -405,7 +450,6 @@ html, body {
 }
 
 
-
 .highlighted-field {
     border: 2px solid #FFD700; /* Example: gold border */
 }
@@ -417,23 +461,11 @@ html, body {
     max-width: 100%; /* Limit the width to the container */
 }
 
-.card-header {
+.chart-header {
     background-color: var(--color-secondary) !important;
-}
-
-.badge {
-    background-color: var(--color-secondary) !important;
-}
-
-.card {
-    margin-bottom: 3rem !important;
 }
 
 .wrapper {
-    background-color: var(--color-card) !important;
-}
-
-#soil-health-page .container-fluid:not(#pageTitle) {
     background-color: var(--color-card) !important;
 }
 
@@ -442,15 +474,12 @@ html, body {
 .header-container {
     position: sticky;
     top: 0;
-    z-index: 9997;
+    z-index: 1;
     background-color: white;
     transition: top 0.3s ease; /* Smooth transition when hiding/showing */
 }
 
-/* For the scrollable container holding your content */
-.main-content {
-    scroll-snap-type: y proximity;
-}
+
 
 /* Hide the header when scrolling past 100px */
 body.scrolled-down .header-container {
@@ -465,3 +494,25 @@ body.scrolled-down .header-container {
     transition: height 0.3s ease !important; /* Adjust duration as needed */
 }
 
+#header1 {
+    display: inline-block; /* Make the h1 an inline-block element */
+    position: relative; /* Positioning context for the image */
+}
+
+#header1 .responsive-image {
+    width: 50px; /* Set a width for the image */
+    height: auto; /* Maintain aspect ratio */
+    vertical-align: middle; /* Align the image vertically with the text */
+    margin-left: -50px; /* No margin to ensure it clips directly to the text */
+    position: relative; /* Position relative to the text */
+    top: -0.6em; /* Adjust this value to align the image vertically with the text */
+}
+
+main.main-content {
+  max-width: 1500px;
+  align-self: center;
+}
+
+
+  
+  

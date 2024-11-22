@@ -32,8 +32,7 @@
         <link rel="stylesheet" href="../../management/css/dialog.css" />
         <style>
             .cont {
-                margin: 3.25rem;
-                margin-top: 2rem;
+                margin: 2rem 0;
             }
 
             #interpretation {
@@ -44,15 +43,15 @@
     </head>
 
     <body>
-        <div class="header-container">
+        <header class="header-container">
             <!-- Include your header content or component here -->
-        </div>
+        </header>
 
-        <div class="main-content">
+        <main class="main-content w-100 mx-0">
             <div class="container-fluid">
                 <div class="cont">
                     <div class="col-md-12">
-                        <div class="card w-100 bg-white">
+                        <div class="card bg-white">
                             <div
                                 id="pageTitle"
                                 class="container-fluid text-white d-flex justify-content-center align-items-center py-2 position-relative"
@@ -114,27 +113,26 @@
                                     </div>
                                 </div>
 
-                                <!-- Search and Download Section -->
+                             <!-- Search and Download Section -->
                                 <div class="row align-items-center mb-4">
-                                    <!-- Search Input (80% width) -->
-                                    <div class="col-8">
+                                    <!-- Search Input -->
+                                    <div class="col pe-2">
                                         <input
                                             style="background-color: #d9d9d9"
                                             type="text"
                                             id="searchInput"
-                                            class="form-control"
+                                            class="form-control w-100"
                                             placeholder="Search Crop Name/Variety..."
                                         />
                                     </div>
-                                    <!-- Download Button (20% width) -->
-                                    <div class="col-4">
-                                        <button
-                                            class="btn btn-primary download-btn"
-                                        >
+                                    <!-- Download Button -->
+                                    <div class="col-auto">
+                                        <button class="btn btn-primary download-btn">
                                             Download
                                         </button>
                                     </div>
                                 </div>
+
                                 <!-- Data Table -->
                                 <div class="table-responsive mt-4">
                                     <table
@@ -175,7 +173,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
 
         <div class="footer-container">
             <!-- Include your footer content or component here -->

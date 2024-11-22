@@ -33,11 +33,11 @@
             <!-- Your header content or component -->
         </header>
 
-        <main class="main-content">
+        <main class="main-content mx-5">
             <section>
                 <div class="container-fluid mx-auto cont">
                     <div
-                        class="row d-flex align-items-center justify-content-center"
+                        class="row d-flex align-items-center justify-content-between"
                     >
                         <!-- Left Column -->
                         <div class="col-md-5 text-md-start">
@@ -54,27 +54,17 @@
                                     class="img-fluid m-0 p-0"
                                 />
                             </div>
-                            <div
-                                class="d-flex align-items-center justify-content-center justify-content-md-start"
-                            >
-                                <h1
-                                    id="header1"
-                                    class="position-relative text-md-start"
-                                >
+                            <div class="d-flex align-items-center justify-content-center justify-content-md-start">
+                                <h1 id="header1" class="text-md-start text-center">
                                     Masaganang Agricultura
                                     <img
                                         src="img/header1.webp"
                                         alt="Header Image"
-                                        class="img-fluid position-absolute top-0 end-0"
-                                        style="
-                                            width: 50px;
-                                            top: -1rem;
-                                            right: -1rem;
-                                        "
-                                    />
+                                        class="responsive-image">
                                 </h1>
                             </div>
-                            <h1 id="header2" class="text-md-start">
+                            
+                            <h1 id="header2" class="text-md-start text-center">
                                 Maunlad na Ekonomiya
                             </h1>
                             <br />
@@ -122,10 +112,19 @@
             <section>
                 <div class="container-fluid">
                     <div
-                        class="row d-flex align-items-center justify-content-center"
+                        class="row d-flex align-items-center justify-content-between"
                     >
-                        <!-- Left Column -->
                         <div class="col-md-5">
+                            <div class="image-container text-center">
+                                <img
+                                    width="80%"
+                                    src="img/logo.webp"
+                                    alt="Placeholder Image"
+                                    class="img-fluid"
+                                />
+                            </div>
+                        </div>
+                        <div class="col-md-5 mt-only-5">
                             <div class="card">
                                 <div class="card-body d-flex">
                                     <div class="features-list">
@@ -196,26 +195,13 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Spacer Column -->
-                        <div class="col-md-1 d-none d-md-block"></div>
-                        <!-- Right Column -->
-                        <div class="col-md-5 d-flex justify-content-center">
-                            <div class="image-container">
-                                <img
-                                    width="80%"
-                                    src="img/logo.webp"
-                                    alt="Placeholder Image"
-                                    class="img-fluid"
-                                />
-                            </div>
-                        </div>
                     </div>
                 </div>
             </section>
 
             <section>
                 <div class="container-fluid mt-4">
-                    <div class="row m-2">
+                    <div class="row">
                         <div class="col-md-12 d-flex align-items-stretch">
                             <div class="card w-100">
                                 <div class="card-body">
@@ -256,7 +242,7 @@
                                             <h4 class="card-title text-center">
                                                 <em>Seasonal Top Crops</em>
                                             </h4>
-                                            <div class="paragraph mx-3">
+                                            <div class="paragraph mx-5">
                                                 <p>
                                                     This feature identifies
                                                     appropriate crops with
@@ -282,7 +268,7 @@
                 <div class="container-fluid mt-4">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="m-4">
+                            <div>
                                 <h2>
                                     <strong
                                         ><em>Soil Health Monitoring</em></strong
@@ -296,8 +282,8 @@
                                     and suggestions for ongoing soil health
                                     monitoring.
                                 </p>
-                                <div class="card w-100 p-5">
-                                    <div class="card-body">
+                                <div class="card w-100">
+                                    <div class="card-body pt-5 pb-5 mx-5">
                                         <ul class="ml-4">
                                             <h4 class="card-title">
                                                 <em
@@ -333,7 +319,7 @@
                                 </div>
                                 <a
                                     href="/soil-health"
-                                    class="btn btn-custom mt-4"
+                                    class="btn btn-custom mt-4 mt-only-5"
                                     >View More</a
                                 >
                             </div>
@@ -346,7 +332,7 @@
                 <div class="container-fluid mt-4">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="m-4">
+                            <div>
                                 <h2>
                                     <strong><em>Weather Forecast</em></strong>
                                 </h2>
@@ -388,7 +374,7 @@
                                 </div>
                                 <a
                                     href="/weather-forecast"
-                                    class="btn btn-custom mt-4"
+                                    class="btn btn-custom mt-4 mt-only-5"
                                     >View More</a
                                 >
                             </div>
@@ -401,7 +387,7 @@
                 <div class="container-fluid mt-4">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="m-4">
+                            <div>
                                 <h2>
                                     <strong
                                         ><em>Geospatial Map Trends</em></strong
@@ -448,7 +434,7 @@
                                 </div>
                                 <a
                                     href="/map-trends"
-                                    class="btn btn-custom mt-4"
+                                    class="btn btn-custom mt-4 mt-only-5"
                                     >View More</a
                                 >
                             </div>
@@ -461,7 +447,7 @@
                 <div class="container-fluid mt-4">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="m-4">
+                            <div>
                                 <h2>
                                     <strong><em>Feedback</em></strong>
                                 </h2>
@@ -476,7 +462,7 @@
                                 </p>
                                 <div class="card w-100 p-5">
                                     <div class="card-body">
-                                        <ul class="ml-4">
+                                        <ul>
                                             <h4 class="card-title">
                                                 <em>Feedback Features:</em>
                                             </h4>
@@ -501,7 +487,7 @@
                                 </div>
                                 <a
                                     href="/contact-us"
-                                    class="btn btn-custom mt-4"
+                                    class="btn btn-custom mt-4 mt-only-5"
                                     >Give Feedback</a
                                 >
                             </div>

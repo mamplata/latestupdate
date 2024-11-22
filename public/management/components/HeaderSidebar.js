@@ -148,7 +148,7 @@ $(document).ready(function () {
                 </div>
         
                 <!-- Sidebar and Content Wrapper -->
-                <div class="content-wrapper d-flex">
+                <div class="content-wrapper d-flex justify-content-between">
                     <!-- Sidebar -->
                     <nav id="sidebar" class="sidebar collapse">
                         <!-- Close button for small screens -->
@@ -175,7 +175,7 @@ $(document).ready(function () {
                     </nav>
         
                     <!-- Main Content Area -->
-                    <main role="main" id="main-content" class="content ml-sm-auto col-lg-10 pr-4">
+                    <main role="main" id="main-content" class="content col-lg-10">
                         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <h1 class="h2">Main Content</h1>
                         </div>

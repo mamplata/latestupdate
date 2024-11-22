@@ -1,27 +1,787 @@
-import Dialog from"../helpers/Dialog.js";import{addDownload}from"../../../js/fetch.js";let farmers=[];let barangayArray=[];class Farmer{constructor(e,r,a,t,n,o){this.barangayId=e;this.farmerId=r;this.farmerName=a;this.fieldArea=t;this.fieldType=n;this.phoneNumber=o!==null?String(o):" "}createFarmer(r){const e=farmers.find(e=>e.farmerName===r.farmerName);if(e){alert("Farmer already exists");return}$.ajax({url:"/api/farmers",type:"POST",contentType:"application/json",data:JSON.stringify(r),success:function(e){},error:function(e){console.error("Error:",e)}})}updateFarmer(r){const e=farmers.find(e=>e.farmerName===r.farmerName);if(e&&e.farmerId!==r.farmerId){alert("Farmer already exists");return}farmers=farmers.map(e=>e.farmerId===r.farmerId?{...e,...r}:farmers);fetch(`/api/farmers/${r.farmerId}`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(r)}).then(e=>e.json()).then(e=>{})["catch"](e=>{console.error("Error:",e)})}removeFarmer(r){fetch(`/api/farmers/${r}`,{method:"DELETE",headers:{"Content-Type":"application/json"}}).then(e=>{if(e.status===204){farmers=farmers.filter(e=>e.farmerId!==e)}else if(e.status===404){console.error(`Farmer with ID ${r} not found.`)}else{console.error(`Failed to delete farmer with ID ${r}.`)}})["catch"](e=>{console.error("Error:",e)})}}function getFarmer(){$.ajaxSetup({headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content")}});$.ajax({url:"/api/farmers",method:"GET",success:function(e){let r=e;farmers=r},error:function(e,r,a){console.error("Error fetching farmers:",a)}})}getFarmer();function getBarangayNames(){$.ajaxSetup({headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content")}});$.ajax({url:"/api/barangays",method:"GET",success:function(e){const r=e;barangayArray=r;const a=$("#barangay-option");a.empty();a.append(`<option value="" disabled selected>Select Barangay</option>`);r.forEach(e=>{a.append(`<option value="${e.barangayId}">${e.barangayName}</option>`)})},error:function(e,r,a){console.error("Error fetching barangays:",a)}})}function searchFarmer(e){const n=e.toLowerCase();const r=farmers.filter(e=>{const r=Object.values(e).some(e=>e!==null&&e.toString().toLowerCase().includes(n));const a=getBarangayName(e.barangayId);const t=a&&a.toLowerCase().includes(n);return r||t});return r}function getBarangayName(r){const e=barangayArray.find(e=>e.barangayId===r);return e?e.barangayName:null}function getBarangayId(r){const e=barangayArray.find(e=>e.barangaName===r);return e?e.barangayId:null}function initializeMethodsFarmer(){var i=null;var o=5;var l=1;var a=null;var s=false;async function c(e=null){await new Promise(e=>setTimeout(e,1e3));$("#farmerTableBody").empty();if(e){const r=searchFarmer(e);const a=(l-1)*o;const t=a+o;const n=r.slice(a,t);if(n.length>0){n.forEach(e=>{$("#farmerTableBody").append(`
-                        <tr data-index=${e.farmerId}>
-                            <td style="display: none;">${e.farmerId}</td>
-                            <td>${getBarangayName(e.barangayId)}</td>
-                            <td>${e.farmerName}</td>
-                            <td>${e.fieldArea}</td>
-                            <td>${e.fieldType}</td>
-                            <td>${e.phoneNumber!==null?e.phoneNumber:"NA"}</td>
+import Dialog from "../helpers/Dialog.js";
+import { addDownload } from "../../../js/fetch.js";
+// Farmer.js
+let farmers = [];
+let barangayArray = [];
+
+class Farmer {
+    constructor(
+        barangayId,
+        farmerId,
+        farmerName,
+        fieldArea,
+        fieldType,
+        phoneNumber
+    ) {
+        this.barangayId = barangayId;
+        this.farmerId = farmerId;
+        this.farmerName = farmerName;
+        this.fieldArea = fieldArea;
+        this.fieldType = fieldType;
+        this.phoneNumber = phoneNumber !== null ? String(phoneNumber) : " ";
+    }
+
+    createFarmer(farmer) {
+        const existingFarmer = farmers.find(
+            (b) => b.farmerName === farmer.farmerName
+        );
+        if (existingFarmer) {
+            alert("Farmer already exists");
+            return;
+        }
+
+        $.ajax({
+            url: "/api/farmers",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(farmer),
+            success: function (data) {
+                getFarmer();
+                // Show success message
+                toastr.success("Farmer added successfully.", "Success", {
+                    timeOut: 5000,
+                    positionClass: "toast-top-center",
+                    toastClass: "toast-success-custom", // Success color
+                });
+            },
+            error: function (error) {
+                console.error("Error:", error);
+            },
+        });
+    }
+
+    updateFarmer(updatedFarmer) {
+        const existingFarmer = farmers.find(
+            (b) => b.farmerName === updatedFarmer.farmerName
+        );
+
+        if (
+            existingFarmer &&
+            existingFarmer.farmerId !== updatedFarmer.farmerId
+        ) {
+            alert("Farmer already exists");
+            return;
+        }
+
+        farmers = farmers.map((farmer) =>
+            farmer.farmerId === updatedFarmer.farmerId
+                ? { ...farmer, ...updatedFarmer }
+                : farmers
+        );
+
+        fetch(`/api/farmers/${updatedFarmer.farmerId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedFarmer),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                getFarmer();
+                // Show success message
+                toastr.success("Farmer updated successfully.", "Success", {
+                    timeOut: 5000,
+                    positionClass: "toast-top-center",
+                    toastClass: "toast-success-custom", // Success color
+                });
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
+
+    removeFarmer(farmerId) {
+        fetch(`/api/farmers/${farmerId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => {
+                if (response.status === 204) {
+                    farmers = farmers.filter(
+                        (farmer) => farmer.farmerId !== farmer
+                    );
+
+                    getFarmer();
+                    
+                } else if (response.status === 404) {
+                    console.error(`Farmer with ID ${farmerId} not found.`);
+                } else {
+                    console.error(
+                        `Failed to delete farmer with ID ${farmerId}.`
+                    );
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
+}
+
+function getFarmer() {
+    // Fetch farmers from Laravel backend
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+
+    // Fetch farmers from Laravel backend
+    $.ajax({
+        url: "/api/farmers", // Endpoint to fetch farmers
+        method: "GET",
+        success: function (response) {
+            // Assuming response is an array of farmers
+            let farmer = response;
+
+            farmers = farmer;
+           
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching farmers:", error);
+        },
+    });
+}
+
+getFarmer();
+
+function getBarangayNames() {
+    // Fetch barangays from Laravel backend
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+
+    // Fetch barangays from Laravel backend
+    $.ajax({
+        url: "/api/barangays", // Endpoint to fetch barangays
+        method: "GET",
+        success: function (response) {
+            // Assuming response is an array of barangays
+            const barangays = response;
+            barangayArray = barangays;
+           
+
+            // Populate select dropdown with barangays
+            const barangaySelect = $("#barangay-option");
+            barangaySelect.empty(); // Clear existing options
+            barangaySelect.append(
+                `<option value="" disabled selected>Select Barangay</option>`
+            );
+            barangays.forEach((b) => {
+                barangaySelect.append(
+                    `<option value="${b.barangayId}">${b.barangayName}</option>`
+                );
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching barangays:", error);
+        },
+    });
+}
+
+function searchFarmer(searchTerm) {
+    const lowerCaseSearchTerm = searchTerm.toLowerCase(); // Convert search term to lowercase for case-insensitive search
+
+    const foundFarmers = farmers.filter((farmer) => {
+        // Check against farmer properties
+        const matchesFarmerProperties = Object.values(farmer).some(
+            (value) =>
+                value !== null &&
+                value.toString().toLowerCase().includes(lowerCaseSearchTerm)
+        );
+
+        // Check if the barangay name matches by looking up the barangayId
+        const barangayName = getBarangayName(farmer.barangayId); // Get the barangay name from the ID
+        const matchesBarangayName =
+            barangayName &&
+            barangayName.toLowerCase().includes(lowerCaseSearchTerm);
+
+        return matchesFarmerProperties || matchesBarangayName;
+    });
+
+    return foundFarmers;
+}
+
+function getBarangayName(id) {
+    // Find the barangay object with the matching ID
+    const barangay = barangayArray.find(
+        (barangay) => barangay.barangayId === id
+    );
+
+    // Return the name of the barangay if found, or null if not found
+    return barangay ? barangay.barangayName : null;
+}
+
+function getBarangayId(name) {
+    // Find the barangay object with the matching ID
+    const barangay = barangayArray.find(
+        (barangay) => barangay.barangaName === name
+    );
+
+    // Return the name of the barangay if found, or null if not found
+    return barangay ? barangay.barangayId : null;
+}
+
+function initializeMethodsFarmer() {
+    var selectedRow = null;
+    var pageSize = 5;
+    var currentPage = 1;
+    var farmer = null;
+    var isEdit = false;
+
+    async function displayFarmers(searchTerm = null) {
+        // Simulate a delay of 1 second
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        $("#farmerTableBody").empty();
+
+        if (searchTerm) {
+            // Display farmers that match the search term
+            const foundFarmers = searchFarmer(searchTerm);
+
+            // Calculate start and end indices based on current page and page size
+            const startIndex = (currentPage - 1) * pageSize;
+            const endIndex = startIndex + pageSize;
+
+            // Paginate the found farmers
+            const paginatedFarmers = foundFarmers.slice(startIndex, endIndex);
+
+            if (paginatedFarmers.length > 0) {
+                paginatedFarmers.forEach((farmer) => {
+                    $("#farmerTableBody").append(`
+                        <tr data-index=${farmer.farmerId}>
+                            <td style="display: none;">${farmer.farmerId}</td>
+                            <td>${getBarangayName(farmer.barangayId)}</td>
+                            <td>${farmer.farmerName}</td>
+                            <td>${farmer.fieldArea}</td>
+                            <td>${farmer.fieldType}</td>
+                            <td>${
+                                farmer.phoneNumber !== null
+                                    ? farmer.phoneNumber
+                                    : "NA"
+                            }</td>
                         </tr>
-                    `)})}else{$("#farmerTableBody").append(`
+                    `);
+                });
+            } else {
+                // Handle case where no farmers are found
+                $("#farmerTableBody").append(`
                     <tr>
                         <td colspan="6">No farmers found!</td>
                     </tr>
-                `)}}else{const n=farmers.slice((l-1)*o,l*o);if(n.length>0){n.forEach(e=>{$("#farmerTableBody").append(`
-                        <tr data-index=${e.farmerId}>
-                            <td style="display: none;">${e.farmerId}</td>
-                            <td data-barangay-id=${e.barangayId}>${getBarangayName(e.barangayId)}</td>
-                            <td>${e.farmerName}</td>
-                            <td>${e.fieldArea}</td>
-                            <td>${e.fieldType}</td>
-                            <td>${e.phoneNumber!==null?e.phoneNumber:"NA"}</td>
+                `);
+            }
+        } else {
+            // Display paginated farmers if no searchTerm is provided
+            const paginatedFarmers = farmers.slice(
+                (currentPage - 1) * pageSize,
+                currentPage * pageSize
+            );
+
+            if (paginatedFarmers.length > 0) {
+                paginatedFarmers.forEach((farmer) => {
+                    $("#farmerTableBody").append(`
+                        <tr data-index=${farmer.farmerId}>
+                            <td style="display: none;">${farmer.farmerId}</td>
+                            <td data-barangay-id=${
+                                farmer.barangayId
+                            }>${getBarangayName(farmer.barangayId)}</td>
+                            <td>${farmer.farmerName}</td>
+                            <td>${farmer.fieldArea}</td>
+                            <td>${farmer.fieldType}</td>
+                            <td>${
+                                farmer.phoneNumber !== null
+                                    ? farmer.phoneNumber
+                                    : "NA"
+                            }</td>
                         </tr>
-                    `)})}else{$("#farmerTableBody").append(`
+                    `);
+                });
+            } else {
+                // Handle case where no farmers are available
+                $("#farmerTableBody").append(`
                     <tr>
                         <td colspan="6">No farmers available!</td>
                     </tr>
-                `)}}}c();$("#search").on("input",function(){let e=$("#search").val();c(e)});$("#prevBtn").click(function(){if(l>1){l--;c()}});$("#nextBtn").click(function(){var e=Math.ceil(farmers.length/o);if(l<e){l++;c()}});$("#submitBtn").click(function(e){e.preventDefault();const r=document.getElementById("farmerForm");if(!r.checkValidity()){r.reportValidity();return}var a=Number($("#farmerId").val());var t=$("#farmerName").val();var n=parseInt($("#fieldArea").val(),10);var o=$("#fieldType").val();var l=$("#phoneNumber").val();var d=parseInt($("#barangay-option").val(),10);if(i!==null&&s){let e=new Farmer(d,a,t,n,o,l);e.updateFarmer(e);i=null;$("#submitBtn").text("Add farmer");$("#cancelBtn").hide();m();s=false}else{let e=new Farmer(d,a,t,n,o,l);e.createFarmer(e)}$("#farmerForm")[0].reset();i=null;$("#farmerTableBody tr").removeClass("selected-row");$("#editBtn").prop("disabled",true);$("#deleteBtn").prop("disabled",true);getFarmer();c()});function m(){$("#editBtn").prop("disabled",true);$("#deleteBtn").prop("disabled",true);i=null;$("#farmerTableBody tr").removeClass("selected-row")}$("#editBtn").click(async function(){const e=await Dialog.confirmDialog("Confirm Edit","Are you sure you want to edit this farmer's details?");if(e.operation===1){$("#editModal").modal("hide");$("#cancelBtn").show();$("#farmerId").val(a.farmerId);$("#farmerName").val(a.farmerName);$("#fieldArea").val(a.fieldArea);$("#fieldType").val(a.fieldType);$("#phoneNumber").val(a.phoneNumber);$("#barangay-option").val(a.barangayId);$("#submitBtn").text("Update Farmer")}$("#farmerTableBody tr").removeClass("selected-row");$("#editBtn").prop("disabled",true);$("#deleteBtn").prop("disabled",true)});$("#cancelEdit").click(function(){m()});$("#cancelBtn").click(function(){i=null;$("#farmerForm")[0].reset();$("#submitBtn").text("Add Farmer");$("#cancelBtn").hide();$("#farmerTableBody tr").removeClass("selected-row");$("#editBtn").prop("disabled",true);$("#deleteBtn").prop("disabled",true)});$("#deleteBtn").click(async function(){const e=await Dialog.confirmDialog("Confirm Deletion","Are you sure you want to delete this farmer?");if(e.operation===1){let e=new Farmer;e.removeFarmer(a.farmerId);getFarmer();c();m();s=true}else{$("#editBtn").prop("disabled",true);$("#deleteBtn").prop("disabled",true)}});$("#cancelDelete").click(function(){m()});$("#farmerTableBody").on("click","tr",function(){var e=$(this);var r=e.data("index");a=farmers.find(e=>e.farmerId===r);i=r;if(i!==null){$("#farmerTableBody tr").removeClass("selected-row");$("#farmerTableBody tr").filter(function(){return parseInt($(this).find("td:eq(0)").text(),10)===i}).addClass("selected-row");$("#editBtn").prop("disabled",false);$("#deleteBtn").prop("disabled",false)}else{$("#farmerTableBody tr").removeClass("selected-row")}});$(document).ready(function(){$(".download-btn").click(function(){Dialog.downloadDialog().then(e=>{r(e,farmers)})["catch"](e=>{console.error("Error:",e)})})});function r(e,r){const a=`FARMER MASTERLIST`;if(e==="csv"){t(a,r)}else if(e==="xlsx"){n(a,r)}else if(e==="pdf"){f(a,r)}}function d(e){return e.replace(/([a-z])([A-Z])/g,"$1 $2").replace(/_/g," ").replace(/\b\w/g,e=>e.toUpperCase())}function e(e){if(typeof e==="string"&&(e.includes(",")||e.includes("\n")||e.includes('"'))){e='"'+e.replace(/"/g,'""')+'"'}return e}function t(e,r){const a={barangayId:"Barangay",farmerName:"Farmer Name",fieldArea:"Field Area",fieldType:"Field Type",phoneNumber:"Phone Number"};const t=["barangayId","farmerName","fieldArea","fieldType","phoneNumber"];const n=t.map(e=>a[e]);function o(e){if(e===undefined||e===null)return"";if(typeof e==="string"&&(e.includes(",")||e.includes('"')||e.includes("\n"))){e=`"${e.replace(/"/g,'""')}"`}return e}const l=[n.join(","),...r.map(a=>t.map(e=>{let r=a[e]!==undefined?a[e]:"";if(e==="barangayId"&&r!==""){r=getBarangayName(r)}return o(r)}).join(","))].join("\n");const d=new Blob([l],{type:"text/csv"});const i=URL.createObjectURL(d);const s=document.createElement("a");s.href=i;s.download=e;document.body.appendChild(s);s.click();document.body.removeChild(s);URL.revokeObjectURL(i);addDownload(e,"CSV")}function n(n,e){const t={barangayId:"Barangay",farmerName:"Farmer Name",fieldArea:"Field Area",fieldType:"Field Type",phoneNumber:"Phone Number"};const o=["barangayId","farmerName","fieldArea","fieldType","phoneNumber"];const r=o.map(e=>t[e]);const a=e.map(r=>{const a={};o.forEach(e=>{a[t[e]]=e==="barangayId"?getBarangayName(r[e]):r[e]});return a});const l=new ExcelJS.Workbook;const d=l.addWorksheet("Sheet1");d.addRow(r);a.forEach(r=>{d.addRow(o.map(e=>{return r[t[e]]!==undefined?r[t[e]]:""}))});const i={font:{name:"Calibri",size:12,bold:true,color:{argb:"FFFFFFFF"}},fill:{type:"pattern",pattern:"solid",fgColor:{argb:"203764"}},alignment:{horizontal:"center",vertical:"middle"},border:{top:{style:"thin",color:{argb:"FF000000"}},right:{style:"thin",color:{argb:"FF000000"}},bottom:{style:"thin",color:{argb:"FF000000"}},left:{style:"thin",color:{argb:"FF000000"}}}};const s={font:{name:"Calibri",size:11},alignment:{horizontal:"center",vertical:"middle",wrapText:true},border:{top:{style:"thin",color:{argb:"FF000000"}},right:{style:"thin",color:{argb:"FF000000"}},bottom:{style:"thin",color:{argb:"FF000000"}},left:{style:"thin",color:{argb:"FF000000"}}}};const c=d.getRow(1);c.eachCell({includeEmpty:true},e=>{e.style=i});c.height=20;d.eachRow({includeEmpty:true},(e,r)=>{if(r>1){e.eachCell({includeEmpty:true},e=>{e.style=s})}});d.columns=r.map(e=>({width:Math.max(e.length,10)+5}));l.xlsx.writeBuffer().then(function(e){const r=new Blob([e],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});const a=URL.createObjectURL(r);const t=document.createElement("a");t.href=a;t.download=n;t.click();URL.revokeObjectURL(a)});addDownload(n,"XLSX")}function f(e,r){const{jsPDF:a}=window.jspdf;const t=new a;const n=["barangayId","farmerName","fieldArea","fieldType","phoneNumber"];const o=n.map(d);t.autoTable({head:[o],body:r.map(r=>n.map(e=>e==="barangayId"?getBarangayName(r[e]):r[e])),theme:"striped"});t.save(e);addDownload(e,"PDF")}function d(e){const r={barangayId:"Barangay",farmerName:"Farmer Name",fieldArea:"Field Area",fieldType:"Field Type",phoneNumber:"Phone Number"};return r[e]||e}}export{Farmer,getFarmer,searchFarmer,farmers,barangayArray,initializeMethodsFarmer,getBarangayId,getBarangayNames};
+                `);
+            }
+        }
+    }
+
+    // Display initial farmers
+    displayFarmers();
+
+    $("#search").on("input", function () {
+        let farmerName = $("#search").val();
+        displayFarmers(farmerName);
+    });
+
+    // Pagination: Previous button click handler
+    $("#prevBtn").click(function () {
+        if (currentPage > 1) {
+            currentPage--;
+            displayFarmers();
+        }
+    });
+
+    // Pagination: Next button click handler
+    $("#nextBtn").click(function () {
+        var totalPages = Math.ceil(farmers.length / pageSize);
+        if (currentPage < totalPages) {
+            currentPage++;
+            displayFarmers();
+        }
+    });
+
+    // Form submission handler (Add or Update farmer)
+    $("#submitBtn").click(function (event) {
+        event.preventDefault();
+
+        const form = document.getElementById('farmerForm');
+        
+        // Check if form is valid
+        if (!form.checkValidity()) {
+            // If form is invalid, show the built-in validation messages
+            form.reportValidity();
+            return;
+        }
+
+        var farmerId = Number($("#farmerId").val());
+        var farmerName = $("#farmerName").val();
+        var fieldArea = parseInt($("#fieldArea").val(), 10);
+        var fieldType = $("#fieldType").val();
+        var phoneNumber = $("#phoneNumber").val();
+        var barangayId = parseInt($("#barangay-option").val(), 10);
+        if (selectedRow !== null && isEdit) {
+            let farmer = new Farmer(
+                barangayId,
+                farmerId,
+                farmerName,
+                fieldArea,
+                fieldType,
+                phoneNumber
+            );
+            
+            farmer.updateFarmer(farmer);
+            selectedRow = null;
+            $("#submitBtn").text("Add farmer");
+            $("#cancelBtn").hide();
+            resetFields();
+            isEdit = false;
+        } else {
+            let farmer = new Farmer(
+                barangayId,
+                farmerId,
+                farmerName,
+                fieldArea,
+                fieldType,
+                phoneNumber
+            );
+          
+            farmer.createFarmer(farmer);
+        }
+
+        // Clear form fields after submission
+        $("#farmerForm")[0].reset();
+        selectedRow = null;
+        $("#farmerTableBody tr").removeClass("selected-row");
+        $("#editBtn").prop("disabled", true);
+        $("#deleteBtn").prop("disabled", true);
+        getFarmer();
+        displayFarmers();
+    });
+
+    function resetFields() {
+        // Reset UI states
+        $("#editBtn").prop("disabled", true);
+        $("#deleteBtn").prop("disabled", true);
+        selectedRow = null;
+        $("#farmerTableBody tr").removeClass("selected-row");
+    }
+
+    $("#editBtn").click(async function () {
+        // Open the confirmation dialog
+        const result = await Dialog.confirmDialog(
+            "Confirm Edit",
+            "Are you sure you want to edit this farmer's details?"
+        );
+
+        // Check if the user clicked OK
+        if (result.operation === 1) {
+            // Proceed with editing
+            $("#editModal").modal("hide");
+            $("#cancelBtn").show();
+            $("#farmerId").val(farmer.farmerId);
+            $("#farmerName").val(farmer.farmerName);
+            $("#fieldArea").val(farmer.fieldArea);
+            $("#fieldType").val(farmer.fieldType);
+            $("#phoneNumber").val(farmer.phoneNumber);
+            $("#barangay-option").val(farmer.barangayId);
+            $("#submitBtn").text("Update Farmer");
+        } 
+        $("#farmerTableBody tr").removeClass("selected-row");
+        $("#editBtn").prop("disabled", true);
+        $("#deleteBtn").prop("disabled", true);
+    });
+
+    $("#cancelEdit").click(function () {
+        resetFields();
+    });
+
+    // Cancel button click handler
+    $("#cancelBtn").click(function () {
+        selectedRow = null;
+        $("#farmerForm")[0].reset();
+        $("#submitBtn").text("Add Farmer");
+        $("#cancelBtn").hide();
+        $("#farmerTableBody tr").removeClass("selected-row");
+        $("#editBtn").prop("disabled", true);
+        $("#deleteBtn").prop("disabled", true);
+    });
+
+    $("#deleteBtn").click(async function () {
+        // Open the confirmation dialog
+        const result = await Dialog.confirmDialog(
+            "Confirm Deletion",
+            "Are you sure you want to delete this farmer?"
+        );
+
+        // Check if the user clicked OK
+        if (result.operation === 1) {
+            // Proceed with deletion
+            let farmerToDelete = new Farmer();
+            farmerToDelete.removeFarmer(farmer.farmerId);
+            getFarmer();
+            displayFarmers();
+            resetFields();
+            isEdit = true;
+        } else {
+            // If Cancel is clicked, do nothing or add additional handling if needed
+         
+            $("#editBtn").prop("disabled", true);
+            $("#deleteBtn").prop("disabled", true);
+        }
+    });
+
+    $("#cancelDelete").click(function () {
+        resetFields();
+    });
+
+    // Row click handler (for selecting rows)
+    $("#farmerTableBody").on("click", "tr", function () {
+        var $this = $(this);
+        var farmerId = $this.data("index");
+        farmer = farmers.find((u) => u.farmerId === farmerId);
+        selectedRow = farmerId;
+        // Highlight selected row
+        if (selectedRow !== null) {
+            $("#farmerTableBody tr").removeClass("selected-row");
+            $("#farmerTableBody tr")
+                .filter(function () {
+                    return (
+                        parseInt($(this).find("td:eq(0)").text(), 10) ===
+                        selectedRow
+                    );
+                })
+                .addClass("selected-row");
+            $("#editBtn").prop("disabled", false);
+            $("#deleteBtn").prop("disabled", false);
+        } else {
+            $("#farmerTableBody tr").removeClass("selected-row");
+        }
+    });
+
+    $(document).ready(function () {
+        $(".download-btn").click(function () {
+            // Call the downloadDialog method and handle the promise
+            Dialog.downloadDialog()
+                .then((format) => {
+                  
+                    download(format, farmers);
+                })
+                .catch((error) => {
+                    console.error("Error:", error); // Handle any errors that occur
+                });
+        });
+    });
+
+    function download(format, data) {
+        const filename = `FARMER MASTERLIST`;
+        if (format === "csv") {
+            downloadCSV(filename, data);
+        } else if (format === "xlsx") {
+            downloadExcel(filename, data);
+        } else if (format === "pdf") {
+            downloadPDF(filename, data);
+        }
+    }
+
+    function formatHeader(key) {
+        return key
+            .replace(/([a-z])([A-Z])/g, "$1 $2")
+            .replace(/_/g, " ")
+            .replace(/\b\w/g, (char) => char.toUpperCase());
+    }
+
+    function escapeCSVValue(value) {
+        if (
+            typeof value === "string" &&
+            (value.includes(",") || value.includes("\n") || value.includes('"'))
+        ) {
+            value = '"' + value.replace(/"/g, '""') + '"';
+        }
+        return value; // Return escaped value
+    }
+
+    function downloadCSV(filename, data) {
+        // Define the header mapping for farmer data
+        const headerMap = {
+            barangayId: "Barangay",
+            farmerName: "Farmer Name",
+            fieldArea: "Field Area",
+            fieldType: "Field Type",
+            phoneNumber: "Phone Number",
+        };
+
+        // Define the order of headers
+        const headersToInclude = [
+            "barangayId",
+            "farmerName",
+            "fieldArea",
+            "fieldType",
+            "phoneNumber",
+        ];
+
+        // Map headers to the desired names
+        const headers = headersToInclude.map((key) => headerMap[key]);
+
+        // Helper function to escape CSV values
+        function escapeCSVValue(value) {
+            if (value === undefined || value === null) return "";
+            if (
+                typeof value === "string" &&
+                (value.includes(",") ||
+                    value.includes('"') ||
+                    value.includes("\n"))
+            ) {
+                value = `"${value.replace(/"/g, '""')}"`;
+            }
+            return value;
+        }
+
+        // Filter data to match the new headers and format values
+        const csvRows = [
+            headers.join(","), // Add the header row
+            ...data.map((row) =>
+                headersToInclude
+                    .map((key) => {
+                        let value = row[key] !== undefined ? row[key] : ""; // Ensure non-null values
+
+                        // Replace 'barangayId' with corresponding barangay name
+                        if (key === "barangayId" && value !== "") {
+                            value = getBarangayName(value);
+                        }
+
+                        return escapeCSVValue(value);
+                    })
+                    .join(",")
+            ),
+        ].join("\n");
+
+        // Create a Blob and trigger download
+        const blob = new Blob([csvRows], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        // Optional: Log download action
+        addDownload(filename, "CSV");
+    }
+
+    function downloadExcel(filename, data) {
+        // Define the header mapping for farmer data
+        const headerMap = {
+            barangayId: "Barangay",
+            farmerName: "Farmer Name",
+            fieldArea: "Field Area",
+            fieldType: "Field Type",
+            phoneNumber: "Phone Number",
+        };
+
+        // Define the order of headers
+        const headersToInclude = [
+            "barangayId",
+            "farmerName",
+            "fieldArea",
+            "fieldType",
+            "phoneNumber",
+        ];
+
+        // Map headers to the desired names
+        const mappedHeaders = headersToInclude.map((key) => headerMap[key]);
+
+        // Filter data to match the new headers
+        const filteredData = data.map((row) => {
+            const filteredRow = {};
+            headersToInclude.forEach((key) => {
+                // Replace 'barangayId' with the corresponding barangay name
+                filteredRow[headerMap[key]] =
+                    key === "barangayId" ? getBarangayName(row[key]) : row[key];
+            });
+            return filteredRow;
+        });
+
+        // Create a new workbook and add a worksheet
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet("Sheet1");
+
+        // Add filtered data to the worksheet
+        worksheet.addRow(mappedHeaders);
+        filteredData.forEach((row) => {
+            worksheet.addRow(
+                headersToInclude.map((header) => {
+                    return row[headerMap[header]] !== undefined
+                        ? row[headerMap[header]]
+                        : "";
+                })
+            );
+        });
+
+        // Define header and data style
+        const headerStyle = {
+            font: {
+                name: "Calibri",
+                size: 12,
+                bold: true,
+                color: { argb: "FFFFFFFF" }, // White color
+            },
+            fill: {
+                type: "pattern",
+                pattern: "solid",
+                fgColor: { argb: "203764" },
+            },
+            alignment: { horizontal: "center", vertical: "middle" },
+            border: {
+                top: { style: "thin", color: { argb: "FF000000" } }, // Black border
+                right: { style: "thin", color: { argb: "FF000000" } },
+                bottom: { style: "thin", color: { argb: "FF000000" } },
+                left: { style: "thin", color: { argb: "FF000000" } },
+            },
+        };
+
+        const dataStyle = {
+            font: {
+                name: "Calibri",
+                size: 11,
+            },
+            alignment: {
+                horizontal: "center",
+                vertical: "middle",
+                wrapText: true,
+            },
+            border: {
+                top: { style: "thin", color: { argb: "FF000000" } }, // Black border
+                right: { style: "thin", color: { argb: "FF000000" } },
+                bottom: { style: "thin", color: { argb: "FF000000" } },
+                left: { style: "thin", color: { argb: "FF000000" } },
+            },
+        };
+
+        // Apply style to header row
+        const headerRow = worksheet.getRow(1);
+        headerRow.eachCell({ includeEmpty: true }, (cell) => {
+            cell.style = headerStyle;
+        });
+        headerRow.height = 20; // Set header row height
+
+        // Apply style to data rows
+        worksheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
+            if (rowNumber > 1) {
+                // Skip header row
+                row.eachCell({ includeEmpty: true }, (cell) => {
+                    cell.style = dataStyle;
+                });
+            }
+        });
+
+        // Set column widths with padding to prevent overflow
+        worksheet.columns = mappedHeaders.map((header) => ({
+            width: Math.max(header.length, 10) + 5, // Ensure minimum width
+        }));
+
+        // Write workbook to browser
+        workbook.xlsx.writeBuffer().then(function (buffer) {
+            const blob = new Blob([buffer], {
+                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+        addDownload(filename, "XLSX");
+    }
+
+    function downloadPDF(filename, data) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        // Specify the columns you want to include in the PDF for farmer data
+        const columns = [
+            "barangayId",
+            "farmerName",
+            "fieldArea",
+            "fieldType",
+            "phoneNumber",
+        ];
+        const headers = columns.map(formatHeader);
+
+        // Create the table using only the specified columns
+        doc.autoTable({
+            head: [headers],
+            body: data.map((row) =>
+                columns.map((key) =>
+                    key === "barangayId" ? getBarangayName(row[key]) : row[key]
+                )
+            ),
+            theme: "striped",
+        });
+
+        // Save the PDF with the season selection in the filename
+        doc.save(filename);
+        addDownload(filename, "PDF");
+    }
+
+    function formatHeader(key) {
+        const headerMap = {
+            barangayId: "Barangay",
+            farmerName: "Farmer Name",
+            fieldArea: "Field Area",
+            fieldType: "Field Type",
+            phoneNumber: "Phone Number",
+        };
+        return headerMap[key] || key;
+    }
+}
+
+export {
+    Farmer,
+    getFarmer,
+    searchFarmer,
+    farmers,
+    barangayArray,
+    initializeMethodsFarmer,
+    getBarangayId,
+    getBarangayNames,
+};

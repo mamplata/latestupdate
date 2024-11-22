@@ -12,7 +12,7 @@ class ConcernController extends Controller
      */
     public function index()
     {
-        $concerns = Concern::all();
+        $concerns = Concern::orderBy('created_at', 'desc')->get();
         return response()->json($concerns);
     }
 

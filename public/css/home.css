@@ -1,6 +1,5 @@
 .card {
     background-color: #BFD8AF; /* Light green */
-    margin-bottom: 20px;
     border-radius: 40px;
     border: 1px solid #555;
     height: 100%; /* Ensure both cards are the same height */
@@ -57,17 +56,7 @@ h4 {
     align-items: center;
     justify-content: center;
   }
-  
-  /* Adjust column alignment on smaller screens */
-  .col-md-5, .col-md-6 {
-    text-align: center;
-  }
-  
-  @media (min-width: 768px) {
-    .col-md-5, .col-md-6 {
-      text-align: left;
-    }
-  }
+
   
   
   /* Adjust the card content to center align */
@@ -92,10 +81,6 @@ h4 {
     list-style: none;
     padding-left: 0;
   }
-  
-  .fa-li {
-    margin-right: 0.5em;
-  }
 
   .card {
     background-color: #dbf4cd !important;
@@ -104,5 +89,10 @@ h4 {
   
 
   .main-content {
-    background-color: #f5f5f5 !important;
+    background-color: inherit;
+  }
+  
+  .cont {
+        margin: 0 !important;
+        margin-top: 2rem !important;
   }

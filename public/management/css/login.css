@@ -35,7 +35,13 @@ html, body {
 }
 
 #logo {
-    width: 30%;
+    width: 50%;
+}
+
+@media (min-width: 460px) and (max-width: 990px) {
+    #logo {
+        width: 30%; /* Adjust width for screens between 768px and 900px */
+    }
 }
 
 .form-control {

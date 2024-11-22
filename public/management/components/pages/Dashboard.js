@@ -30,21 +30,23 @@ export default function initDashboard() {
         border-radius: 1em;
         margin-bottom: 2em;
         color: white;
-        background-color: #008000; /* Green background for cards */
         cursor: pointer; /* Pointer cursor for indicating clickability */
       }
       .card-box .card-body {
-        font-size: 1.5em;
+        font-size: 3em;
         font-weight: bold;
+        color: black;
         display: flex;
         align-items: center;
         justify-content: around;
-        height: 5em;
         flex-direction: column;
       }
-      .card-title {
+      
+      .card-header {
+        background-color: #baa863;
+        color: black;
         margin-bottom: 1em;
-        font-size: 0.7em;
+        font-size: 1.5em;
         text-align: center;
       }
       .card-box a {
@@ -98,10 +100,10 @@ export default function initDashboard() {
 
       if (user.role === "admin") {
           dashboardHtml += `
-      <div class="col-md-3">
+        <div class="col-md-3">
           <div class="card card-box" data-link="#manage-users">
+            <div class="card-header">Users</div>
             <div class="card-body">
-              <h5 class="card-title">Users</h5>
               <p id="users-count">0</p>
             </div>
           </div>
@@ -111,24 +113,24 @@ export default function initDashboard() {
       dashboardHtml += `
       <div class="col-md-3">
         <div class="card card-box" data-link="#maintenance" data-value="farmer">
+         <div class="card-header">Farmers</div>
           <div class="card-body">
-            <h5 class="card-title">Farmers</h5>
             <p id="farmers-count">0</p>
           </div>
         </div>
       </div>
       <div class="col-md-3">
         <div class="card card-box" data-link="#maintenance" data-value="barangay">
+         <div class="card-header">Barangays</div>
           <div class="card-body">
-            <h5 class="card-title">Barangays</h5>
             <p id="barangays-count">0</p>
           </div>
         </div>
       </div>
       <div class="col-md-3">
         <div class="card card-box" data-link="#maintenance" data-value="production">
+        <div class="card-header">Records</div>
           <div class="card-body">
-            <h5 class="card-title">Records</h5>
             <p id="records-count">0</p>
           </div>
         </div>
@@ -140,24 +142,24 @@ export default function initDashboard() {
           dashboardHtml += ` 
         <div class="col-md-3">
           <div class="card card-box" data-link="#data-entries">
+          <div class="card-header">Data Entries</div>
             <div class="card-body">
-              <h5 class="card-title">Data Entries</h5>
               <p id="data-entries-count">0</p>
             </div>
           </div>
         </div>
         <div class="col-md-3">
           <div class="card card-box no-link">
+          <div class="card-header">Downloads</div>
             <div class="card-body">
-              <h5 class="card-title">Downloads</h5>
               <p id="downloads-count">0</p>
             </div>
           </div>
         </div>
         <div class="col-md-3">
           <div class="card card-box" data-link="#concerns">
+          <div class="card-header">Concerns</div>
             <div class="card-body">
-              <h5 class="card-title">Concerns & Issues</h5>
               <p id="concerns-count">0</p>
             </div>
           </div>
@@ -344,44 +346,68 @@ export default function initDashboard() {
   // Initialize dashboard with dummy data
   async function initializeDashboard() {
       try {
-          // Fetch data asynchronously
-          let [
-              farmers,
-              records,
-              users,
-              barangays,
-              concerns,
-              dataEntries,
-              download,
-          ] = await Promise.all([
-              getFarmer(),
-              getRecord(),
-              getUsers(),
-              getBarangay(),
-              getConcerns(),
-              getDataEntries(),
-              getDownloadCount(),
-          ]);
+                 const results = await Promise.allSettled([
+            getFarmer(),
+            getRecord(),
+            getUsers(),
+            getBarangay(),
+            getConcerns(),
+            getDataEntries(),
+            getDownloadCount(),
+        ]);
 
-          // Initialize with real data or dummy data where applicable
-          var dashboardData = {
-              users: users.length,
-              farmers: farmers.length,
-              barangays: barangays.length,
-              records: records.length,
-              dataEntries: dataEntries,
-              downloads: download,
-              concerns: concerns.length,
-          };
+        // Destructure results for easier handling
+        const [
+            farmersResult,
+            recordsResult,
+            usersResult,
+            barangaysResult,
+            concernsResult,
+            dataEntriesResult,
+            downloadResult,
+        ] = results;
 
-          // Update dashboard with the fetched data
-          $("#users-count").text(dashboardData.users);
-          $("#farmers-count").text(dashboardData.farmers);
-          $("#barangays-count").text(dashboardData.barangays);
-          $("#records-count").text(dashboardData.records);
-          $("#data-entries-count").text(dashboardData.dataEntries);
-          $("#downloads-count").text(dashboardData.downloads);
-          $("#concerns-count").text(dashboardData.concerns);
+        // Initialize dashboard data with default values
+        const dashboardData = {
+            users: 0,
+            farmers: 0,
+            barangays: 0,
+            records: 0,
+            dataEntries: 0,
+            downloads: 0,
+            concerns: 0,
+        };
+
+        // Helper function to extract value or set default
+        const getValue = (result, defaultValue = 0) => {
+            return result.status === 'fulfilled' ? result.value : defaultValue;
+        };
+
+        // Populate dashboardData with fetched values or defaults
+        dashboardData.users = getValue(usersResult, dashboardData.users).length || dashboardData.users;
+        dashboardData.farmers = getValue(farmersResult, dashboardData.farmers).length || dashboardData.farmers;
+        dashboardData.barangays = getValue(barangaysResult, dashboardData.barangays).length || dashboardData.barangays;
+        dashboardData.records = getValue(recordsResult, dashboardData.records).length || dashboardData.records;
+        dashboardData.concerns = getValue(concernsResult, dashboardData.concerns).length || dashboardData.concerns;
+        dashboardData.dataEntries = getValue(dataEntriesResult, dashboardData.dataEntries) || dashboardData.dataEntries;
+        dashboardData.downloads = getValue(downloadResult, dashboardData.downloads) || dashboardData.downloads;
+
+        // Optionally, log or handle any rejected promises
+        results.forEach((result, index) => {
+            if (result.status === 'rejected') {
+                console.warn(`Fetch operation ${index + 1} failed:`, result.reason);
+                // You can display error messages or take other actions here
+            }
+        });
+
+        // Update dashboard with the fetched data
+        $("#users-count").text(dashboardData.users);
+        $("#farmers-count").text(dashboardData.farmers);
+        $("#barangays-count").text(dashboardData.barangays);
+        $("#records-count").text(dashboardData.records);
+        $("#data-entries-count").text(dashboardData.dataEntries);
+        $("#downloads-count").text(dashboardData.downloads);
+        $("#concerns-count").text(dashboardData.concerns);
 
           if (user.role === "admin") {
               $(".card-box").click(function () {

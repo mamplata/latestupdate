@@ -38,10 +38,10 @@ import{getProduction,getPrice,getPest,getDisease,addDownload,getUniqueCropNames,
 </div>
 `;p+=`<div class="row" style="margin-bottom: 20px;">`;t.slice().reverse().forEach(e=>{const t=e.replace(/([A-Z])/g," $1").toLowerCase();const o=i[e].growthRateOverall;const r=i[e].growthRateLatestMonth;const a=i[e].performance==="Increase"?"bg-success":i[e].performance==="Decrease"?"bg-danger":"bg-warning";const n=i[e].performance==="Increase"?'<i class="fas fa-arrow-up"></i>':i[e].performance==="Decrease"?'<i class="fas fa-arrow-down"></i>':'<i class="fas fa-minus"></i>';const s=e===u?"highlighted-field":"";p+=` 
     <div class="col-md-4 mb-4"> <!-- Adjust the number of columns here --> 
-        <div class="card ${a} ${s}" style="border-radius: 15px; color: white; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);"> 
+        <div class="card shadow-lg" style="border-radius: 15px; color: white; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);"> 
+            <div class="card-header ${a} ${s} text-center" style="font-size: 1.25rem;"><strong>${n} ${t.charAt(0).toUpperCase()+t.slice(1)}</strong></div> 
             <div class="card-body"> 
-                <h5 class="card-title" style="font-size: 1.25rem;"><strong>${n} ${t.charAt(0).toUpperCase()+t.slice(1)}</strong></h5> 
-                <ul class="text-center" style="list-style-type: none; padding: 0; color: white;"> 
+                <ul class="text-center" style="list-style-type: none; padding: 0; color: #000"> 
                     <li style="margin: 5px 0;">Average: <strong>${i[e].average.toFixed(2)}</strong></li> 
                     <li style="margin: 5px 0;">Overall Growth Rate: <strong>${o}%</strong></li> 
                     <li style="margin: 5px 0;">Growth Rate in Latest Month: <strong>${r}%</strong></li> 
