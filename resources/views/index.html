@@ -35,18 +35,18 @@
 
         <main class="main-content mx-5">
             <section>
-                <div class="container-fluid mx-auto cont">
+                <div class="container-fluid mx-auto cont py-5">
                     <div
                         class="row d-flex align-items-center justify-content-between"
                     >
                         <!-- Left Column -->
-                        <div class="col-md-5 text-md-start">
+                        <div class="col-md-5 text-md-start order-md-1 order-2 mt-5 mt-lg-0">
                             <div
                                 class="d-flex flex-column justify-content-center align-items-center align-items-md-start"
                             >
-                                <span class="m-0 p-0" style="line-height: 0%"
-                                    ><strong>Original & Natural</strong></span
-                                >
+                                <span class="m-0 p-0" style="line-height: 0%">
+                                    <strong>Original & Natural</strong>
+                                </span>
                                 <img
                                     width="150px"
                                     src="img/underline1.webp"
@@ -54,27 +54,88 @@
                                     class="img-fluid m-0 p-0"
                                 />
                             </div>
-                            <div class="d-flex align-items-center justify-content-center justify-content-md-start">
-                                <h1 id="header1" class="text-md-start text-center">
+                            <div
+                                class="d-flex align-items-center justify-content-center justify-content-md-start"
+                            >
+                                <h1
+                                    id="header1"
+                                    class="text-md-start text-center"
+                                >
                                     Masaganang Agricultura
                                     <img
                                         src="img/header1.webp"
                                         alt="Header Image"
-                                        class="responsive-image">
+                                        class="responsive-image"
+                                    />
                                 </h1>
                             </div>
-                            
+
                             <h1 id="header2" class="text-md-start text-center">
                                 Maunlad na Ekonomiya
                             </h1>
                             <br />
                             <div class="paragraph text-md-start">
                                 <p>
-                                    AgroConnect Cabuyao is an agriculture
-                                    information system designed to assist the
-                                    City Agriculture Office in making informed
-                                    decisions regarding crop selection and
-                                    planting.
+                                    AgroConnect Cabuyao provides tools to
+                                    monitor crop production and prices, keeping
+                                    farmers and technicians informed.
+                                </p>
+                            </div>
+                            <a
+                                href="#about"
+                                class="btn btn-custom d-inline-flex align-items-center justify-content-center w-100"
+                            >
+                                <i class="fas fa-info-circle me-2"></i> Learn
+                                More
+                            </a>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="col-md-6 d-flex justify-content-center order-md-2 order-1">
+                            <div>
+                                <img
+                                    src="img/CAO-1.webp"
+                                    alt="Cabuyao Agriculture Office"
+                                    class="img-fluid"
+                                    style="
+                                        filter: drop-shadow(5px 5px 10px #555);
+                                    "
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="about">
+                <div class="container-fluid">
+                    <div
+                        class="row d-flex align-items-center justify-content-between"
+                    >
+                        <!-- Left Column: Image -->
+                        <div class="col-md-5 text-center">
+                            <div>
+                                <img
+                                    src="img/CAO-2.webp"
+                                    alt="AgroConnect Logo"
+                                    class="img-fluid"
+                                    style="
+                                        filter: drop-shadow(5px 5px 10px #555);
+                                    "
+                                    ;
+                                />
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Text Content -->
+                        <div class="col-md-6 mt-4 mt-md-0">
+                            <div class="paragraph text-md-start text-justify">
+                                <p>
+                                    <strong>AgroConnect Cabuyao</strong> is an
+                                    agriculture information system designed to
+                                    assist the City Agriculture Office in making
+                                    informed decisions regarding crop selection
+                                    and planting.
                                 </p>
                                 <p>
                                     It serves as a comprehensive tool for
@@ -94,407 +155,630 @@
                                     share suggestions and concerns.
                                 </p>
                             </div>
-                        </div>
-                        <!-- Right Column -->
-                        <div class="col-md-6 d-flex justify-content-center">
-                            <div class="image-container">
-                                <img
-                                    src="img/CAO-1.webp"
-                                    alt="Cabuyao Agriculture Office"
-                                    class="img-fluid"
-                                />
-                            </div>
+                            <a
+                                href="#features"
+                                class="btn btn-custom d-inline-flex align-items-center justify-content-center"
+                            >
+                                <i class="fas fa-info-circle me-2"></i> View
+                                Features
+                            </a>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section>
+            <section id="features">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                        <a href="#section-trends" class="text-decoration-none">
+                            <div class="card border shadow-lg h-100">
+                                <div
+                                    class="card-body text-center"
+                                    style="padding: 30px"
+                                >
+                                    <i
+                                        class="fas fa-chart-line fa-3x mb-3 text-dark"
+                                        style="display: block; margin: auto"
+                                    ></i>
+                                    <h5
+                                        class="card-title text-dark"
+                                        style="
+                                            margin-top: 20px;
+                                            font-weight: bold;
+                                        "
+                                    >
+                                        Seasonal Trends
+                                    </h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                        <a href="#section-crops" class="text-decoration-none">
+                            <div class="card border shadow-lg h-100">
+                                <div
+                                    class="card-body text-center"
+                                    style="padding: 30px"
+                                >
+                                    <i
+                                        class="fas fa-seedling fa-3x mb-3 text-dark"
+                                        style="display: block; margin: auto"
+                                    ></i>
+                                    <h5
+                                        class="card-title text-dark"
+                                        style="
+                                            margin-top: 20px;
+                                            font-weight: bold;
+                                        "
+                                    >
+                                        Seasonal Top Crops
+                                    </h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                        <a href="#section-soil" class="text-decoration-none">
+                            <div class="card border shadow-lg h-100">
+                                <div
+                                    class="card-body text-center"
+                                    style="padding: 30px"
+                                >
+                                    <i
+                                        class="fas fa-leaf fa-3x mb-3 text-dark"
+                                        style="display: block; margin: auto"
+                                    ></i>
+                                    <h5
+                                        class="card-title text-dark"
+                                        style="
+                                            margin-top: 20px;
+                                            font-weight: bold;
+                                        "
+                                    >
+                                        Soil Health Monitoring
+                                    </h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                        <a href="#section-weather" class="text-decoration-none">
+                            <div class="card border shadow-lg h-100">
+                                <div
+                                    class="card-body text-center"
+                                    style="padding: 30px"
+                                >
+                                    <i
+                                        class="fas fa-cloud-sun fa-3x mb-3 text-dark"
+                                        style="display: block; margin: auto"
+                                    ></i>
+                                    <h5
+                                        class="card-title text-dark"
+                                        style="
+                                            margin-top: 20px;
+                                            font-weight: bold;
+                                        "
+                                    >
+                                        Weather Forecast
+                                    </h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                        <a href="#section-map" class="text-decoration-none">
+                            <div class="card border shadow-lg h-100">
+                                <div
+                                    class="card-body text-center"
+                                    style="padding: 30px"
+                                >
+                                    <i
+                                        class="fas fa-map-marked-alt fa-3x mb-3 text-dark"
+                                        style="display: block; margin: auto"
+                                    ></i>
+                                    <h5
+                                        class="card-title text-dark"
+                                        style="
+                                            margin-top: 20px;
+                                            font-weight: bold;
+                                        "
+                                    >
+                                        Geospatial Map Trends
+                                    </h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                        <a
+                            href="#section-feedback"
+                            class="text-decoration-none"
+                        >
+                            <div class="card border shadow-lg h-100">
+                                <div
+                                    class="card-body text-center"
+                                    style="padding: 30px"
+                                >
+                                    <i
+                                        class="fas fa-comments fa-3x mb-3 text-dark"
+                                        style="display: block; margin: auto"
+                                    ></i>
+                                    <h5
+                                        class="card-title text-dark"
+                                        style="
+                                            margin-top: 20px;
+                                            font-weight: bold;
+                                        "
+                                    >
+                                        Feedback
+                                    </h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-trends">
                 <div class="container-fluid">
                     <div
                         class="row d-flex align-items-center justify-content-between"
                     >
-                        <div class="col-md-5">
-                            <div class="image-container text-center">
-                                <img
-                                    width="80%"
-                                    src="img/logo.webp"
-                                    alt="Placeholder Image"
-                                    class="img-fluid"
-                                />
+                        <div class="col-md-6 mt-4 mt-md-0 order-md-1 order-2">
+                            <div class="paragraph text-md-start text-center">
+                                <h4>
+                                    <em>Seasonal Trends</em>
+                                </h4>
+                                <p>
+                                    This feature analyzes trends such as crop
+                                    yield performance, pest and disease
+                                    occurrence, crop prices, production volume,
+                                    cost volume, sales volume, and income from
+                                    prices.
+                                </p>
                             </div>
+                            <a
+                                href="/seasonal-trends"
+                                class="btn btn-custom d-inline-flex align-items-center justify-content-center"
+                            >
+                                <i class="fas fa-info-circle me-2"></i> View
+                                More
+                            </a>
                         </div>
-                        <div class="col-md-5 mt-only-5">
-                            <div class="card">
-                                <div class="card-body d-flex">
-                                    <div class="features-list">
-                                        <h4>
-                                            <em
-                                                ><strong
-                                                    >Key Features:</strong
-                                                ></em
-                                            >
-                                        </h4>
-                                        <ul class="fa-ul mt-5">
-                                            <li>
-                                                <span class="fa-li"
-                                                    ><i
-                                                        class="far fa-check-square"
-                                                    ></i></span
-                                                ><strong
-                                                    >Seasonal Trends</strong
-                                                >
-                                            </li>
-                                            <li class="mt-2">
-                                                <span class="fa-li"
-                                                    ><i
-                                                        class="far fa-check-square"
-                                                    ></i></span
-                                                ><strong
-                                                    >Seasonal Top Crops</strong
-                                                >
-                                            </li>
-                                            <li class="mt-2">
-                                                <span class="fa-li"
-                                                    ><i
-                                                        class="far fa-check-square"
-                                                    ></i></span
-                                                ><strong
-                                                    >Soil Health
-                                                    Monitoring</strong
-                                                >
-                                            </li>
-                                            <li class="mt-2">
-                                                <span class="fa-li"
-                                                    ><i
-                                                        class="far fa-check-square"
-                                                    ></i></span
-                                                ><strong
-                                                    >Weather Forecast</strong
-                                                >
-                                            </li>
-                                            <li class="mt-2">
-                                                <span class="fa-li"
-                                                    ><i
-                                                        class="far fa-check-square"
-                                                    ></i></span
-                                                ><strong
-                                                    >Geospatial Map
-                                                    Trends</strong
-                                                >
-                                            </li>
-                                            <li class="mt-2">
-                                                <span class="fa-li"
-                                                    ><i
-                                                        class="far fa-check-square"
-                                                    ></i></span
-                                                ><strong>Feedback</strong>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
+                        <div class="col-md-5 text-center order-md-2 order-1">
+                            <div class="icon-container">
+                                <i
+                                    class="fas fa-chart-line fa-5x text-success"
+                                    style="margin: 0"
+                                ></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section>
+            <section id="section-crops">
+                <div class="container-fluid">
+                    <div
+                        class="row d-flex align-items-center justify-content-between"
+                    >
+                        <div class="col-md-5 text-center">
+                            <div class="icon-container">
+                                <i
+                                    class="fas fa-seedling fa-5x text-success"
+                                    style="margin: 0"
+                                ></i>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mt-4 mt-md-0">
+                            <div class="paragraph text-md-start text-center">
+                                <h4>
+                                    <em>Seasonal Top Crops</em>
+                                </h4>
+                                <p>
+                                    This feature identifies appropriate crops
+                                    with favorable value by analyzing data from
+                                    past seasons.
+                                </p>
+                            </div>
+                            <a
+                                href="/top-crops"
+                                class="btn btn-custom d-inline-flex align-items-center justify-content-center"
+                            >
+                                <i class="fas fa-info-circle me-2"></i> View
+                                More
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-soil">
                 <div class="container-fluid mt-4">
-                    <div class="row">
-                        <div class="col-md-12 d-flex align-items-stretch">
-                            <div class="card w-100">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12">
+                            <div class="card text-center w-100">
                                 <div class="card-body">
-                                    <div class="row">
-                                        <!-- Seasonal Trends Section -->
-                                        <div
-                                            class="col-md-6 d-flex flex-column justify-content-center align-items-center mt-5"
+                                    <h2>
+                                        <strong
+                                            ><em
+                                                >Soil Health Monitoring</em
+                                            ></strong
                                         >
-                                            <h4 class="card-title text-center">
-                                                <em>Seasonal Trends</em>
-                                            </h4>
-                                            <img
-                                                src="img/seasonaltrends.webp"
-                                                alt="Seasonal Trends"
-                                                class="img-fluid mb-3"
-                                            /><br />
-                                            <div class="paragraph mx-5">
-                                                <p>
-                                                    This feature analyzes trends
-                                                    such as crop yield
-                                                    performance, pest and
-                                                    disease occurrence, crop
-                                                    prices, production volume,
-                                                    cost volume, sales volume,
-                                                    and income from prices.
-                                                </p>
-                                            </div>
-                                            <a
-                                                href="/seasonal-trends"
-                                                class="btn btn-custom mt-3 mb-5"
-                                                >View More</a
-                                            >
-                                        </div>
-                                        <!-- Seasonal Top Crops Section -->
-                                        <div
-                                            class="col-md-6 d-flex flex-column justify-content-center align-items-center"
+                                    </h2>
+                                    <p class="mt-4">
+                                        This feature empowers agriculturalists
+                                        to oversee soil nutrient levels and pH
+                                        for farmers, allowing them to provide
+                                        feedback and suggestions for ongoing
+                                        soil health monitoring.
+                                    </p>
+                                    <h4 class="mt-5">
+                                        <em
+                                            >Summary of Soil Health in Cabuyao,
+                                            Laguna:</em
                                         >
-                                            <h4 class="card-title text-center">
-                                                <em>Seasonal Top Crops</em>
-                                            </h4>
-                                            <div class="paragraph mx-5">
-                                                <p>
-                                                    This feature identifies
-                                                    appropriate crops with
-                                                    favorable value by analyzing
-                                                    data from past seasons.
-                                                </p>
-                                            </div>
-                                            <a
-                                                href="/top-crops"
-                                                class="btn btn-custom mt-3 mb-5"
-                                                >View More</a
-                                            >
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+                                    </h4>
 
-            <section>
-                <div class="container-fluid mt-4">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div>
-                                <h2>
-                                    <strong
-                                        ><em>Soil Health Monitoring</em></strong
-                                    >
-                                </h2>
-                                <br />
-                                <p>
-                                    This feature empowers agriculturalists to
-                                    oversee soil nutrient levels and pH for
-                                    farmers, allowing them to provide feedback
-                                    and suggestions for ongoing soil health
-                                    monitoring.
-                                </p>
-                                <div class="card w-100">
-                                    <div class="card-body pt-5 pb-5 mx-5">
-                                        <ul class="ml-4">
-                                            <h4 class="card-title">
-                                                <em
-                                                    >Summary of Soil Health in
-                                                    Cabuyao, Laguna:</em
+                                    <div class="row mt-4">
+                                        <div
+                                            class="col-12 col-md-6 col-lg-4 mb-3"
+                                        >
+                                            <div
+                                                class="soil-metric-card p-3 bg-light rounded shadow-sm"
+                                            >
+                                                <strong>pH Level:</strong>
+                                                <p class="mt-2">
+                                                    Measures the acidity or
+                                                    alkalinity of the soil.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="col-12 col-md-6 col-lg-4 mb-3"
+                                        >
+                                            <div
+                                                class="soil-metric-card p-3 bg-light rounded shadow-sm"
+                                            >
+                                                <strong
+                                                    >Nitrogen Content:</strong
                                                 >
-                                            </h4>
-                                            <li>
-                                                pH Level: Measures the acidity
-                                                or alkalinity of the soil.
-                                            </li>
-                                            <li>
-                                                Nitrogen Content: Amount of
-                                                nitrogen present in the soil,
-                                                crucial for plant growth.
-                                            </li>
-                                            <li>
-                                                Phosphorus Content: Essential
-                                                nutrient for root development
-                                                and overall plant health.
-                                            </li>
-                                            <li>
-                                                Potassium Content: Important for
-                                                regulating water use and
-                                                improving disease resistance.
-                                            </li>
-                                            <li>
-                                                Organic Matter: Indicator of
-                                                soil fertility and health.
-                                            </li>
-                                        </ul>
+                                                <p class="mt-2">
+                                                    Amount of nitrogen present
+                                                    in the soil, crucial for
+                                                    plant growth.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="col-12 col-md-6 col-lg-4 mb-3"
+                                        >
+                                            <div
+                                                class="soil-metric-card p-3 bg-light rounded shadow-sm"
+                                            >
+                                                <strong
+                                                    >Phosphorus Content:</strong
+                                                >
+                                                <p class="mt-2">
+                                                    Essential nutrient for root
+                                                    development and overall
+                                                    plant health.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="col-12 col-md-6 col-lg-4 mb-3"
+                                        >
+                                            <div
+                                                class="soil-metric-card p-3 bg-light rounded shadow-sm"
+                                            >
+                                                <strong
+                                                    >Potassium Content:</strong
+                                                >
+                                                <p class="mt-2">
+                                                    Important for regulating
+                                                    water use and improving
+                                                    disease resistance.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="col-12 col-md-6 col-lg-4 mb-3"
+                                        >
+                                            <div
+                                                class="soil-metric-card p-3 bg-light rounded shadow-sm"
+                                            >
+                                                <strong>Organic Matter:</strong>
+                                                <p class="mt-2">
+                                                    Indicator of soil fertility
+                                                    and health.
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
+
+                                    <a
+                                        href="/soil-health"
+                                        class="btn btn-custom btn-soil-health mt-5 mb-5"
+                                    >
+                                        View More
+                                    </a>
                                 </div>
-                                <a
-                                    href="/soil-health"
-                                    class="btn btn-custom mt-4 mt-only-5"
-                                    >View More</a
-                                >
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section>
-                <div class="container-fluid mt-4">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div>
-                                <h2>
-                                    <strong><em>Weather Forecast</em></strong>
-                                </h2>
-                                <br />
-                                <p>
-                                    Features include weather forecasts for
-                                    specific areas, aiding farmers in planning
-                                    and managing their agricultural activities
-                                    based on upcoming weather conditions.
+            <script>
+                // Ensure all soil-metric-card elements are the same height
+                window.addEventListener("DOMContentLoaded", () => {
+                    const cards =
+                        document.querySelectorAll(".soil-metric-card");
+                    let maxHeight = 0;
+
+                    // Calculate the largest height
+                    cards.forEach((card) => {
+                        const cardHeight = card.offsetHeight;
+                        if (cardHeight > maxHeight) {
+                            maxHeight = cardHeight;
+                        }
+                    });
+
+                    // Apply the largest height to all cards
+                    cards.forEach((card) => {
+                        card.style.height = `${maxHeight}px`;
+                    });
+                });
+            </script>
+
+            <section id="section-weather">
+                <div class="container-fluid py-5">
+                    <div class="row d-flex align-items-center">
+                        <!-- Icon Section -->
+                        <div class="col-md-5 text-center">
+                            <div class="icon-container">
+                                <i
+                                    class="fas fa-cloud-sun fa-5x text-success"
+                                    style="margin: 0"
+                                ></i>
+                            </div>
+                        </div>
+
+                        <!-- Content Section -->
+                        <div class="col-md-6 offset-md-1 mt-4 mt-md-0">
+                            <div
+                                class="content-section text-md-start text-center"
+                            >
+                                <h4 class="mb-3">
+                                    <em>Weather Forecast</em>
+                                </h4>
+                                <p class="mb-4">
+                                    This feature identifies appropriate crops
+                                    with favorable value by analyzing data from
+                                    past seasons.
                                 </p>
-                                <div class="card w-100 p-5">
-                                    <div class="card-body">
-                                        <ul class="ml-4">
-                                            <h4 class="card-title">
-                                                <em>Key Weather Metrics:</em>
-                                            </h4>
-                                            <li>
-                                                Temperature: Provides current
-                                                and forecasted temperatures for
-                                                effective planning.
-                                            </li>
-                                            <li>
-                                                Precipitation: Insights into
-                                                rainfall patterns to help manage
-                                                irrigation and crop protection.
-                                            </li>
-                                            <li>
-                                                Humidity: Assists in monitoring
-                                                conditions that affect crop
-                                                health and pest prevalence.
-                                            </li>
-                                            <li>
-                                                Wind Speed: Information on wind
-                                                conditions relevant for planting
-                                                and harvesting decisions.
-                                            </li>
-                                        </ul>
-                                    </div>
+
+                                <div class="key-metrics">
+                                    <h5 class="mb-3">
+                                        <em>Key Weather Metrics:</em>
+                                    </h5>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2">
+                                            <strong>Temperature:</strong>
+                                            Provides current and forecasted
+                                            temperatures for effective planning.
+                                        </li>
+                                        <li class="mb-2">
+                                            <strong>Precipitation:</strong>
+                                            Insights into rainfall patterns to
+                                            help manage irrigation and crop
+                                            protection.
+                                        </li>
+                                        <li class="mb-2">
+                                            <strong>Humidity:</strong> Assists
+                                            in monitoring conditions that affect
+                                            crop health and pest prevalence.
+                                        </li>
+                                        <li class="mb-2">
+                                            <strong>Wind Speed:</strong>
+                                            Information on wind conditions
+                                            relevant for planting and harvesting
+                                            decisions.
+                                        </li>
+                                    </ul>
                                 </div>
+
                                 <a
                                     href="/weather-forecast"
-                                    class="btn btn-custom mt-4 mt-only-5"
-                                    >View More</a
+                                    class="btn btn-custom mt-4 d-inline-flex align-items-center justify-content-center"
                                 >
+                                    <i class="fas fa-info-circle me-2"></i> View
+                                    More
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section>
-                <div class="container-fluid mt-4">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div>
-                                <h2>
-                                    <strong
-                                        ><em>Geospatial Map Trends</em></strong
-                                    >
-                                </h2>
-                                <br />
-                                <p>
+            <section id="section-map">
+                <div class="container-fluid">
+                    <div class="row d-flex align-items-center justify-content-between">
+
+                         <!-- Content Section -->
+                         <div class="col-md-6 mt-4 mt-md-0 order-md-1 order-2">
+                            <div
+                                class="content-section text-md-start text-center"
+                            >
+                                <h4 class="mb-3">
+                                    <em>Geospatial Map Trends</em>
+                                </h4>
+                                <p class="mb-4">
                                     This feature offers a comprehensive map view
                                     displaying various geospatial trends,
                                     allowing for detailed analysis of land use,
                                     crop distribution, and environmental
                                     factors.
                                 </p>
-                                <div class="card w-100 p-5">
-                                    <div class="card-body">
-                                        <ul class="ml-4">
-                                            <h4 class="card-title">
-                                                <em>Map Trends Overview:</em>
-                                            </h4>
-                                            <li>
-                                                Land Use Patterns: Visual
-                                                representation of land
-                                                utilization across different
-                                                regions.
-                                            </li>
-                                            <li>
-                                                Crop Distribution: Insights into
-                                                where different crops are grown
-                                                and their yields.
-                                            </li>
-                                            <li>
-                                                Environmental Factors: Analysis
-                                                of factors like soil health,
-                                                water availability, and climate
-                                                impacts.
-                                            </li>
-                                            <li>
-                                                Historical Data: Trends over
-                                                time to track changes and inform
-                                                future decisions.
-                                            </li>
-                                        </ul>
-                                    </div>
+
+                                <div class="key-metrics">
+                                    <h5 class="mb-3">
+                                        <em>Map Trends Overview:</em>
+                                    </h5>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2">
+                                            <strong>Land Use Patterns:</strong>
+                                            Visual representation of land
+                                            utilization across different
+                                            regions.
+                                        </li>
+                                        <li class="mb-2">
+                                            <strong>Crop Distribution:</strong>
+                                            Insights into where different crops
+                                            are grown and their yields.
+                                        </li>
+                                        <li class="mb-2">
+                                            <strong
+                                                >Environmental Factors:</strong
+                                            >
+                                            Analysis of factors like soil
+                                            health, water availability, and
+                                            climate impacts.
+                                        </li>
+                                        <li class="mb-2">
+                                            <strong> Historical Data:</strong>
+                                            Trends over time to track changes
+                                            and inform future decisions.
+                                        </li>
+                                    </ul>
                                 </div>
+
                                 <a
                                     href="/map-trends"
-                                    class="btn btn-custom mt-4 mt-only-5"
-                                    >View More</a
+                                    class="btn btn-custom mt-4 d-inline-flex align-items-center justify-content-center"
                                 >
+                                    <i class="fas fa-info-circle me-2"></i> View
+                                    More
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Icon Section -->
+                        <div class="col-md-5 text-center order-md-2 order-1">
+                            <div class="icon-container">
+                                <i
+                                    class="fas fa-map-marked fa-5x text-success"
+                                    style="margin: 0"
+                                ></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section>
+            <section id="section-feedback">
                 <div class="container-fluid mt-4">
-                    <div class="row">
+                    <div class="row justify-content-center">
                         <div class="col-md-12">
-                            <div>
-                                <h2>
-                                    <strong><em>Feedback</em></strong>
-                                </h2>
-                                <br />
-                                <p>
-                                    The feedback feature allows users to submit
-                                    their insights and suggestions for
-                                    continuous improvement of the AgroConnect
-                                    system. It encourages communication and
-                                    engagement between users and the development
-                                    team.
-                                </p>
-                                <div class="card w-100 p-5">
-                                    <div class="card-body">
-                                        <ul>
-                                            <h4 class="card-title">
-                                                <em>Feedback Features:</em>
-                                            </h4>
-                                            <li>
-                                                Submit Feedback: Easy-to-use
-                                                form for users to provide their
-                                                comments and suggestions.
-                                            </li>
-                                            <li>
-                                                Track Feedback: View the status
-                                                of submitted feedback and any
-                                                responses.
-                                            </li>
-                                            <li>
-                                                Engage with Users: Facilitate
-                                                ongoing communication between
-                                                the AgroConnect team and its
-                                                users.
-                                            </li>
-                                        </ul>
+                            <div class="card text-center w-100">
+                                <div class="card-body">
+                                    <h2>
+                                        <strong><em>Feedback</em></strong>
+                                    </h2>
+                                    <p class="mt-4">
+                                        The feedback feature allows users to
+                                        submit their insights and suggestions
+                                        for continuous improvement of the
+                                        AgroConnect system. It encourages
+                                        communication and engagement between
+                                        users and the development team.
+                                    </p>
+                                    <h4 class="mt-5">
+                                        <em>Feedback Features:</em>
+                                    </h4>
+
+                                    <div class="row mt-4">
+                                        <div
+                                            class="col-12 col-md-6 col-lg-4 mb-3"
+                                        >
+                                            <div
+                                                class="feedback-card p-3 bg-light rounded shadow-sm"
+                                            >
+                                                <strong
+                                                    >Submit Feedback:</strong
+                                                >
+                                                <p class="mt-2">
+                                                    Easy-to-use form for users
+                                                    to provide their comments
+                                                    and suggestions.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="col-12 col-md-6 col-lg-4 mb-3"
+                                        >
+                                            <div
+                                                class="feedback-card p-3 bg-light rounded shadow-sm"
+                                            >
+                                                <strong>Track Feedback:</strong>
+                                                <p class="mt-2">
+                                                    View the status of submitted
+                                                    feedback and any responses.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="col-12 col-md-6 col-lg-4 mb-3"
+                                        >
+                                            <div
+                                                class="feedback-card p-3 bg-light rounded shadow-sm"
+                                            >
+                                                <strong></strong>
+                                                    Engage with Users:</strong
+                                                >
+                                                <p class="mt-2">
+                                                    Facilitate ongoing
+                                                    communication between the
+                                                    AgroConnect team and its
+                                                    users.
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
+
+                                    <a
+                                        href="/contact-us"
+                                        class="btn btn-custom btn-feedback mt-5 mb-5"
+                                    >
+                                        View More
+                                    </a>
                                 </div>
-                                <a
-                                    href="/contact-us"
-                                    class="btn btn-custom mt-4 mt-only-5"
-                                    >Give Feedback</a
-                                >
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
+
+            <script>
+                // Ensure all soil-metric-card elements are the same height
+                window.addEventListener("DOMContentLoaded", () => {
+                    const cards = document.querySelectorAll(".feedback-card");
+                    let maxHeight = 0;
+
+                    // Calculate the largest height
+                    cards.forEach((card) => {
+                        const cardHeight = card.offsetHeight;
+                        if (cardHeight > maxHeight) {
+                            maxHeight = cardHeight;
+                        }
+                    });
+
+                    // Apply the largest height to all cards
+                    cards.forEach((card) => {
+                        card.style.height = `${maxHeight}px`;
+                    });
+                });
+            </script>
         </main>
 
         <footer class="footer-container">

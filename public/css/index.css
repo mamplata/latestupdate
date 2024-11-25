@@ -61,7 +61,7 @@ ul {
         margin-bottom: 2rem !important;
     }
 
-    .btn-custom:not(.btn-contact) {
+    .btn-custom:not(.btn-contact):not(.btn-soil-health):not(.btn-feedback) {
         width: 100% !important;
     }
 
@@ -76,7 +76,6 @@ ul {
     }
 
     .btn {
-        margin: 0 !important;
         font-size: var(--font-size-base) !important;
     }
 
@@ -101,7 +100,7 @@ ul {
 /* Medium screens (tablets) */
 @media (min-width: 481px) and (max-width: 990px) {
 
-    .btn-custom:not(.btn-contact) {
+    .btn-custom:not(.btn-contact):not(.btn-soil-health):not(.btn-feedback) {
         width: 100% !important;
     }
 
@@ -116,7 +115,6 @@ ul {
     }
 
     .btn {
-        margin: 0 !important;
         font-size: var(--font-size-base) !important;
     }
 
@@ -156,12 +154,12 @@ ul {
 /* Large screens (desktops) */
 @media (min-width: 769px) {
 
-    .btn-custom:not(.btn-contact) {
-        width: 30% !important;
+    .btn-custom:not(.btn-contact):not(.btn-soil-health):not(.btn-feedback) {
+        width: 100% !important;
     }
     
     .btn-custom .btn-contact {
-        padding 0 10px !important;
+        padding: 0 10px !important;
     }  
 }
 
