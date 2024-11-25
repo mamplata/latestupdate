@@ -20,7 +20,6 @@ use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\RiceProductionController;
 
 // Public routes (no authentication required)
-Route::get('/users', [UserController::class, 'index']);
 Route::post('/login', [UserController::class, 'login']);
 
 Route::get('/crops', [CropController::class, 'index']);
@@ -51,6 +50,7 @@ Route::get('/weather-keys', function () {
 // Protected routes (authentication required)
 Route::middleware('auth:sanctum')->group(function () {
     // Api for users
+    Route::get('/users', [UserController::class, 'index']);
     Route::post('/users', [UserController::class, 'store']);
     Route::get('/users/{id}', [UserController::class, 'show']);
     Route::put('/users/{id}', [UserController::class, 'update']);

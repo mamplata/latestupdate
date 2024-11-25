@@ -21,7 +21,6 @@ $(document).ready(function () {
             $("#loadingScreen").fadeOut();
         }, 2000); // 2 seconds delay
     });
-    
 
     // Prepend header structure with navigation links to the body
     $(".header-container").prepend(`
@@ -59,6 +58,9 @@ $(document).ready(function () {
                     <li class="nav-item d-flex align-items-center justify-content-center">
                         <a class="nav-link text-white w-100" href="/contact-us">Contact Us</a>
                     </li>
+                    <li class="nav-item d-flex align-items-center justify-content-center">
+                         <button id="toggle-btn" class="en">EN</button>
+                    </li>
                 </ul>
             </div>
         </header>
@@ -88,4 +90,52 @@ $(document).ready(function () {
         });
     </script>
 `);
+});
+
+$(document).ready(function () {
+    let currentLocale = "en"; // Default locale
+
+    function translate(locale) {
+        // Collect all translation keys
+        let keys = [];
+        $("[data-key]").each(function () {
+            keys.push($(this).data("key"));
+        });
+
+        // Fetch translations
+        $.ajax({
+            url: "/translate",
+            method: "GET",
+            data: {
+                keys: keys,
+                locale: locale,
+            },
+            success: function (translations) {
+                // Update text dynamically
+                $("[data-key]").each(function () {
+                    const key = $(this).data("key");
+                    if (translations[key]) {
+                        $(this).html(translations[key]);
+                    }
+                });
+            },
+            error: function () {
+                alert("Failed to load translations.");
+            },
+        });
+    }
+
+    // Toggle translation between English and Tagalog
+    $("#toggle-btn").click(function () {
+        // Toggle locale
+        currentLocale = currentLocale === "en" ? "tl" : "en";
+        translate(currentLocale);
+
+        // Update button appearance
+        if (currentLocale === "en") {
+            $(this).removeClass("tl").addClass("en").text("EN");
+        } else {
+            $(this).removeClass("en").addClass("tl").text("TL");
+        }
+    });
 });
