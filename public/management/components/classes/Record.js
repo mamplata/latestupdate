@@ -46,16 +46,14 @@ class Record {
                 body: JSON.stringify(record),
             });
 
-       
-
             if (!response.ok) {
                 const errorText = await response.text();
-          
+
                 throw new Error("Failed to create record");
             }
 
             const data = await response.json();
-        
+
             return data.recordId;
         } catch (error) {
             console.error("Error:", error);
@@ -97,7 +95,7 @@ class Record {
             }
 
             const data = await response.json();
-        
+
             return data.recordId;
         } catch (error) {
             console.error("Error:", error);
@@ -178,8 +176,6 @@ function getRecord(dataType) {
             withCredentials: true, // Ensure cookies are sent with the request
         },
         success: async function (response) {
-           
-
             if (Array.isArray(response) && response.length > 0) {
                 const recordsArray = response; // Store the array of records in recordsArray
                 records = [];
@@ -210,9 +206,7 @@ function getRecord(dataType) {
                 // Optionally, update the UI with the new records
                 // Example: $('#recordsTable').html(generateTableHtml(records));
             } else {
-      
                 records = [];
-               
             }
         },
         error: function (xhr, status, error) {
@@ -261,86 +255,73 @@ function initializeMethodsRecord(dataType) {
     var isEdit = false;
 
     async function displayRecords(recordName = null) {
-        // Simulate a delay of 1 second
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        try {
+            // Construct the API query parameters
+            let query = `/api/records/${dataType}?page=${currentPage}&pageSize=${pageSize}`;
+            if (recordName) {
+                query += `&recordName=${encodeURIComponent(recordName)}`;
+            }
 
-        $("#recordTableBody").empty();
-        const userId = user ? user.userId : null;
-        const userRole = user ? user.role : "admin";
-        var startIndex = (currentPage - 1) * pageSize;
-        var endIndex = startIndex + pageSize;
+            // Fetch records from the server
+            const response = await fetch(query, {
+                credentials: "include", // Include credentials for cookies
+                method: "GET",
+            });
 
-        // Filter records based on user role
-        const filteredRecords =
-            userRole === "admin"
-                ? records
-                : records.filter((record) => record.userId === userId);
+            if (!response.ok) {
+                throw new Error(
+                    `Error fetching records: ${response.statusText}`
+                );
+            }
 
-        // If a record name is provided, search for matching records
-        if (recordName) {
-            const foundRecords = searchRecord(recordName).filter((record) =>
-                filteredRecords.some((fr) => fr.recordId === record.recordId)
-            );
+            const data = await response.json();
+            records = data.data;
 
-            // Apply pagination to the found records
-            const paginatedFoundRecords = foundRecords.slice(
-                startIndex,
-                endIndex
-            );
+            $("#recordTableBody").empty();
 
-            if (paginatedFoundRecords.length > 0) {
-                paginatedFoundRecords.forEach((record) => {
+            if (Array.isArray(data.data) && data.data.length > 0) {
+                data.data.forEach((record) => {
+                    const base64String = record.fileRecord;
+                    const mimeType =
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    const link = `data:${mimeType};base64,${base64String}`;
+                    const button = `<button class="btn btn-sm btn-green" onclick="confirmDownload('${link}', '${record.name}.xlsx')">Download</button>`;
+
                     $("#recordTableBody").append(`
-                        <tr data-index=${record.recordId}>
-                            <td style="display: none;">${record.recordId}</td>
-                            <td>${record.nameString}</td>
+                        <tr data-index=${record.recordId} class="text-center">
+                          <td style="display: none;">${record.recordId}</td>
+                            <td>${record.name}</td>
                             <td>${record.fileSize}</td>
-                            <td>${record.downloadButton}</td>
+                            <td>${button}</td>
                         </tr>
                     `);
                 });
-            } else {
-                // Handle case where no records are found
-                $("#recordTableBody").append(`
-                    <tr>
-                        <td colspan="4">Record not found!</td>
-                    </tr>
-                `);
-            }
-        } else {
-            // Display paginated records if no recordName is provided
-            const paginatedRecords = filteredRecords.slice(
-                startIndex,
-                endIndex
-            );
 
-            if (paginatedRecords.length > 0) {
-                paginatedRecords.forEach((record) => {
-                    $("#recordTableBody").append(`
-                        <tr data-index=${record.recordId}>
-                            <td style="display: none;">${record.recordId}</td>
-                            <td>${record.nameString}</td>
-                            <td>${record.fileSize}</td>
-                            <td>${record.downloadButton}</td>
-                        </tr>
-                    `);
-                });
+                const totalPages = data.last_page || 1;
+                $("#paginationInfo").text(`${data.current_page}/${totalPages}`);
+                $("#prevBtn").prop("disabled", !data.prev_page_url);
+                $("#nextBtn").prop("disabled", !data.next_page_url);
             } else {
-                // Handle case where no records are available
                 $("#recordTableBody").append(`
                     <tr>
-                        <td colspan="4">No records available!</td>
+                        <td colspan="3">No records found!</td>
                     </tr>
                 `);
             }
+        } catch (error) {
+            console.error("Unexpected error:", error);
+            $("#recordTableBody").append(`
+                <tr>
+                    <td colspan="3">Error loading records.</td>
+                </tr>
+            `);
         }
     }
 
-    // Display initial records
-    displayRecords();
-
+    // Event listener for search input
     $("#search").on("input", function () {
-        let recordName = $("#search").val();
+        const recordName = $(this).val();
+        currentPage = 1; // Reset to the first page on a new search
         displayRecords(recordName);
     });
 
@@ -348,21 +329,22 @@ function initializeMethodsRecord(dataType) {
     $("#prevBtn").click(function () {
         if (currentPage > 1) {
             currentPage--;
-            displayRecords();
+            const recordName = $("#search").val(); // Include search query
+            displayRecords(recordName);
         }
     });
 
     // Pagination: Next button click handler
     $("#nextBtn").click(function () {
-        var totalPages = Math.ceil(records.length / pageSize);
-        if (currentPage < totalPages) {
-            currentPage++;
-            displayRecords();
-        }
+        currentPage++;
+        const recordName = $("#search").val(); // Include search query
+        displayRecords(recordName);
     });
 
+    // Display initial records
+    displayRecords();
+
     function getSeason(month) {
-    
         month = month.toLowerCase();
 
         // Define the dry and wet seasons
@@ -785,7 +767,6 @@ function initializeMethodsRecord(dataType) {
                         }
                     }
 
-               
                     // Check if all search terms are found
                     const allTermsFound = normalizedSearchTerms.every((term) =>
                         foundTerms.has(term)
@@ -962,7 +943,7 @@ function initializeMethodsRecord(dataType) {
             $("#fileRecord").removeAttr("required");
             $("#lblUpload").text("Insert New File (optional):");
             $("#submitBtn").text("Update Record");
-        } 
+        }
         $("#recordTableBody tr").removeClass("selected-row");
         $("#editBtn").prop("disabled", true);
         $("#deleteBtn").prop("disabled", true);
@@ -1000,7 +981,7 @@ function initializeMethodsRecord(dataType) {
             resetFields();
         } else {
             // If Cancel is clicked, do nothing or add additional handling if needed
- 
+
             $("#editBtn").prop("disabled", true);
             $("#deleteBtn").prop("disabled", true);
         }

@@ -88,6 +88,7 @@ $(document).ready(function () {
 
             if (response.message !== "Invalid Token") {
                 user = response.user;
+                console.log(user.role);
                 load();
             } else {
                 window.location.href = "/management-login";

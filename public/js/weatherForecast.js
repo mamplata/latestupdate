@@ -1,43 +1,176 @@
-import Dialog from"../management/components/helpers/Dialog.js";$(document).ready(function(){let i;let o;let s=0;let r=null;const n=2*60*60*1e3;$(document).ready(function(){$("#infoBtn").click(function(){let e=`
-  <p>Welcome to the Weather Forecast page. This tool provides a 5-day weather forecast to help you plan and prepare for upcoming weather conditions. Follow these instructions to use the tool effectively:</p>
+import Dialog from "../management/components/helpers/Dialog.js";
+$(document).ready(function () {
+    let i;
+    let o;
+    let s = 0;
+    let r = null;
+    const n = 2 * 60 * 60 * 1e3;
+    $(document).ready(function () {
+        $("#infoBtn").click(function () {
+            let e = `
+<p>Welcome to the Weather Forecast page. (Maligayang pagdating sa pahina ng Weather Forecast.) This tool provides a 5-day weather forecast to help you plan and prepare for upcoming weather conditions. (Ang tool na ito ay nagbibigay ng 5-araw na pagtataya ng panahon upang matulungan kang magplano at maghanda para sa mga paparating na kondisyon ng panahon.) Follow these instructions to use the tool effectively: (Sundin ang mga tagubiling ito upang magamit ang tool nang epektibo:)</p>
 
-  <ol>
-    <li><strong>View the 5-Day Forecast:</strong><br>
-    The forecast displays weather information for the next five days. Each day includes detailed data on the following parameters:
-      <ul>
-        <li><strong>Temperature:</strong> The expected high and low temperatures for each day.</li>
-        <li><strong>Humidity:</strong> The forecasted humidity levels, indicating the amount of moisture in the air.</li>
-        <li><strong>Precipitation:</strong> The amount of expected precipitation, including rain, snow, or other forms of moisture.</li>
-        <li><strong>Rainfall Probability:</strong> The likelihood of rainfall, expressed as a percentage probability.</li>
-      </ul>
-    </li>
+<ol>
+  <li><strong>View the 5-Day Forecast:</strong><br>
+  (Tingnan ang 5-Araw na Taya ng Panahon:) The forecast displays weather information for the next five days. (Ipinapakita ng taya ang impormasyon ng panahon para sa susunod na limang araw.) Each day includes detailed data on the following parameters: (Ang bawat araw ay may kasamang detalyadong datos sa mga sumusunod na parameter:)
+    <ul>
+      <li><strong>Temperature:</strong> The expected high and low temperatures for each day. (<strong>Temperatura:</strong> Ang inaasahang pinakamataas at pinakamababang temperatura bawat araw.)</li>
+      <li><strong>Humidity:</strong> The forecasted humidity levels, indicating the amount of moisture in the air. (<strong>Halumigmig:</strong> Ang inaasahang antas ng halumigmig, na nagpapahiwatig ng dami ng kahalumigmigan sa hangin.)</li>
+      <li><strong>Precipitation:</strong> The amount of expected precipitation, including rain, snow, or other forms of moisture. (<strong>Pag-ulan:</strong> Ang inaasahang dami ng ulan, niyebe, o iba pang anyo ng kahalumigmigan.)</li>
+      <li><strong>Rainfall Probability:</strong> The likelihood of rainfall, expressed as a percentage probability. (<strong>Pagkakataon ng Ulan:</strong> Ang posibilidad ng ulan, na ipinapahayag bilang porsyentong posibilidad.)</li>
+    </ul>
+  </li>
 
-    <li><strong>Understand Weather Parameters:</strong><br>
-    Each weather parameter provides insights into the expected conditions:
-      <ul>
-        <li><strong>Temperature:</strong> Helps you prepare for hot or cold weather.</li>
-        <li><strong>Humidity:</strong> Useful for understanding comfort levels and potential impacts on health.</li>
-        <li><strong>Precipitation:</strong> Indicates potential for rain or snow, helping you plan outdoor activities.</li>
-        <li><strong>Rainfall Probability:</strong> Allows you to gauge the chance of rain and plan accordingly.</li>
-      </ul>
-    </li>
+  <li><strong>Understand Weather Parameters:</strong><br>
+  (Unawain ang Mga Parameter ng Panahon:) Each weather parameter provides insights into the expected conditions: (Ang bawat parameter ng panahon ay nagbibigay ng pananaw sa mga inaasahang kondisyon:)
+    <ul>
+      <li><strong>Temperature:</strong> Helps you prepare for hot or cold weather. (<strong>Temperatura:</strong> Tumutulong sa iyong maghanda para sa mainit o malamig na panahon.)</li>
+      <li><strong>Humidity:</strong> Useful for understanding comfort levels and potential impacts on health. (<strong>Halumigmig:</strong> Kapaki-pakinabang para sa pag-unawa sa antas ng kaginhawaan at potensyal na epekto sa kalusugan.)</li>
+      <li><strong>Precipitation:</strong> Indicates potential for rain or snow, helping you plan outdoor activities. (<strong>Pag-ulan:</strong> Nagpapahiwatig ng posibilidad ng ulan o niyebe, na tumutulong sa iyong magplano ng mga aktibidad sa labas.)</li>
+      <li><strong>Rainfall Probability:</strong> Allows you to gauge the chance of rain and plan accordingly. (<strong>Pagkakataon ng Ulan:</strong> Pinapayagan kang tantyahin ang tsansa ng ulan at magplano nang naaayon.)</li>
+    </ul>
+  </li>
+</ol>
 
-  <p>This tool provides comprehensive weather forecasting to help you make informed decisions based on expected weather conditions.</p>
-  `;Dialog.showInfoModal(e)})});async function c(){const e=`https://dataservice.accuweather.com/forecasts/v1/daily/5day/${o}?apikey=${i}&details=true&metric=true`;try{const a=await $.getJSON(e);await $.ajax({url:"api/weatherforecasts",method:"POST",contentType:"application/json",data:JSON.stringify({weather_data:a,timestamp:(new Date).getTime()})});r=a;s=(new Date).getTime();l(a)}catch(t){console.error("Error fetching or saving forecast data:",t)}}function D(e){const t=new Date;const a=t.getHours();const i=6;const o=18;let s;function r(){if(a>=i&&a<o){return'url("../img/weather/day.webp")'}else{return'url("../img/weather/night.webp")'}}const n=e?e.toLowerCase():"";switch(true){case n.includes("sunny"):s='url("../img/weather/day.webp")';break;case n.includes("cloudy"):s='url("../img/weather/cloudy.webp")';break;case n.includes("rain")||n.includes("drizzle")||n.includes("shower"):s='url("../img/weather/rain.webp")';break;case n.includes("storm")||n.includes("thunderstorm"):s='url("../img/weather/storm.webp")';break;default:s=r()}$(".bg").css({"background-image":s,"background-size":"cover","background-position":"center"})}function l(e){const t=new Date;const f=t.getHours();const a=e.DailyForecasts[0];const i=new Date(a.Date);const o=`https://developer.accuweather.com/sites/default/files/${("0"+a.Day.Icon).slice(-2)}-s.png`;const s=`https://developer.accuweather.com/sites/default/files/${("0"+a.Night.Icon).slice(-2)}-s.png`;const r=a.Day.IconPhrase;const n=a.Night.IconPhrase;const c=a.Temperature.Maximum.Value;const l=a.Temperature.Minimum.Value;const d=a.Day.RelativeHumidity.Maximum||0;const h=a.Night.RelativeHumidity.Maximum||0;const p=a.Day.PrecipitationIntensity||"None";const u=a.Night.PrecipitationIntensity||"None";const m=a.Day.PrecipitationProbability||0;const g=a.Night.PrecipitationProbability||0;const w=6;const b=18;let y;if(f>=w&&f<b){y=r;$("#today").html(`
+<p>This tool provides comprehensive weather forecasting to help you make informed decisions based on expected weather conditions. (Ang tool na ito ay nagbibigay ng komprehensibong pagtataya ng panahon upang matulungan kang gumawa ng mahusay na desisyon batay sa mga inaasahang kondisyon ng panahon.)</p>
+
+  `;
+            Dialog.showInfoModal(e);
+        });
+    });
+    async function c() {
+        const e = `https://dataservice.accuweather.com/forecasts/v1/daily/5day/${o}?apikey=${i}&details=true&metric=true`;
+        try {
+            const a = await $.getJSON(e);
+            await $.ajax({
+                url: "api/weatherforecasts",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    weather_data: a,
+                    timestamp: new Date().getTime(),
+                }),
+            });
+            r = a;
+            s = new Date().getTime();
+            l(a);
+        } catch (t) {
+            console.error("Error fetching or saving forecast data:", t);
+        }
+    }
+    function D(e) {
+        const t = new Date();
+        const a = t.getHours();
+        const i = 6;
+        const o = 18;
+        let s;
+        function r() {
+            if (a >= i && a < o) {
+                return 'url("../img/weather/day.webp")';
+            } else {
+                return 'url("../img/weather/night.webp")';
+            }
+        }
+        const n = e ? e.toLowerCase() : "";
+        switch (true) {
+            case n.includes("sunny"):
+                s = 'url("../img/weather/day.webp")';
+                break;
+            case n.includes("cloudy"):
+                s = 'url("../img/weather/cloudy.webp")';
+                break;
+            case n.includes("rain") ||
+                n.includes("drizzle") ||
+                n.includes("shower"):
+                s = 'url("../img/weather/rain.webp")';
+                break;
+            case n.includes("storm") || n.includes("thunderstorm"):
+                s = 'url("../img/weather/storm.webp")';
+                break;
+            default:
+                s = r();
+        }
+        $(".bg").css({
+            "background-image": s,
+            "background-size": "cover",
+            "background-position": "center",
+        });
+    }
+    function l(e) {
+        const t = new Date();
+        const f = t.getHours();
+        const a = e.DailyForecasts[0];
+        const i = new Date(a.Date);
+        const o = `https://developer.accuweather.com/sites/default/files/${(
+            "0" + a.Day.Icon
+        ).slice(-2)}-s.png`;
+        const s = `https://developer.accuweather.com/sites/default/files/${(
+            "0" + a.Night.Icon
+        ).slice(-2)}-s.png`;
+        const r = a.Day.IconPhrase;
+        const n = a.Night.IconPhrase;
+        const c = a.Temperature.Maximum.Value;
+        const l = a.Temperature.Minimum.Value;
+        const d = a.Day.RelativeHumidity.Maximum || 0;
+        const h = a.Night.RelativeHumidity.Maximum || 0;
+        const p = a.Day.PrecipitationIntensity || "None";
+        const u = a.Night.PrecipitationIntensity || "None";
+        const m = a.Day.PrecipitationProbability || 0;
+        const g = a.Night.PrecipitationProbability || 0;
+        const w = 6;
+        const b = 18;
+        let y;
+        if (f >= w && f < b) {
+            y = r;
+            $("#today").html(`
   <h4>${r}</h4>
   <img src="${o}" alt="${r}" class="weather-icon">
   <p>Temperature: ${c}°C</p>
   <p>Humidity: ${d}%</p>
   <p>Precipitation: ${p}</p>
   <p>Rainfall Probability: ${m}%</p>
-`)}else{y=n;$("#today").html(`
+`);
+        } else {
+            y = n;
+            $("#today").html(`
   <h4>${n}</h4>
   <img src="${s}" alt="${n}" class="weather-icon">
   <p>Temperature: ${l}°C</p>
   <p>Humidity: ${h}%</p>
   <p>Precipitation: ${u}</p>
   <p>Rainfall Probability: ${g}%</p>
-`)}D(y);const v=e.DailyForecasts.slice(1);const P=$("#forecast");P.empty();v.forEach(e=>{const t=new Date(e.Date);const a=t.toLocaleDateString("en-US",{month:"short",day:"2-digit"});const i=t.toLocaleDateString("en-US",{weekday:"long"});const o=e.Temperature.Maximum.Value;const s=e.Temperature.Minimum.Value;const r=e.Day.RelativeHumidity.Maximum||0;const n=e.Night.RelativeHumidity.Maximum||0;const c=e.Day.PrecipitationIntensity||"None";const l=e.Night.PrecipitationIntensity||"None";const d=e.Day.IconPhrase;const h=e.Night.IconPhrase;const p=`https://developer.accuweather.com/sites/default/files/${("0"+e.Day.Icon).slice(-2)}-s.png`;const u=`https://developer.accuweather.com/sites/default/files/${("0"+e.Night.Icon).slice(-2)}-s.png`;const m=e.Day.PrecipitationProbability||0;const g=e.Night.PrecipitationProbability||0;let y;if(f>=w&&f<b){y=$(`
+`);
+        }
+        D(y);
+        const v = e.DailyForecasts.slice(1);
+        const P = $("#forecast");
+        P.empty();
+        v.forEach((e) => {
+            const t = new Date(e.Date);
+            const a = t.toLocaleDateString("en-US", {
+                month: "short",
+                day: "2-digit",
+            });
+            const i = t.toLocaleDateString("en-US", { weekday: "long" });
+            const o = e.Temperature.Maximum.Value;
+            const s = e.Temperature.Minimum.Value;
+            const r = e.Day.RelativeHumidity.Maximum || 0;
+            const n = e.Night.RelativeHumidity.Maximum || 0;
+            const c = e.Day.PrecipitationIntensity || "None";
+            const l = e.Night.PrecipitationIntensity || "None";
+            const d = e.Day.IconPhrase;
+            const h = e.Night.IconPhrase;
+            const p = `https://developer.accuweather.com/sites/default/files/${(
+                "0" + e.Day.Icon
+            ).slice(-2)}-s.png`;
+            const u = `https://developer.accuweather.com/sites/default/files/${(
+                "0" + e.Night.Icon
+            ).slice(-2)}-s.png`;
+            const m = e.Day.PrecipitationProbability || 0;
+            const g = e.Night.PrecipitationProbability || 0;
+            let y;
+            if (f >= w && f < b) {
+                y = $(`
     <div class="col-md-3 mb-4 forecast-card">
       <div class="card h-100">
         <div class="card-body">
@@ -51,7 +184,9 @@ import Dialog from"../management/components/helpers/Dialog.js";$(document).ready
         </div>
       </div>
     </div>
-  `)}else{y=$(`
+  `);
+            } else {
+                y = $(`
     <div class="col-md-3 mb-4 forecast-card">
       <div class="card h-100">
         <div class="card-body">
@@ -65,4 +200,46 @@ import Dialog from"../management/components/helpers/Dialog.js";$(document).ready
         </div>
       </div>
     </div>
-  `)}P.append(y)})}async function e(){const e=(new Date).getTime();try{const a=await $.getJSON("api/weatherforecasts");const i=a.timestamp;const o=a.weather_data;if(i&&e-i<n){l(o);}else{await c()}}catch(t){console.error("Error fetching cached data from the server:",t);await c()}}async function t(){try{const t=await fetch("/api/weather-keys");if(!t.ok){throw new Error(`HTTP error! status: ${t.status}`)}const a=await t.json();i=a.weather_api_key;o=a.weather_location_key;}catch(e){console.error("Error fetching weather keys:",e)}}$(document).ready(async function(){await t();if(i&&o){await e()}else{console.error("Weather API Key or Location Key is missing.")}})});
+  `);
+            }
+            P.append(y);
+        });
+    }
+    async function e() {
+        const e = new Date().getTime();
+        try {
+            const a = await $.getJSON("api/weatherforecasts");
+            const i = a.timestamp;
+            const o = a.weather_data;
+            if (i && e - i < n) {
+                l(o);
+            } else {
+                await c();
+            }
+        } catch (t) {
+            console.error("Error fetching cached data from the server:", t);
+            await c();
+        }
+    }
+    async function t() {
+        try {
+            const t = await fetch("/api/weather-keys");
+            if (!t.ok) {
+                throw new Error(`HTTP error! status: ${t.status}`);
+            }
+            const a = await t.json();
+            i = a.weather_api_key;
+            o = a.weather_location_key;
+        } catch (e) {
+            console.error("Error fetching weather keys:", e);
+        }
+    }
+    $(document).ready(async function () {
+        await t();
+        if (i && o) {
+            await e();
+        } else {
+            console.error("Weather API Key or Location Key is missing.");
+        }
+    });
+});

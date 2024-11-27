@@ -7,13 +7,45 @@ use Illuminate\Http\Request;
 
 class SoilHealthController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Get all soilHealths, ordered by their ID in descending order
-        $soilHealths = SoilHealth::orderBy('soilHealthId', 'desc')->get();
+        // Get the search term, page size, and current page from the request
+        $searchTerm = $request->query('search'); // Search term for filtering soil health records
+        $pageSize = $request->query('pageSize'); // Page size, if not provided will default to all records
+        $page = $request->query('page', 1); // Current page, default to 1 if not provided
+
+        // Build the query to retrieve soil health records
+        $query = SoilHealth::query();
+
+        // Apply search filter if a search term is provided
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('barangay', 'like', "%$searchTerm%")
+                    ->orWhere('farmer', 'like', "%$searchTerm%")
+                    ->orWhere('fieldType', 'like', "%$searchTerm%")
+                    ->orWhere('nitrogenContent', 'like', "%$searchTerm%")
+                    ->orWhere('phosphorusContent', 'like', "%$searchTerm%")
+                    ->orWhere('potassiumContent', 'like', "%$searchTerm%")
+                    ->orWhere('pH', 'like', "%$searchTerm%")
+                    ->orWhere('generalRating', 'like', "%$searchTerm%")
+                    ->orWhere('recommendations', 'like', "%$searchTerm%")
+                    ->orWhere('season', 'like', "%$searchTerm%")
+                    ->orWhere('monthYear', 'like', "%$searchTerm%");
+            });
+        }
+
+        // If no pageSize is provided, return all records
+        if (!$pageSize) {
+            $soilHealths = $query->orderBy('soilHealthId', 'desc')->get(); // Get all records
+        } else {
+            // If pageSize is provided, apply pagination
+            $soilHealths = $query->orderBy('soilHealthId', 'desc')
+                ->paginate($pageSize, ['*'], 'page', $page);
+        }
 
         return response()->json($soilHealths, 200);
     }
+
 
     public function store(Request $request)
     {

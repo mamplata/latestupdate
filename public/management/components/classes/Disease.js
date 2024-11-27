@@ -1,15 +1,667 @@
-import Dialog from"../helpers/Dialog.js";import{addDownload,getYearRange}from"../../../js/fetch.js";let diseases=[];class Disease{constructor(e,t,s,a,o,n,r,c){this.recordId=e;this.barangay=t;this.cropName=s;this.diseaseName=a;this.totalPlanted=o;this.totalAffected=n;this.season=r;this.monthYear=c}async addDisease(e){function t(t,s){const a=[];for(let e=0;e<t.length;e+=s){a.push(t.slice(e,e+s))}return a}const s=20;const a=e.length;const o=t(e,s);let n=0;const r=(e,t)=>{$("#progressMessage").text(`Uploading ${e}-${t}/${a}`)};$("#loader").show();$("body").addClass("no-scroll");for(const[i,l]of o.entries()){const d=n+1;const f=d+l.length-1;r(d,f);try{await $.ajax({url:"/api/diseases-batch",method:"POST",data:{diseaseData:l,_token:$('meta[name="csrf-token"]').attr("content")}});n+=l.length}catch(c){console.error(`Error sending batch ${i+1}:`,c.responseText)}}$("#loader").hide();$("body").removeClass("no-scroll");toastr.success("Diseases uploaded successfully!","Success",{timeOut:5e3,positionClass:"toast-top-center",toastClass:"toast-success-custom"});getDiseases()}updateDisease(t){const e=diseases.find(e=>e.recordId===t.recordId);if(e&&e.recordId!==t.recordId){alert("Disease record ID already exists");return}diseases=diseases.map(e=>e.recordId===t.recordId?{...e,...t}:e);fetch(`/api/diseases/${t.recordId}`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(t)}).then(e=>e.json()).then(e=>{})["catch"](e=>{console.error("Error:",e)});getDiseases()}removeDisease(e){$.ajax({url:"/api/diseasesByRecords",method:"DELETE",data:{diseaseData:e,_token:$('meta[name="csrf-token"]').attr("content")},success:function(e){},error:function(e){console.error(e.responseText)}});getDiseases()}}function getDiseases(){$.ajaxSetup({headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content")}});$.ajax({url:"/api/diseases",method:"GET",success:function(e){diseases=e;},error:function(e,t,s){console.error("Error fetching diseases:",s)}})}function initializeMethodsDisease(){function r(e){const t=e.toLowerCase();const s=diseases.filter(e=>{return Object.values(e).some(e=>e.toString().toLowerCase().includes(t))});return s}var c=5;var i=1;async function t(e=null){await new Promise(e=>setTimeout(e,1e3));$("#diseaseTableBody").empty();var t=(i-1)*c;var s=t+c;const a=e?r(e):diseases;if(a.length>0){for(var o=t;o<s;o++){if(o>=a.length){break}var n=a[o];$("#diseaseTableBody").append(`
-            <tr data-index=${n.diseaseId}>
-              <td>${n.barangay}</td>
-              <td>${n.cropName}</td>
-              <td>${n.diseaseName}</td>
-              <td>${n.totalPlanted}</td>
-              <td>${n.totalAffected}</td>
-              <td>${n.season}</td>
-              <td>${n.monthYear}</td>
-            </tr>
-          `)}}else{$("#diseaseTableBody").append(`
-          <tr>
-            <td colspan="7">No results found!</td>
-          </tr>
-        `)}$("#diseaseTable").trigger("update")}$("#search").on("input",function(){let e=$("#search").val();t(e)});$("#prevBtn").click(function(){if(i>1){i--;t($("#search").val())}});$("#nextBtn").click(function(){var e=Math.ceil(r($("#search").val()).length/c);if(i<e){i++;t($("#search").val())}});$(document).ready(function(){$(".download-btn").click(function(){Dialog.downloadDialog().then(e=>{s(e,diseases)})["catch"](e=>{console.error("Error:",e)})})});let a="";async function e(){a=await getYearRange()}e();function s(e,t){const s=`Diseases Data ${a}`;if(e==="csv"){o(s,t)}else if(e==="xlsx"){n(s,t)}else if(e==="pdf"){l(s,t)}}function o(e,t){const s={barangay:"Barangay",cropName:"Crops Planted",diseaseName:"Disease Observed",totalPlanted:"Total no. of Trees/Plants Planted",totalAffected:"Total no. of Trees/Plants Affected/Damaged",season:"Season"};const a=["barangay","cropName","diseaseName","totalPlanted","totalAffected","season"];const o=a.map(e=>s[e]);function n(e){if(e===undefined||e===null)return"";if(typeof e==="string"&&(e.includes(",")||e.includes('"')||e.includes("\n"))){e=`"${e.replace(/"/g,'""')}"`}return e}const r=[o.join(","),...t.map(s=>a.map(e=>{const t=s[e]!==undefined?s[e]:"";return n(t)}).join(","))].join("\n");const c=new Blob([r],{type:"text/csv"});const i=URL.createObjectURL(c);const l=document.createElement("a");l.href=i;l.download=e;document.body.appendChild(l);l.click();document.body.removeChild(l);URL.revokeObjectURL(i);addDownload(e,"CSV")}function n(o,e){const a={barangay:"Barangay",cropName:"Crops Planted",diseaseName:"Disease Observed",totalPlanted:"Total no. of Trees/Plants Planted",totalAffected:"Total no. of Trees/Plants Affected/Damaged",season:"Season"};const n=["barangay","cropName","diseaseName","totalPlanted","totalAffected","season"];const t=n.map(e=>a[e]);const s=e.map(t=>{const s={};n.forEach(e=>{s[a[e]]=t[e]});return s});const r=new ExcelJS.Workbook;const c=r.addWorksheet(o);c.addRow(t);s.forEach(s=>{c.addRow(n.map(e=>{const t=s[a[e]];return t}))});const i={font:{name:"Calibri",size:12,bold:true,color:{argb:"FFFFFFFF"}},fill:{type:"pattern",pattern:"solid",fgColor:{argb:"203764"}},alignment:{horizontal:"center",vertical:"middle"},border:{top:{style:"thin",color:{argb:"FF000000"}},right:{style:"thin",color:{argb:"FF000000"}},bottom:{style:"thin",color:{argb:"FF000000"}},left:{style:"thin",color:{argb:"FF000000"}}}};const l={font:{name:"Calibri",size:11},alignment:{horizontal:"center",vertical:"middle",wrapText:true},border:{top:{style:"thin",color:{argb:"FF000000"}},right:{style:"thin",color:{argb:"FF000000"}},bottom:{style:"thin",color:{argb:"FF000000"}},left:{style:"thin",color:{argb:"FF000000"}}}};const d=c.getRow(1);d.eachCell({includeEmpty:true},e=>{e.style=i});d.height=20;c.eachRow({includeEmpty:true},(e,t)=>{if(t>1){e.eachCell({includeEmpty:true},e=>{e.style=l})}});c.columns=t.map(e=>({width:Math.max(e.length,10)+5}));r.xlsx.writeBuffer().then(function(e){const t=new Blob([e],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});const s=URL.createObjectURL(t);const a=document.createElement("a");a.href=s;a.download=o;a.click();URL.revokeObjectURL(s)});addDownload(o,"XLSX")}function l(e,t){const{jsPDF:s}=window.jspdf;const a=new s("landscape");const o=[...new Set(t.flatMap(Object.keys))];const n=o.filter(e=>!e.toLowerCase().includes("id"));const r=n.slice(0,n.length-2);const c=r.map(d);const i=e=>{if(typeof e==="number"){return e.toFixed(2)}return e};a.autoTable({head:[c],body:t.map(s=>r.map(e=>{let t=s[e];return i(t)})),theme:"striped"});a.save(e);addDownload(e,"PDF")}function d(e){return e.replace(/([a-z])([A-Z])/g,"$1 $2").replace(/_/g," ").split(" ").map(e=>e.charAt(0).toUpperCase()+e.slice(1)).join(" ")}getDiseases();t()}async function processDiseaseData(e,a,t,s,o){var n=e.SheetNames[0];var r=e.Sheets[n];var c=getKeyBySubstring(a,"Disease Observed");var i=XLSX.utils.decode_range(r["!ref"]);let l=[];for(var d=i.s.r+5;d<=i.e.r;d++){var f=c.charAt(0)+(d+1);var u=r[f]?r[f].v:"";if(u===""||u==="None"){continue}var h=XLSX.utils.decode_cell(c+"1").c;var g=XLSX.utils.encode_col(h+1)+(d+1);var p=XLSX.utils.encode_col(h+2)+(d+1);var m={};Object.keys(a).forEach(function(e){var t=a[e].charAt(0)+(d+1);var s=r[t]?r[t].v:"";m[e]=s});m["TotalPlanted"]=r[g]?r[g].v:0;m["TotalAffected"]=r[p]?r[p].v:0;var y=new Disease(t,getKeyBySubstring(m,"Farm Location"),getKeyBySubstring(m,"Crops Planted"),getKeyBySubstring(m,"Disease Observed"),m["TotalPlanted"],m["TotalAffected"],s,o);l.push(y)}if(l.length!==0){var b=diseases.find(e=>e.recordId===l[0].recordId);if(b){await l[0].removeDisease(l)}l[0].addDisease(l)}return diseases}function getKeyBySubstring(t,e){const s=e.trim().toLowerCase();for(let e in t){if(e.trim().toLowerCase().includes(s)){return t[e]}}return null}export{Disease,getDiseases,diseases,initializeMethodsDisease,processDiseaseData};
+import Dialog from "../helpers/Dialog.js";
+import { addDownload, getYearRange } from "../../../js/fetch.js";
+let diseases = [];
+
+class Disease {
+    constructor(
+        recordId,
+        barangay,
+        cropName,
+        diseaseName,
+        totalPlanted,
+        totalAffected,
+        season,
+        monthYear
+    ) {
+        this.recordId = recordId;
+        this.barangay = barangay;
+        this.cropName = cropName;
+        this.diseaseName = diseaseName;
+        this.totalPlanted = totalPlanted;
+        this.totalAffected = totalAffected;
+        this.season = season;
+        this.monthYear = monthYear;
+    }
+
+    async addDisease(diseases) {
+        function chunkArray(array, size) {
+            const result = [];
+            for (let i = 0; i < array.length; i += size) {
+                result.push(array.slice(i, i + size));
+            }
+            return result;
+        }
+
+        const batchSize = 20; // Size of each batch
+        const totalRows = diseases.length;
+        const diseaseBatches = chunkArray(diseases, batchSize);
+
+        let processedRows = 0; // Keep track of the number of processed rows
+
+        // Function to update progress message
+        const updateProgressMessage = (start, end) => {
+            $("#progressMessage").text(
+                `Uploading ${start}-${end}/${totalRows}`
+            );
+        };
+
+        // Show the loader and disable user interaction
+        $("#loader").show();
+        $("body").addClass("no-scroll"); // Optional: Add a class to disable scrolling
+
+        for (const [index, batch] of diseaseBatches.entries()) {
+            const start = processedRows + 1;
+            const end = start + batch.length - 1;
+            updateProgressMessage(start, end);
+
+            try {
+                await $.ajax({
+                    url: "/api/diseases-batch",
+                    method: "POST",
+                    data: {
+                        diseaseData: batch,
+                        _token: $('meta[name="csrf-token"]').attr("content"),
+                    },
+                });
+
+                processedRows += batch.length;
+            } catch (xhr) {
+                console.error(
+                    `Error sending batch ${index + 1}:`,
+                    xhr.responseText
+                );
+                // Optionally handle the error or retry
+            }
+        }
+
+        // Hide the loader and re-enable user interaction
+        $("#loader").hide();
+        $("body").removeClass("no-scroll"); // Remove the class to re-enable scrolling
+        toastr.success("Diseases uploaded successfully!", "Success", {
+            timeOut: 5000, // 5 seconds
+            positionClass: "toast-top-center",
+            toastClass: "toast-success-custom",
+        });
+
+        getDiseases();
+    }
+
+    updateDisease(updatedDisease) {
+        const existingDisease = diseases.find(
+            (u) => u.recordId === updatedDisease.recordId
+        );
+
+        if (
+            existingDisease &&
+            existingDisease.recordId !== updatedDisease.recordId
+        ) {
+            alert("Disease record ID already exists");
+            return;
+        }
+
+        diseases = diseases.map((disease) =>
+            disease.recordId === updatedDisease.recordId
+                ? { ...disease, ...updatedDisease }
+                : disease
+        );
+
+        fetch(`/api/diseases/${updatedDisease.recordId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedDisease),
+        })
+            .then((response) => response.json())
+            .then((data) => {})
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+        getDiseases();
+    }
+
+    removeDisease(diseases) {
+        $.ajax({
+            url: "/api/diseasesByRecords",
+            method: "DELETE",
+            data: {
+                diseaseData: diseases, // Custom key for data
+                _token: $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (response) {},
+            error: function (xhr) {
+                console.error(xhr.responseText);
+            },
+        });
+        getDiseases();
+    }
+}
+
+function getDiseases() {
+    // Fetch diseases from Laravel backend
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+
+    $.ajax({
+        url: "/api/diseases",
+        method: "GET",
+        success: function (response) {
+            diseases = response;
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching diseases:", error);
+        },
+    });
+}
+
+function initializeMethodsDisease() {
+    $(document).ready(function () {
+        let pageSize = 5; // Define page size
+        let currentPage = 1; // Define current page
+
+        // Function to display diseases
+        async function displayDisease(searchTerm = null) {
+            // Simulate a delay of 1 second (optional, can be removed if not needed)
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+
+            // Clear the table body
+            $("#diseaseTableBody").empty();
+
+            // Construct query parameters for pagination and search
+            let query = `?page=${currentPage}&pageSize=${pageSize}`;
+            if (searchTerm) {
+                query += `&search=${encodeURIComponent(searchTerm)}`;
+            }
+
+            // Fetch disease data from the server
+            try {
+                const response = await fetch(`/api/diseases${query}`);
+                const data = await response.json();
+
+                // Check if there are results
+                if (data.data && data.data.length > 0) {
+                    data.data.forEach(function (disease) {
+                        // Append each row to the table body
+                        $("#diseaseTableBody").append(`
+                          <tr data-index=${disease.diseaseId}>
+                              <td>${disease.barangay}</td>
+                              <td>${disease.cropName}</td>
+                              <td>${disease.diseaseName}</td>
+                              <td>${disease.totalPlanted}</td>
+                              <td>${disease.totalAffected}</td>
+                              <td>${disease.season}</td>
+                              <td>${disease.monthYear}</td>
+                          </tr>
+                      `);
+                    });
+                } else {
+                    // If no results found, display a message
+                    $("#diseaseTableBody").append(`
+                      <tr>
+                          <td colspan="7">No results found!</td>
+                      </tr>
+                  `);
+                }
+
+                // Update pagination info
+                const totalPages = data.last_page || 1; // Total pages from API response
+                $("#paginationInfo").text(`${data.current_page}/${totalPages}`);
+
+                // Enable/disable pagination buttons based on the current page
+                $("#firstBtn").prop("disabled", data.current_page === 1);
+                $("#prevBtn").prop("disabled", data.prev_page_url === null);
+                $("#nextBtn").prop("disabled", data.next_page_url === null);
+                $("#lastBtn").prop(
+                    "disabled",
+                    data.current_page === totalPages
+                );
+
+                // Reinitialize tablesorter after adding rows
+                $("#diseaseTable").trigger("update");
+            } catch (error) {
+                console.error("Error fetching disease data:", error);
+                $("#diseaseTableBody").append(`
+                  <tr>
+                      <td colspan="7">Error loading disease data.</td>
+                  </tr>
+              `);
+            }
+        }
+
+        // Initialize tablesorter
+        $("#diseaseTable").tablesorter();
+
+        // Search input handler
+        $("#search").on("input", function () {
+            let searchTerm = $("#search").val();
+            displayDisease(searchTerm);
+        });
+
+        // Pagination buttons click handlers
+        $("#firstBtn").click(function () {
+            currentPage = 1;
+            const searchTerm = $("#search").val();
+            displayDisease(searchTerm);
+        });
+
+        $("#prevBtn").click(function () {
+            if (currentPage > 1) {
+                currentPage--;
+                const searchTerm = $("#search").val();
+                displayDisease(searchTerm);
+            }
+        });
+
+        $("#nextBtn").click(function () {
+            currentPage++;
+            const searchTerm = $("#search").val();
+            displayDisease(searchTerm);
+        });
+
+        $("#lastBtn").click(function () {
+            const totalPages = $("#paginationInfo").text().split("/")[1]; // Get total pages
+            currentPage = parseInt(totalPages);
+            const searchTerm = $("#search").val();
+            displayDisease(searchTerm);
+        });
+
+        // Initial load
+        displayDisease();
+    });
+
+    $(document).ready(function () {
+        $(".download-btn").click(function () {
+            // Call the downloadDialog method and handle the promise
+            Dialog.downloadDialog()
+                .then((format) => {
+                    download(format, diseases);
+                })
+                .catch((error) => {
+                    console.error("Error:", error); // Handle any errors that occur
+                });
+        });
+    });
+
+    let yearRange = "";
+
+    // Fetch year range once and store it
+    async function initializeYearRange() {
+        yearRange = await getYearRange("Disease");
+    }
+
+    // Call this function when your app or page loads
+    initializeYearRange();
+
+    // Modified download function that uses the stored yearRange
+    function download(format, data) {
+        // Construct the filename using the stored yearRange
+        const filename = `Diseases Data ${yearRange}`;
+
+        // Call the appropriate download function based on the format
+        if (format === "csv") {
+            downloadCSV(filename, data);
+        } else if (format === "xlsx") {
+            downloadExcel(filename, data);
+        } else if (format === "pdf") {
+            downloadPDF(filename, data);
+        }
+    }
+
+    function downloadCSV(filename, data) {
+        // Define the header mapping for pest data
+        const headerMap = {
+            barangay: "Barangay",
+            cropName: "Crops Planted",
+            diseaseName: "Disease Observed",
+            totalPlanted: "Total no. of Trees/Plants Planted",
+            totalAffected: "Total no. of Trees/Plants Affected/Damaged",
+            season: "Season",
+        };
+
+        // Define the order of headers
+        const headersToInclude = [
+            "barangay",
+            "cropName",
+            "diseaseName",
+            "totalPlanted",
+            "totalAffected",
+            "season",
+        ];
+
+        // Map headers to the desired names
+        const headers = headersToInclude.map((key) => headerMap[key]);
+
+        // Helper function to escape CSV values
+        function escapeCSVValue(value) {
+            if (value === undefined || value === null) return "";
+            if (
+                typeof value === "string" &&
+                (value.includes(",") ||
+                    value.includes('"') ||
+                    value.includes("\n"))
+            ) {
+                value = `"${value.replace(/"/g, '""')}"`;
+            }
+            return value;
+        }
+
+        // Filter data to match the new headers
+        const csvRows = [
+            headers.join(","),
+            ...data.map((row) =>
+                headersToInclude
+                    .map((key) => {
+                        const value = row[key] !== undefined ? row[key] : ""; // Ensure non-null values
+                        return escapeCSVValue(value);
+                    })
+                    .join(",")
+            ),
+        ].join("\n");
+
+        // Create a Blob and trigger download
+        const blob = new Blob([csvRows], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        // Optional: Log download action
+        addDownload(filename, "CSV");
+    }
+
+    function downloadExcel(filename, data) {
+        // Define the header mapping for pest data
+        const headerMap = {
+            barangay: "Barangay",
+            cropName: "Crops Planted",
+            diseaseName: "Disease Observed",
+            totalPlanted: "Total no. of Trees/Plants Planted",
+            totalAffected: "Total no. of Trees/Plants Affected/Damaged",
+            season: "Season",
+        };
+
+        // Define the order of headers
+        const headersToInclude = [
+            "barangay",
+            "cropName",
+            "diseaseName",
+            "totalPlanted",
+            "totalAffected",
+            "season",
+        ];
+
+        // Map headers to the desired names
+        const mappedHeaders = headersToInclude.map((key) => headerMap[key]);
+
+        // Filter data to match the new headers
+        const filteredData = data.map((row) => {
+            const filteredRow = {};
+            headersToInclude.forEach((key) => {
+                filteredRow[headerMap[key]] = row[key];
+            });
+            return filteredRow;
+        });
+
+        // Create a new workbook and add a worksheet
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet(filename);
+
+        // Add filtered data to the worksheet
+        worksheet.addRow(mappedHeaders);
+        filteredData.forEach((row) => {
+            worksheet.addRow(
+                headersToInclude.map((header) => {
+                    const value = row[headerMap[header]];
+
+                    return value;
+                })
+            );
+        });
+
+        // Define header and data style
+        const headerStyle = {
+            font: {
+                name: "Calibri",
+                size: 12,
+                bold: true,
+                color: { argb: "FFFFFFFF" }, // White color
+            },
+            fill: {
+                type: "pattern",
+                pattern: "solid",
+                fgColor: { argb: "203764" },
+            },
+            alignment: { horizontal: "center", vertical: "middle" },
+            border: {
+                top: { style: "thin", color: { argb: "FF000000" } }, // Black border
+                right: { style: "thin", color: { argb: "FF000000" } },
+                bottom: { style: "thin", color: { argb: "FF000000" } },
+                left: { style: "thin", color: { argb: "FF000000" } },
+            },
+        };
+
+        const dataStyle = {
+            font: {
+                name: "Calibri",
+                size: 11,
+            },
+            alignment: {
+                horizontal: "center",
+                vertical: "middle",
+                wrapText: true,
+            },
+            border: {
+                top: { style: "thin", color: { argb: "FF000000" } }, // Black border
+                right: { style: "thin", color: { argb: "FF000000" } },
+                bottom: { style: "thin", color: { argb: "FF000000" } },
+                left: { style: "thin", color: { argb: "FF000000" } },
+            },
+        };
+
+        // Apply style to header row
+        const headerRow = worksheet.getRow(1);
+        headerRow.eachCell({ includeEmpty: true }, (cell) => {
+            cell.style = headerStyle;
+        });
+        headerRow.height = 20; // Set header row height
+
+        // Apply style to data rows
+        worksheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
+            if (rowNumber > 1) {
+                // Skip header row
+                row.eachCell({ includeEmpty: true }, (cell) => {
+                    cell.style = dataStyle;
+                });
+            }
+        });
+
+        // Set column widths with padding to prevent overflow
+        worksheet.columns = mappedHeaders.map((header) => ({
+            width: Math.max(header.length, 10) + 5, // Ensure minimum width
+        }));
+
+        // Write workbook to browser
+        workbook.xlsx.writeBuffer().then(function (buffer) {
+            const blob = new Blob([buffer], {
+                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+        addDownload(filename, "XLSX");
+    }
+
+    function downloadPDF(filename, data) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF("landscape"); // Specify landscape orientation
+
+        // Extract all unique keys from the data
+        const allKeys = [...new Set(data.flatMap(Object.keys))];
+
+        // Filter out keys containing "id" and the last two keys
+        const filteredKeys = allKeys.filter(
+            (key) => !key.toLowerCase().includes("id")
+        );
+        const columns = filteredKeys.slice(0, filteredKeys.length - 2);
+
+        // Format headers
+        const headers = columns.map(formatHeader);
+
+        // Function to format numerical values
+        const formatValue = (value) => {
+            if (typeof value === "number") {
+                return value.toFixed(2); // Format numbers to 2 decimal places
+            }
+            return value;
+        };
+
+        // Create the table using all columns and formatted values
+        doc.autoTable({
+            head: [headers],
+            body: data.map((row) =>
+                columns.map((key) => {
+                    let value = row[key];
+                    return formatValue(value);
+                })
+            ),
+            theme: "striped",
+        });
+
+        // Save the PDF
+        doc.save(filename);
+        addDownload(filename, "PDF");
+    }
+
+    function formatHeader(header) {
+        return header
+            .replace(/([a-z])([A-Z])/g, "$1 $2") // Insert space before each capital letter
+            .replace(/_/g, " ") // Replace underscores with spaces if any
+            .split(" ")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ");
+    }
+
+    getDiseases();
+}
+
+async function processDiseaseData(
+    workbook,
+    cellMappings,
+    id,
+    season,
+    monthYear
+) {
+    // Select the sheet you want to read from
+    var sheetName = workbook.SheetNames[0]; // Assuming the first sheet
+    var worksheet = workbook.Sheets[sheetName];
+
+    // Find the column index for 'Disease Observed' in cellMappings
+    var diseaseColumn = getKeyBySubstring(cellMappings, "Disease Observed");
+
+    // Decode the range of the worksheet
+    var range = XLSX.utils.decode_range(worksheet["!ref"]);
+    let diseaseDatas = [];
+
+    // Loop through rows starting from the first row after the header
+    for (var rowNum = range.s.r + 5; rowNum <= range.e.r; rowNum++) {
+        // Check if the corresponding row in column 'Disease Observed' has a non-empty value
+        var cellAddressDisease = diseaseColumn.charAt(0) + (rowNum + 1); // Dynamically construct column 'Disease Observed' cell address
+        var cellValueDisease = worksheet[cellAddressDisease]
+            ? worksheet[cellAddressDisease].v
+            : "";
+
+        // Skip rows where 'Disease Observed' is empty
+        if (cellValueDisease === "" || cellValueDisease === "None") {
+            continue; // Skip this row if it doesn't meet the filter criteria
+        }
+
+        // Find the index of the column to the right of 'Disease Observed'
+        var diseaseColumnIndex = XLSX.utils.decode_cell(diseaseColumn + "1").c;
+        var totalPlantedColumn =
+            XLSX.utils.encode_col(diseaseColumnIndex + 1) + (rowNum + 1); // Column to the right
+        var totalAffectedColumn =
+            XLSX.utils.encode_col(diseaseColumnIndex + 2) + (rowNum + 1); // Column to the next right
+
+        // Read values based on the defined cell mappings
+        var diseaseData = {};
+        Object.keys(cellMappings).forEach(function (key) {
+            var cellAddress = cellMappings[key].charAt(0) + (rowNum + 1); // Dynamically construct cell address based on key
+            var cellValue = worksheet[cellAddress]
+                ? worksheet[cellAddress].v
+                : "";
+            diseaseData[key] = cellValue; // Store value for the current key in diseaseData
+        });
+
+        // Add the values of 'Total no. of Trees/Plants Planted' and 'Total no. of Trees/Plants Affected/Damaged'
+        diseaseData["TotalPlanted"] = worksheet[totalPlantedColumn]
+            ? worksheet[totalPlantedColumn].v
+            : 0;
+        diseaseData["TotalAffected"] = worksheet[totalAffectedColumn]
+            ? worksheet[totalAffectedColumn].v
+            : 0;
+
+        // Create a new Disease instance
+        var disease = new Disease(
+            id,
+            getKeyBySubstring(diseaseData, "Farm Location"),
+            getKeyBySubstring(diseaseData, "Crops Planted"),
+            getKeyBySubstring(diseaseData, "Disease Observed"),
+            diseaseData["TotalPlanted"],
+            diseaseData["TotalAffected"],
+            season,
+            monthYear
+        );
+
+        // Add the new disease instance to diseaseDatas array
+        diseaseDatas.push(disease);
+    }
+
+    if (diseaseDatas.length !== 0) {
+        // Check if the record ID already exists in the diseaseDatas array
+        var existingDisease = diseases.find(
+            (d) => d.recordId === diseaseDatas[0].recordId
+        );
+
+        if (existingDisease) {
+            // Remove existing disease before adding the new one
+            await diseaseDatas[0].removeDisease(diseaseDatas);
+        }
+
+        diseaseDatas[0].addDisease(diseaseDatas);
+    }
+    return diseases;
+}
+
+// Function to find a key in object containing a substring (case-insensitive and trims extra spaces)
+function getKeyBySubstring(obj, substr) {
+    // Convert substring to lowercase and trim any extra spaces
+    const lowerSubstr = substr.trim().toLowerCase();
+
+    for (let key in obj) {
+        // Convert key to lowercase and trim any extra spaces
+        if (key.trim().toLowerCase().includes(lowerSubstr)) {
+            return obj[key];
+        }
+    }
+
+    return null;
+}
+
+export {
+    Disease,
+    getDiseases,
+    diseases,
+    initializeMethodsDisease,
+    processDiseaseData,
+};

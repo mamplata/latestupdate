@@ -18,6 +18,7 @@ use App\Http\Controllers\DamageReportController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\RiceProductionController;
+use Illuminate\Support\Facades\Auth;
 
 // Public routes (no authentication required)
 Route::post('/login', [UserController::class, 'login']);
@@ -38,6 +39,8 @@ Route::get('/damages', [DamageReportController::class, 'index']);
 Route::get('/soilhealths', [SoilHealthController::class, 'index']);
 Route::get('/concerns', [ConcernController::class, 'index']);
 Route::get('/weatherforecasts', [WeatherForecastController::class, 'index']);
+Route::get('/data-year', [RecordController::class, 'getYearRange']);
+
 Route::middleware('auth:sanctum')->get('/records/{type}', [RecordController::class, 'indexByType']);
 
 Route::get('/weather-keys', function () {
@@ -171,12 +174,12 @@ Route::post('/downloads/add', [DownloadController::class, 'addDownload']);
 // Check user route
 Route::get('check-user', function (Request $request) {
     $user = $request->attributes->get('user');
+
     return response()->json([
         'message' => 'Token is valid',
         'user' => $user
     ]);
-})->middleware('check.user');
-
+})->middleware('check.user.session');
 
 // Crops Selection Api
 Route::get('/unique-crop-names', [CropController::class, 'getUniqueCropNames']);

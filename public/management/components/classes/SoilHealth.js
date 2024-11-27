@@ -1,19 +1,704 @@
-import Dialog from"../helpers/Dialog.js";import{addDownload,getYearRange}from"../../../js/fetch.js";let soilHealths=[];class SoilHealth{constructor(t,e,o,n,a,r,s,l,i,c,d,h){this.recordId=t;this.barangay=e;this.farmer=o;this.fieldType=n;this.nitrogenContent=a;this.phosphorusContent=r;this.potassiumContent=s;this.pH=l;this.generalRating=i;this.recommendations=c;this.season=d;this.monthYear=h}async addSoilHealth(t){function e(e,o){const n=[];for(let t=0;t<e.length;t+=o){n.push(e.slice(t,t+o))}return n}const o=20;const n=t.length;const a=e(t,o);let r=0;const s=(t,e)=>{$("#progressMessage").text(`Uploading ${t}-${e}/${n}`)};$("#loader").show();$("body").addClass("no-scroll");for(const[i,c]of a.entries()){const d=r+1;const h=d+c.length-1;s(d,h);try{await $.ajax({url:"/api/soilhealths-batch",method:"POST",data:{soilHealthData:c,_token:$('meta[name="csrf-token"]').attr("content")}});r+=c.length}catch(l){console.error(`Error sending batch ${i+1}:`,l.responseText)}}$("#loader").hide();$("body").removeClass("no-scroll");toastr.success("File uploaded successfully!","Success",{timeOut:5e3,positionClass:"toast-top-center",toastClass:"toast-success-custom"});getSoilHealth()}updateSoilHealth(e){const t=soilHealthData.find(t=>t.recordId===e.recordId);if(t&&t.recordId!==e.recordId){alert("Soil Health record ID already exists");return}soilHealths=soilHealths.map(t=>t.recordId===e.recordId?{...t,...e}:t);fetch(`/api/soilhealths/${e.recordId}`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(e)}).then(t=>t.json()).then(t=>{})["catch"](t=>{console.error("Error:",t)});getSoilHealth()}removeSoilHealth(t){$.ajax({url:"/api/soilhealthsByRecords",method:"DELETE",data:{soilHealthData:t,_token:$('meta[name="csrf-token"]').attr("content")},success:function(t){},error:function(t){console.error(t.responseText)}});getSoilHealth()}}function getSoilHealth(){$.ajaxSetup({headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content")}});$.ajax({url:"/api/soilhealths",method:"GET",success:function(t){soilHealths=t;},error:function(t,e,o){console.error("Error fetching soil health data:",o)}})}function initializeMethodsSoilHealth(){function s(t){const e=t.toLowerCase();const o=soilHealths.filter(t=>{return Object.values(t).some(t=>t.toString().toLowerCase().includes(e))});return o}var l=5;var i=1;async function e(t=null){await new Promise(t=>setTimeout(t,1e3));$("#soilHealthTableBody").empty();var e=(i-1)*l;var o=e+l;const n=t?s(t):soilHealths;if(n.length>0){for(var a=e;a<o;a++){if(a>=n.length){break}var r=n[a];$("#soilHealthTableBody").append(`
-            <tr data-index=${r.recordId}>
-              <td>${r.barangay}</td>
-              <td>${r.farmer}</td>
-              <td>${r.fieldType}</td>
-              <td>${r.nitrogenContent}</td>
-              <td>${r.phosphorusContent}</td>
-              <td>${r.potassiumContent}</td>
-              <td>${r.pH}</td>
-              <td>${r.generalRating}</td>
-              <td>${r.recommendations}</td>
-              <td>${r.season}</td>
-              <td>${r.monthYear}</td>
-            </tr>
-          `)}}else{$("#soilHealthTableBody").append(`
-          <tr>
-            <td colspan="10">No results found!</td>
-          </tr>
-        `)}$("#soilHealthTable").trigger("update")}$("#search").on("input",function(){let t=$("#search").val();e(t)});$("#prevBtn").click(function(){if(i>1){i--;e($("#search").val())}});$("#nextBtn").click(function(){var t=Math.ceil(s($("#search").val()).length/l);if(i<t){i++;e($("#search").val())}});$(document).ready(function(){$(".download-btn").click(function(){Dialog.downloadDialog().then(t=>{o(t,soilHealths)})["catch"](t=>{console.error("Error:",t)})})});let n="";async function t(){n=await getYearRange()}t();function o(t,e){const o=`Soil Health Data ${n}`;if(t==="csv"){a(o,e)}else if(t==="xlsx"){r(o,e)}else if(t==="pdf"){c(o,e)}}function a(t,e){const o={barangay:"Barangay",fieldType:"Field Type",nitrogenContent:"Nitrogen",phosphorusContent:"Phosphorus",potassiumContent:"Potassium",pH:"pH",generalRating:"General Rating",recommendations:"Recommendations",season:"Season",monthYear:"Month Year"};const n=["barangay","fieldType","nitrogenContent","phosphorusContent","potassiumContent","pH","generalRating","recommendations","season","monthYear"];const a=n.map(t=>o[t]);let r="data:text/csv;charset=utf-8,"+a.join(",")+"\n"+e.map(e=>n.map(t=>e[t]||"").join(",")).join("\n");const s=encodeURI(r);const l=document.createElement("a");l.setAttribute("href",s);l.setAttribute("download",t);document.body.appendChild(l);l.click();document.body.removeChild(l);addDownload(t,"CSV")}function r(a,t){const n={barangay:"Barangay",fieldType:"Field Type",nitrogenContent:"Nitrogen",phosphorusContent:"Phosphorus",potassiumContent:"Potassium",pH:"pH",generalRating:"General Rating",recommendations:"Recommendations",season:"Season",monthYear:"Month Year"};const r=["barangay","fieldType","nitrogenContent","phosphorusContent","potassiumContent","pH","generalRating","recommendations","season","monthYear"];const e=r.map(t=>n[t]);const o=t.map(e=>{const o={};r.forEach(t=>{o[n[t]]=e[t]});return o});const s=new ExcelJS.Workbook;const l=s.addWorksheet(a);l.addRow(e);o.forEach(o=>{l.addRow(r.map(t=>{const e=o[n[t]];return e}))});const i={font:{name:"Calibri",size:12,bold:true,color:{argb:"FFFFFFFF"}},fill:{type:"pattern",pattern:"solid",fgColor:{argb:"203764"}},alignment:{horizontal:"center",vertical:"middle"},border:{top:{style:"thin",color:{argb:"FF000000"}},right:{style:"thin",color:{argb:"FF000000"}},bottom:{style:"thin",color:{argb:"FF000000"}},left:{style:"thin",color:{argb:"FF000000"}}}};const c={font:{name:"Calibri",size:11},alignment:{horizontal:"center",vertical:"middle",wrapText:true},border:{top:{style:"thin",color:{argb:"FF000000"}},right:{style:"thin",color:{argb:"FF000000"}},bottom:{style:"thin",color:{argb:"FF000000"}},left:{style:"thin",color:{argb:"FF000000"}}}};const d=l.getRow(1);d.eachCell({includeEmpty:true},t=>{t.style=i});d.height=20;l.eachRow({includeEmpty:true},(t,e)=>{if(e>1){t.eachCell({includeEmpty:true},t=>{t.style=c})}});l.columns=e.map(t=>({width:Math.max(t.length,10)+5}));s.xlsx.writeBuffer().then(function(t){const e=new Blob([t],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});const o=URL.createObjectURL(e);const n=document.createElement("a");n.href=o;n.download=a;n.click();URL.revokeObjectURL(o)});addDownload(a,"XLSX")}function c(t,e){const{jsPDF:o}=window.jspdf;const n=new o("landscape");const a=[...new Set(e.flatMap(Object.keys))];const r=a.filter(t=>!t.toLowerCase().includes("id"));const s=r.slice(0,r.length-2);const l=s.map(d);const i=t=>{if(typeof t==="number"){return t.toFixed(2)}return t};n.autoTable({head:[l],body:e.map(o=>s.map(t=>{let e=o[t];return i(e)})),theme:"striped"});n.save(t);addDownload(t,"PDF")}function d(t){return t.replace(/([a-z])([A-Z])/g,"$1 $2").replace(/_/g," ").split(" ").map(t=>t.charAt(0).toUpperCase()+t.slice(1)).join(" ")}getSoilHealth();e()}async function processSoilHealthData(t,n,e,o,a){var r=t.SheetNames[0];var s=t.Sheets[r];var l=getKeyBySubstring(n,"Barangay");var i=getKeyBySubstring(n,"Field Type");var c=getKeyBySubstring(n,"Nitrogen");var d=getKeyBySubstring(n,"Phosphorus");var h=getKeyBySubstring(n,"Potassium");var u=getKeyBySubstring(n,"pH");var g=getKeyBySubstring(n,"General Fertility");var p=getKeyBySubstring(n,"Recommendations");var m=XLSX.utils.decode_range(s["!ref"]);let y=[];const f=new Set(["L","ML","MH","H"]);for(var b=m.s.r+1;b<=m.e.r;b++){var v=c.charAt(0)+(b+1);var S=s[v]?s[v].v:"";var H=d.charAt(0)+(b+1);var $=s[H]?s[H].v:"";var C=h.charAt(0)+(b+1);var F=s[C]?s[C].v:"";var w=u.charAt(0)+(b+1);var B=s[w]?s[w].v:"";if(![S,$,F,B].every(t=>f.has(t))){continue}var R={};Object.keys(n).forEach(function(t){var e=n[t].charAt(0)+(b+1);var o=s[e]?s[e].v:"";R[t]=o});var T=new SoilHealth(e,getKeyBySubstring(R,"Barangay"),getKeyBySubstring(R,"Farmer"),getKeyBySubstring(R,"Field Type"),getKeyBySubstring(R,"Nitrogen"),getKeyBySubstring(R,"Phosphorus"),getKeyBySubstring(R,"Potassium"),getKeyBySubstring(R,"pH"),getKeyBySubstring(R,"General Fertility"),getKeyBySubstring(R,"Recommendations"),o,a);y.push(T)}var x=soilHealths.find(t=>t.recordId===y[0].recordId);if(x){await y[0].removeSoilHealth(y)}y[0].addSoilHealth(y);return soilHealths}function getKeyBySubstring(e,t){const o=t.trim().toLowerCase();for(let t in e){if(t.trim().toLowerCase().includes(o)){return e[t]}}return null}export{SoilHealth,getSoilHealth,soilHealths,initializeMethodsSoilHealth,processSoilHealthData};
+import Dialog from "../helpers/Dialog.js";
+import { addDownload, getYearRange } from "../../../js/fetch.js";
+let soilHealths = [];
+
+class SoilHealth {
+    constructor(
+        recordId,
+        barangay,
+        farmer,
+        fieldType,
+        nitrogenContent,
+        phosphorusContent,
+        potassiumContent,
+        pH,
+        generalRating,
+        recommendations,
+        season,
+        monthYear
+    ) {
+        this.recordId = recordId;
+        this.barangay = barangay;
+        this.farmer = farmer;
+        this.fieldType = fieldType;
+        this.nitrogenContent = nitrogenContent;
+        this.phosphorusContent = phosphorusContent;
+        this.potassiumContent = potassiumContent;
+        this.pH = pH;
+        this.generalRating = generalRating;
+        this.recommendations = recommendations;
+        this.season = season;
+        this.monthYear = monthYear;
+    }
+
+    async addSoilHealth(soilHealths) {
+        // Function to chunk the array into smaller batches
+        function chunkArray(array, size) {
+            const result = [];
+            for (let i = 0; i < array.length; i += size) {
+                result.push(array.slice(i, i + size));
+            }
+            return result;
+        }
+
+        const batchSize = 20; // Size of each batch
+        const totalRows = soilHealths.length;
+        const soilHealthBatches = chunkArray(soilHealths, batchSize);
+
+        let processedRows = 0; // Keep track of the number of processed rows
+
+        // Function to update progress message
+        const updateProgressMessage = (start, end) => {
+            $("#progressMessage").text(
+                `Uploading ${start}-${end}/${totalRows}`
+            );
+        };
+
+        // Show the loader and disable user interaction
+        $("#loader").show();
+        $("body").addClass("no-scroll"); // Optional: Add a class to disable scrolling
+
+        for (const [index, batch] of soilHealthBatches.entries()) {
+            const start = processedRows + 1;
+            const end = start + batch.length - 1;
+            updateProgressMessage(start, end);
+
+            try {
+                await $.ajax({
+                    url: "/api/soilhealths-batch",
+                    method: "POST",
+                    data: {
+                        soilHealthData: batch,
+                        _token: $('meta[name="csrf-token"]').attr("content"),
+                    },
+                });
+
+                processedRows += batch.length;
+            } catch (xhr) {
+                console.error(
+                    `Error sending batch ${index + 1}:`,
+                    xhr.responseText
+                );
+                // Optionally handle the error or retry
+            }
+        }
+
+        // Hide the loader and re-enable user interaction
+        $("#loader").hide();
+        $("body").removeClass("no-scroll"); // Remove the class to re-enable scrolling
+        toastr.success("File uploaded successfully!", "Success", {
+            timeOut: 5000, // 5 seconds
+            positionClass: "toast-top-center",
+            toastClass: "toast-success-custom",
+        });
+
+        getSoilHealth();
+    }
+
+    updateSoilHealth(updatedSoilHealth) {
+        const existingSoilHealth = soilHealthData.find(
+            (u) => u.recordId === updatedSoilHealth.recordId
+        );
+
+        if (
+            existingSoilHealth &&
+            existingSoilHealth.recordId !== updatedSoilHealth.recordId
+        ) {
+            alert("Soil Health record ID already exists");
+            return;
+        }
+
+        soilHealths = soilHealths.map((soilHealth) =>
+            soilHealth.recordId === updatedSoilHealth.recordId
+                ? { ...soilHealth, ...updatedSoilHealth }
+                : soilHealth
+        );
+
+        fetch(`/api/soilhealths/${updatedSoilHealth.recordId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedSoilHealth),
+        })
+            .then((response) => response.json())
+            .then((data) => {})
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+        getSoilHealth();
+    }
+
+    removeSoilHealth(soilHealths) {
+        $.ajax({
+            url: "/api/soilhealthsByRecords",
+            method: "DELETE",
+            data: {
+                soilHealthData: soilHealths, // Custom key for data
+                _token: $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (response) {},
+            error: function (xhr) {
+                console.error(xhr.responseText);
+            },
+        });
+        getSoilHealth();
+    }
+}
+
+function getSoilHealth() {
+    // Fetch soil health data from Laravel backend
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+
+    $.ajax({
+        url: "/api/soilhealths",
+        method: "GET",
+        success: function (response) {
+            soilHealths = response;
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching soil health data:", error);
+        },
+    });
+}
+
+function initializeMethodsSoilHealth() {
+    $(document).ready(function () {
+        var pageSize = 5; // Define page size
+        var currentPage = 1; // Define current page
+
+        // Function to display soil health records
+        async function displaySoilHealth(searchTerm = null) {
+            // Simulate a delay of 1 second (optional, can be removed if not needed)
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+
+            // Clear the table body
+            $("#soilHealthTableBody").empty();
+
+            // Construct query parameters for pagination and search
+            let query = `?page=${currentPage}&pageSize=${pageSize}`;
+            if (searchTerm) {
+                query += `&search=${encodeURIComponent(searchTerm)}`;
+            }
+
+            // Fetch soil health data from the server
+            try {
+                const response = await fetch(`/api/soilhealths${query}`);
+                const data = await response.json();
+
+                // Check if there are results
+                if (data.data && data.data.length > 0) {
+                    data.data.forEach(function (soilHealth) {
+                        // Append each row to the table body
+                        $("#soilHealthTableBody").append(`
+                          <tr data-index=${soilHealth.soilHealthId}>
+                              <td>${soilHealth.barangay}</td>
+                              <td>${soilHealth.farmer}</td>
+                              <td>${soilHealth.fieldType}</td>
+                              <td>${soilHealth.nitrogenContent}</td>
+                              <td>${soilHealth.phosphorusContent}</td>
+                              <td>${soilHealth.potassiumContent}</td>
+                              <td>${soilHealth.pH}</td>
+                              <td>${soilHealth.generalRating}</td>
+                              <td>${soilHealth.recommendations}</td>
+                              <td>${soilHealth.season}</td>
+                              <td>${soilHealth.monthYear}</td>
+                          </tr>
+                      `);
+                    });
+                } else {
+                    // If no results found, display a message
+                    $("#soilHealthTableBody").append(`
+                      <tr>
+                          <td colspan="11">No results found!</td>
+                      </tr>
+                  `);
+                }
+
+                // Update pagination info
+                const totalPages = data.last_page || 1; // Total pages from API response
+                $("#paginationInfo").text(`${data.current_page}/${totalPages}`);
+
+                // Enable/disable pagination buttons based on the current page
+                $("#firstBtn").prop("disabled", data.current_page === 1);
+                $("#prevBtn").prop("disabled", data.prev_page_url === null);
+                $("#nextBtn").prop("disabled", data.next_page_url === null);
+                $("#lastBtn").prop(
+                    "disabled",
+                    data.current_page === totalPages
+                );
+
+                // Reinitialize tablesorter after adding rows
+                $("#soilHealthTable").trigger("update");
+            } catch (error) {
+                console.error("Error fetching soil health data:", error);
+                $("#soilHealthTableBody").append(`
+                  <tr>
+                      <td colspan="11">Error loading soil health data.</td>
+                  </tr>
+              `);
+            }
+        }
+
+        // Initialize tablesorter
+        $("#soilHealthTable").tablesorter();
+
+        // Search input handler
+        $("#search").on("input", function () {
+            let searchTerm = $("#search").val();
+            displaySoilHealth(searchTerm);
+        });
+
+        // Pagination buttons click handlers
+        $("#firstBtn").click(function () {
+            currentPage = 1;
+            const searchTerm = $("#search").val();
+            displaySoilHealth(searchTerm);
+        });
+
+        $("#prevBtn").click(function () {
+            if (currentPage > 1) {
+                currentPage--;
+                const searchTerm = $("#search").val();
+                displaySoilHealth(searchTerm);
+            }
+        });
+
+        $("#nextBtn").click(function () {
+            currentPage++;
+            const searchTerm = $("#search").val();
+            displaySoilHealth(searchTerm);
+        });
+
+        $("#lastBtn").click(function () {
+            const totalPages = $("#paginationInfo").text().split("/")[1]; // Get total pages
+            currentPage = parseInt(totalPages);
+            const searchTerm = $("#search").val();
+            displaySoilHealth(searchTerm);
+        });
+
+        // Initial load
+        displaySoilHealth();
+    });
+
+    $(document).ready(function () {
+        $(".download-btn").click(function () {
+            // Call the downloadDialog method and handle the promise
+            Dialog.downloadDialog()
+                .then((format) => {
+                    download(format, soilHealths);
+                })
+                .catch((error) => {
+                    console.error("Error:", error); // Handle any errors that occur
+                });
+        });
+    });
+
+    let yearRange = "";
+
+    // Fetch year range once and store it
+    async function initializeYearRange() {
+        yearRange = await getYearRange("SoilHealth");
+    }
+
+    // Call this function when your app or page loads
+    initializeYearRange();
+
+    // Modified download function that uses the stored yearRange
+    function download(format, data) {
+        // Construct the filename using the stored yearRange
+        const filename = `Soil Health Data ${yearRange}`;
+
+        // Call the appropriate download function based on the format
+        if (format === "csv") {
+            downloadCSV(filename, data);
+        } else if (format === "xlsx") {
+            downloadExcel(filename, data);
+        } else if (format === "pdf") {
+            downloadPDF(filename, data);
+        }
+    }
+
+    function downloadCSV(filename, data) {
+        // Define the header mapping for soil health data
+        const headerMap = {
+            barangay: "Barangay",
+            fieldType: "Field Type",
+            nitrogenContent: "Nitrogen",
+            phosphorusContent: "Phosphorus",
+            potassiumContent: "Potassium",
+            pH: "pH",
+            generalRating: "General Rating",
+            recommendations: "Recommendations",
+            season: "Season",
+            monthYear: "Month Year",
+        };
+
+        // Define the order of headers
+        const headersToInclude = [
+            "barangay",
+            "fieldType",
+            "nitrogenContent",
+            "phosphorusContent",
+            "potassiumContent",
+            "pH",
+            "generalRating",
+            "recommendations",
+            "season",
+            "monthYear",
+        ];
+
+        // Map headers to the desired names
+        const mappedHeaders = headersToInclude.map((key) => headerMap[key]);
+
+        // Convert data to CSV format
+        let csvContent =
+            "data:text/csv;charset=utf-8," +
+            mappedHeaders.join(",") +
+            "\n" +
+            data
+                .map((row) =>
+                    headersToInclude.map((key) => row[key] || "").join(",")
+                )
+                .join("\n");
+
+        // Encode CSV content
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", filename);
+        document.body.appendChild(link); // Required for FF
+
+        link.click(); // Download CSV
+        document.body.removeChild(link);
+        addDownload(filename, "CSV");
+    }
+
+    function downloadExcel(filename, data) {
+        // Define the header mapping for soil health data
+        const headerMap = {
+            barangay: "Barangay",
+            fieldType: "Field Type",
+            nitrogenContent: "Nitrogen",
+            phosphorusContent: "Phosphorus",
+            potassiumContent: "Potassium",
+            pH: "pH",
+            generalRating: "General Rating",
+            recommendations: "Recommendations",
+            season: "Season",
+            monthYear: "Month Year",
+        };
+
+        // Define the order of headers
+        const headersToInclude = [
+            "barangay",
+            "fieldType",
+            "nitrogenContent",
+            "phosphorusContent",
+            "potassiumContent",
+            "pH",
+            "generalRating",
+            "recommendations",
+            "season",
+            "monthYear",
+        ];
+
+        // Map headers to the desired names
+        const mappedHeaders = headersToInclude.map((key) => headerMap[key]);
+
+        // Filter data to match the new headers
+        const filteredData = data.map((row) => {
+            const filteredRow = {};
+            headersToInclude.forEach((key) => {
+                filteredRow[headerMap[key]] = row[key];
+            });
+            return filteredRow;
+        });
+
+        // Create a new workbook and add a worksheet
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet(filename);
+
+        // Add filtered data to the worksheet
+        worksheet.addRow(mappedHeaders);
+        filteredData.forEach((row) => {
+            worksheet.addRow(
+                headersToInclude.map((header) => {
+                    const value = row[headerMap[header]];
+
+                    return value;
+                })
+            );
+        });
+
+        // Define header and data style
+        const headerStyle = {
+            font: {
+                name: "Calibri",
+                size: 12,
+                bold: true,
+                color: { argb: "FFFFFFFF" }, // White color
+            },
+            fill: {
+                type: "pattern",
+                pattern: "solid",
+                fgColor: { argb: "203764" },
+            },
+            alignment: { horizontal: "center", vertical: "middle" },
+            border: {
+                top: { style: "thin", color: { argb: "FF000000" } }, // Black border
+                right: { style: "thin", color: { argb: "FF000000" } },
+                bottom: { style: "thin", color: { argb: "FF000000" } },
+                left: { style: "thin", color: { argb: "FF000000" } },
+            },
+        };
+
+        const dataStyle = {
+            font: {
+                name: "Calibri",
+                size: 11,
+            },
+            alignment: {
+                horizontal: "center",
+                vertical: "middle",
+                wrapText: true,
+            },
+            border: {
+                top: { style: "thin", color: { argb: "FF000000" } }, // Black border
+                right: { style: "thin", color: { argb: "FF000000" } },
+                bottom: { style: "thin", color: { argb: "FF000000" } },
+                left: { style: "thin", color: { argb: "FF000000" } },
+            },
+        };
+
+        // Apply style to header row
+        const headerRow = worksheet.getRow(1);
+        headerRow.eachCell({ includeEmpty: true }, (cell) => {
+            cell.style = headerStyle;
+        });
+        headerRow.height = 20; // Set header row height
+
+        // Apply style to data rows
+        worksheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
+            if (rowNumber > 1) {
+                // Skip header row
+                row.eachCell({ includeEmpty: true }, (cell) => {
+                    cell.style = dataStyle;
+                });
+            }
+        });
+
+        // Set column widths with padding to prevent overflow
+        worksheet.columns = mappedHeaders.map((header) => ({
+            width: Math.max(header.length, 10) + 5, // Ensure minimum width
+        }));
+
+        // Write workbook to browser
+        workbook.xlsx.writeBuffer().then(function (buffer) {
+            const blob = new Blob([buffer], {
+                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+        addDownload(filename, "XLSX");
+    }
+
+    function downloadPDF(filename, data) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF("landscape"); // Specify landscape orientation
+
+        // Extract all unique keys from the data
+        const allKeys = [...new Set(data.flatMap(Object.keys))];
+
+        // Filter out keys containing "id" and the last two keys
+        const filteredKeys = allKeys.filter(
+            (key) => !key.toLowerCase().includes("id")
+        );
+        const columns = filteredKeys.slice(0, filteredKeys.length - 2);
+
+        // Format headers
+        const headers = columns.map(formatHeader);
+
+        // Function to format numerical values
+        const formatValue = (value) => {
+            if (typeof value === "number") {
+                return value.toFixed(2); // Format numbers to 2 decimal places
+            }
+            return value;
+        };
+
+        // Create the table using all columns and formatted values
+        doc.autoTable({
+            head: [headers],
+            body: data.map((row) =>
+                columns.map((key) => {
+                    let value = row[key];
+                    return formatValue(value);
+                })
+            ),
+            theme: "striped",
+        });
+
+        // Save the PDF
+        doc.save(filename);
+        addDownload(filename, "PDF");
+    }
+
+    function formatHeader(header) {
+        return header
+            .replace(/([a-z])([A-Z])/g, "$1 $2") // Insert space before each capital letter
+            .replace(/_/g, " ") // Replace underscores with spaces if any
+            .split(" ")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ");
+    }
+
+    getSoilHealth();
+}
+
+// Function to build and return table rows as an array of SoilHealth instances
+async function processSoilHealthData(
+    workbook,
+    cellMappings,
+    id,
+    season,
+    monthYear
+) {
+    // Select the sheet you want to read from
+    var sheetName = workbook.SheetNames[0]; // Assuming the first sheet
+    var worksheet = workbook.Sheets[sheetName];
+
+    // Find the column index for the relevant fields in cellMappings
+    var barangayColumn = getKeyBySubstring(cellMappings, "Barangay");
+    var typeColumn = getKeyBySubstring(cellMappings, "Field Type");
+    var nitrogenColumn = getKeyBySubstring(cellMappings, "Nitrogen");
+    var phosphorusColumn = getKeyBySubstring(cellMappings, "Phosphorus");
+    var potassiumColumn = getKeyBySubstring(cellMappings, "Potassium");
+    var phColumn = getKeyBySubstring(cellMappings, "pH");
+    var generalFertilityColumn = getKeyBySubstring(
+        cellMappings,
+        "General Fertility"
+    );
+    var recommendationsColumn = getKeyBySubstring(
+        cellMappings,
+        "Recommendations"
+    );
+
+    // Decode the range of the worksheet
+    var range = XLSX.utils.decode_range(worksheet["!ref"]);
+    let soilHealthDatas = [];
+
+    // Valid soil health values
+    const validValues = new Set(["L", "ML", "MH", "H"]);
+
+    // Loop through rows starting from the first row after the header
+    for (var rowNum = range.s.r + 1; rowNum <= range.e.r; rowNum++) {
+        // Check if the corresponding row in columns 'Nitrogen', 'Phosphorus', 'Potassium', and 'pH' are valid
+        var cellAddressNitrogen = nitrogenColumn.charAt(0) + (rowNum + 1); // Dynamically construct column 'Nitrogen' cell address
+        var cellValueNitrogen = worksheet[cellAddressNitrogen]
+            ? worksheet[cellAddressNitrogen].v
+            : "";
+
+        var cellAddressPhosphorus = phosphorusColumn.charAt(0) + (rowNum + 1); // Dynamically construct column 'Phosphorus' cell address
+        var cellValuePhosphorus = worksheet[cellAddressPhosphorus]
+            ? worksheet[cellAddressPhosphorus].v
+            : "";
+
+        var cellAddressPotassium = potassiumColumn.charAt(0) + (rowNum + 1); // Dynamically construct column 'Potassium' cell address
+        var cellValuePotassium = worksheet[cellAddressPotassium]
+            ? worksheet[cellAddressPotassium].v
+            : "";
+
+        var cellAddressPh = phColumn.charAt(0) + (rowNum + 1); // Dynamically construct column 'pH' cell address
+        var cellValuePh = worksheet[cellAddressPh]
+            ? worksheet[cellAddressPh].v
+            : "";
+
+        // Check if all soil health values are within the valid range
+        if (
+            ![
+                cellValueNitrogen,
+                cellValuePhosphorus,
+                cellValuePotassium,
+                cellValuePh,
+            ].every((value) => validValues.has(value))
+        ) {
+            continue; // Skip this row if it doesn't meet the filter criteria
+        }
+
+        // Read values based on the defined cell mappings
+        var soilHealthData = {};
+        Object.keys(cellMappings).forEach(function (key) {
+            var cellAddress = cellMappings[key].charAt(0) + (rowNum + 1); // Dynamically construct cell address based on key
+
+            var cellValue = worksheet[cellAddress]
+                ? worksheet[cellAddress].v
+                : "";
+            soilHealthData[key] = cellValue; // Store value for the current key in soilHealthData
+        });
+
+        // Create a new SoilHealth instance
+        var soilHealth = new SoilHealth(
+            id,
+            getKeyBySubstring(soilHealthData, "Barangay"),
+            getKeyBySubstring(soilHealthData, "Farmer"),
+            getKeyBySubstring(soilHealthData, "Field Type"),
+            getKeyBySubstring(soilHealthData, "Nitrogen"),
+            getKeyBySubstring(soilHealthData, "Phosphorus"),
+            getKeyBySubstring(soilHealthData, "Potassium"),
+            getKeyBySubstring(soilHealthData, "pH"),
+            getKeyBySubstring(soilHealthData, "General Fertility"),
+            getKeyBySubstring(soilHealthData, "Recommendations"),
+            season,
+            monthYear
+        );
+
+        // Add the new soil health instance to soilHealthDatas array using addSoilHealth method
+        soilHealthDatas.push(soilHealth);
+    }
+
+    // Check if the record ID already exists in the soilHealthDatas array
+    var existingSoilHealth = soilHealths.find(
+        (sh) => sh.recordId === soilHealthDatas[0].recordId
+    );
+
+    if (existingSoilHealth) {
+        // Remove existing soil health before adding the new one
+        await soilHealthDatas[0].removeSoilHealth(soilHealthDatas);
+    }
+
+    soilHealthDatas[0].addSoilHealth(soilHealthDatas);
+    return soilHealths;
+}
+
+// Function to find a key in object containing a substring (case-insensitive and trims extra spaces)
+function getKeyBySubstring(obj, substr) {
+    // Convert substring to lowercase and trim any extra spaces
+    const lowerSubstr = substr.trim().toLowerCase();
+
+    for (let key in obj) {
+        // Convert key to lowercase and trim any extra spaces
+        if (key.trim().toLowerCase().includes(lowerSubstr)) {
+            return obj[key];
+        }
+    }
+
+    return null;
+}
+
+export {
+    SoilHealth,
+    getSoilHealth,
+    soilHealths,
+    initializeMethodsSoilHealth,
+    processSoilHealthData,
+};

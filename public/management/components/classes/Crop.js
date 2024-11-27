@@ -34,7 +34,6 @@ class Crop {
             return;
         }
 
-       
         // Show the static uploading message
         $("#progressMessage").text("Uploading...");
         $("#loader").show(); // Show the loader
@@ -48,8 +47,6 @@ class Crop {
                 data: JSON.stringify(crop),
             });
 
-            getCrop();
-         
             toastr.success("Crop added successfully!", "Success", {
                 timeOut: 5000, // 5 seconds
                 positionClass: "toast-top-center",
@@ -71,6 +68,8 @@ class Crop {
     }
 
     updateCrop(updatedCrop) {
+        console.log(updatedCrop, crops); // Debugging the structure
+
         // Check for duplicates based on both cropName and variety, excluding the current crop
         const existingCrop = crops.find(
             (c) =>
@@ -98,7 +97,6 @@ class Crop {
         })
             .then((response) => response.json())
             .then((data) => {
-                getCrop();
                 toastr.success("Crop updated successfully!", "Success", {
                     timeOut: 5000, // 5 seconds
                     positionClass: "toast-top-center",
@@ -120,8 +118,6 @@ class Crop {
             .then((response) => {
                 if (response.status === 204) {
                     crops = crops.filter((crop) => crop.cropId !== cropId);
-                    getCrop();
-                   
                 } else if (response.status === 404) {
                     console.error(`Crop with ID ${cropId} not found.`);
                 } else {
@@ -151,7 +147,6 @@ function getCrop() {
             let crop = response;
 
             crops = crop;
-           
         },
         error: function (xhr, status, error) {
             console.error("Error fetching crops:", error);
@@ -176,17 +171,23 @@ function initializeMethodsCrop() {
     var crop = null;
 
     async function displayCrops(cropName = null) {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        try {
+            // Construct query parameters
+            let query = `?page=${currentPage}&pageSize=${pageSize}`;
+            if (cropName) {
+                query += `&cropName=${encodeURIComponent(cropName)}`;
+            }
 
-        $("#cropTableBody").empty();
+            // Fetch crops from the server
+            const response = await fetch(`/api/crops${query}`);
+            const data = await response.json();
 
-        var startIndex = (currentPage - 1) * pageSize;
-        var endIndex = startIndex + pageSize;
+            crops = data.data;
 
-        if (cropName) {
-            const foundCrops = searchCrop(cropName);
-            if (foundCrops.length > 0) {
-                foundCrops.forEach((crop) => {
+            $("#cropTableBody").empty();
+
+            if (data.data.length > 0) {
+                data.data.forEach((crop) => {
                     $("#cropTableBody").append(`
                         <tr data-index=${crop.cropId} class="text-center">
                             <td style="display: none;">${crop.cropId}</td>
@@ -204,38 +205,32 @@ function initializeMethodsCrop() {
             } else {
                 $("#cropTableBody").append(`
                     <tr>
-                        <td colspan="9">Crop not found!</td>
+                        <td colspan="9">No crops found!</td>
                     </tr>
                 `);
             }
-        } else {
-            for (var i = startIndex; i < endIndex; i++) {
-                if (i >= crops.length) {
-                    break;
-                }
-                var crop = crops[i];
-                $("#cropTableBody").append(`
-                    <tr data-index=${crop.cropId} class="text-center">
-                        <td style="display: none;">${crop.cropId}</td>
-                        <td><img src="${crop.cropImg}" alt="${crop.cropName}" class="img-thumbnail" width="50" height="50"></td>
-                        <td>${crop.cropName}</td>
-                        <td>${crop.cropType}</td>
-                        <td>${crop.scientificName}</td>
-                        <td class="crop-cell" title="${crop.plantingSeason}">${crop.plantingSeason}</td>
-                        <td class="crop-cell" title="${crop.growthDuration}">${crop.growthDuration}</td>
-                        <td>${crop.unit}</td>
-                        <td>${crop.weight}</td>
-                    </tr>
-                `);
-            }
+
+            // Update pagination info
+            const totalPages = data.last_page || 1; // Total pages from API response
+            $("#paginationInfo").text(`${data.current_page}/${totalPages}`);
+
+            // Enable/disable pagination buttons based on the current page
+            $("#prevBtn").prop("disabled", data.prev_page_url === null);
+            $("#nextBtn").prop("disabled", data.next_page_url === null);
+        } catch (error) {
+            console.error("Error fetching crops:", error);
+            $("#cropTableBody").append(`
+                <tr>
+                    <td colspan="9">Error loading crops.</td>
+                </tr>
+            `);
         }
     }
 
-    // Display initial crops
-    displayCrops();
-
+    // Event listener for search input
     $("#search").on("input", function () {
-        let cropName = $("#search").val();
+        let cropName = $(this).val();
+        currentPage = 1; // Reset to the first page when searching
         displayCrops(cropName);
     });
 
@@ -243,26 +238,28 @@ function initializeMethodsCrop() {
     $("#prevBtn").click(function () {
         if (currentPage > 1) {
             currentPage--;
-            displayCrops();
+            const cropName = $("#search").val();
+            displayCrops(cropName);
         }
     });
 
     // Pagination: Next button click handler
     $("#nextBtn").click(function () {
-        var totalPages = Math.ceil(crops.length / pageSize);
-        if (currentPage < totalPages) {
-            currentPage++;
-            displayCrops();
-        }
+        currentPage++;
+        const cropName = $("#search").val();
+        displayCrops(cropName);
     });
+
+    // Display initial crops
+    displayCrops();
 
     let prevCropImg = "";
 
     $("#submitBtn").click(function (event) {
         event.preventDefault();
 
-        const form = document.getElementById('cropForm');
-        
+        const form = document.getElementById("cropForm");
+
         // Check if form is valid
         if (!form.checkValidity()) {
             // If form is invalid, show the built-in validation messages
@@ -461,7 +458,7 @@ function initializeMethodsCrop() {
             resetFields();
         } else {
             // If Cancel is clicked, do nothing or add additional handling if needed
-        
+
             $("#cropTableBody tr").removeClass("selected-row");
             $("#editBtn").prop("disabled", true);
             $("#deleteBtn").prop("disabled", true);

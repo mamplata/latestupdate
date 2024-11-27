@@ -1,15 +1,655 @@
-import Dialog from"../helpers/Dialog.js";import{addDownload,getYearRange}from"../../../js/fetch.js";let pests=[];class Pest{constructor(e,t,o,s,n,a,r,c){this.recordId=e;this.barangay=t;this.cropName=o;this.pestName=s;this.totalPlanted=n;this.totalAffected=a;this.season=r;this.monthYear=c}async addPest(e){function t(t,o){const s=[];for(let e=0;e<t.length;e+=o){s.push(t.slice(e,e+o))}return s}const o=20;const s=e.length;const n=t(e,o);let a=0;const r=(e,t)=>{$("#progressMessage").text(`Uploading ${e}-${t}/${s}`)};$("#loader").show();$("body").addClass("no-scroll");for(const[l,d]of n.entries()){const i=a+1;const p=i+d.length-1;r(i,p);try{await $.ajax({url:"/api/pests-batch",method:"POST",data:{pestData:d,_token:$('meta[name="csrf-token"]').attr("content")}});a+=d.length}catch(c){console.error(`Error sending batch ${l+1}:`,c.responseText)}}$("#loader").hide();$("body").removeClass("no-scroll");toastr.success("Pests uploaded successfully!","Success",{timeOut:5e3,positionClass:"toast-top-center",toastClass:"toast-success-custom"});getPests()}updatePest(t){const e=pests.find(e=>e.recordId===t.recordId);if(e&&e.recordId!==t.recordId){alert("Pest record ID already exists");return}pests=pests.map(e=>e.recordId===t.recordId?{...e,...t}:e);fetch(`/api/pests/${t.recordId}`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(t)}).then(e=>e.json()).then(e=>{})["catch"](e=>{console.error("Error:",e)});getPests()}removePest(e){$.ajax({url:"/api/pestsByRecords",method:"DELETE",data:{pestData:e,_token:$('meta[name="csrf-token"]').attr("content")},success:function(e){},error:function(e){console.error(e.responseText)}});getPests()}}function getPests(){$.ajaxSetup({headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content")}});$.ajax({url:"/api/pests",method:"GET",success:function(e){pests=e;},error:function(e,t,o){console.error("Error fetching pests:",o)}})}function initializeMethodsPest(){function r(e){const t=e.toLowerCase();const o=pests.filter(e=>{return Object.values(e).some(e=>e.toString().toLowerCase().includes(t))});return o}var c=5;var l=1;async function t(e=null){await new Promise(e=>setTimeout(e,1e3));$("#pestTableBody").empty();var t=(l-1)*c;var o=t+c;const s=e?r(e):pests;if(s.length>0){for(var n=t;n<o;n++){if(n>=s.length){break}var a=s[n];$("#pestTableBody").append(`
-            <tr data-index=${a.pestId}>
-              <td>${a.barangay}</td>
-              <td>${a.cropName}</td>
-              <td>${a.pestName}</td>
-              <td>${a.totalPlanted}</td>
-              <td>${a.totalAffected}</td>
-              <td>${a.season}</td>
-              <td>${a.monthYear}</td>
-            </tr>
-          `)}}else{$("#pestTableBody").append(`
-          <tr>
-            <td colspan="7">No results found!</td>
-          </tr>
-        `)}$("#pestTable").trigger("update")}$("#search").on("input",function(){let e=$("#search").val();t(e)});$("#prevBtn").click(function(){if(l>1){l--;t($("#search").val())}});$("#nextBtn").click(function(){var e=Math.ceil(r($("#search").val()).length/c);if(l<e){l++;t($("#search").val())}});$(document).ready(function(){$(".download-btn").click(function(){Dialog.downloadDialog().then(e=>{o(e,pests)})["catch"](e=>{console.error("Error:",e)})})});let s="";async function e(){s=await getYearRange()}e();function o(e,t){const o=`Pests Data ${s}`;if(e==="csv"){n(o,t)}else if(e==="xlsx"){a(o,t)}else if(e==="pdf"){d(o,t)}}function n(e,t){const o={barangay:"Barangay",cropName:"Crops Planted",pestName:"Pest Observed",totalPlanted:"Total no. of Trees/Plants Planted",totalAffected:"Total no. of Trees/Plants Affected/Damaged",season:"Season"};const s=["barangay","cropName","pestName","totalPlanted","totalAffected","season"];const n=s.map(e=>o[e]);function a(e){if(e===undefined||e===null)return"";if(typeof e==="string"&&(e.includes(",")||e.includes('"')||e.includes("\n"))){e=`"${e.replace(/"/g,'""')}"`}return e}const r=[n.join(","),...t.map(o=>s.map(e=>{const t=o[e]!==undefined?o[e]:"";return a(t)}).join(","))].join("\n");const c=new Blob([r],{type:"text/csv"});const l=URL.createObjectURL(c);const d=document.createElement("a");d.href=l;d.download=e;document.body.appendChild(d);d.click();document.body.removeChild(d);URL.revokeObjectURL(l);addDownload(e,"CSV")}function a(n,e){const s={barangay:"Barangay",cropName:"Crops Planted",pestName:"Pest Observed",totalPlanted:"Total no. of Trees/Plants Planted",totalAffected:"Total no. of Trees/Plants Affected/Damaged",season:"Season"};const a=["barangay","cropName","totalPlanted","totalAffected","pestName","season"];const t=a.map(e=>s[e]);const o=e.map(t=>{const o={};a.forEach(e=>{o[s[e]]=t[e]});return o});const r=new ExcelJS.Workbook;const c=r.addWorksheet(n);c.addRow(t);o.forEach(o=>{c.addRow(a.map(e=>{const t=o[s[e]];return t}))});const l={font:{name:"Calibri",size:12,bold:true,color:{argb:"FFFFFFFF"}},fill:{type:"pattern",pattern:"solid",fgColor:{argb:"203764"}},alignment:{horizontal:"center",vertical:"middle"},border:{top:{style:"thin",color:{argb:"FF000000"}},right:{style:"thin",color:{argb:"FF000000"}},bottom:{style:"thin",color:{argb:"FF000000"}},left:{style:"thin",color:{argb:"FF000000"}}}};const d={font:{name:"Calibri",size:11},alignment:{horizontal:"center",vertical:"middle",wrapText:true},border:{top:{style:"thin",color:{argb:"FF000000"}},right:{style:"thin",color:{argb:"FF000000"}},bottom:{style:"thin",color:{argb:"FF000000"}},left:{style:"thin",color:{argb:"FF000000"}}}};const i=c.getRow(1);i.eachCell({includeEmpty:true},e=>{e.style=l});i.height=20;c.eachRow({includeEmpty:true},(e,t)=>{if(t>1){e.eachCell({includeEmpty:true},e=>{e.style=d})}});c.columns=t.map(e=>({width:Math.max(e.length,10)+5}));r.xlsx.writeBuffer().then(function(e){const t=new Blob([e],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});const o=URL.createObjectURL(t);const s=document.createElement("a");s.href=o;s.download=n;s.click();URL.revokeObjectURL(o)});addDownload(n,"XLSX")}function d(e,t){const{jsPDF:o}=window.jspdf;const s=new o("landscape");const n=[...new Set(t.flatMap(Object.keys))];const a=n.filter(e=>!e.toLowerCase().includes("id"));const r=a.slice(0,a.length-2);const c=r.map(i);const l=e=>{if(typeof e==="number"){return e.toFixed(2)}return e};s.autoTable({head:[c],body:t.map(o=>r.map(e=>{let t=o[e];return l(t)})),theme:"striped"});s.save(e);addDownload(e,"PDF")}function i(e){return e.replace(/([a-z])([A-Z])/g,"$1 $2").replace(/_/g," ").split(" ").map(e=>e.charAt(0).toUpperCase()+e.slice(1)).join(" ")}getPests();t()}async function processPestData(e,s,t,o,n){var a=e.SheetNames[0];var r=e.Sheets[a];var c=getKeyBySubstring(s,"Pest Observed");var l=XLSX.utils.decode_range(r["!ref"]);let d=[];for(var i=l.s.r+1;i<=l.e.r;i++){var p=c.charAt(0)+(i+1);var f=r[p]?r[p].v:"";if(f===""||f==="None"){continue}var u=XLSX.utils.decode_cell(c+"1").c;var h=XLSX.utils.encode_col(u+1)+(i+1);var g=XLSX.utils.encode_col(u+2)+(i+1);var m={};Object.keys(s).forEach(function(e){var t=s[e].charAt(0)+(i+1);var o=r[t]?r[t].v:"";m[e]=o});m["TotalPlanted"]=r[h]?r[h].v:0;m["TotalAffected"]=r[g]?r[g].v:0;var y=new Pest(t,getKeyBySubstring(m,"Farm Location"),getKeyBySubstring(m,"Crops Planted"),getKeyBySubstring(m,"Pest Observed"),m["TotalPlanted"]||0,m["TotalAffected"]||0,o,n);d.push(y)}if(d.length!==0){var b=pests.find(e=>e.recordId===d[0].recordId);if(b){await d[0].removePest(d)}d[0].addPest(d.slice(2))}return pests}function getKeyBySubstring(t,e){const o=e.trim().toLowerCase();for(let e in t){if(e.trim().toLowerCase().includes(o)){return t[e]}}return null}export{Pest,getPests,pests,initializeMethodsPest,processPestData};
+import Dialog from "../helpers/Dialog.js";
+import { addDownload, getYearRange } from "../../../js/fetch.js";
+let pests = [];
+
+class Pest {
+    constructor(
+        recordId,
+        barangay,
+        cropName,
+        pestName,
+        totalPlanted,
+        totalAffected,
+        season,
+        monthYear
+    ) {
+        this.recordId = recordId;
+        this.barangay = barangay;
+        this.cropName = cropName;
+        this.pestName = pestName;
+        this.totalPlanted = totalPlanted;
+        this.totalAffected = totalAffected;
+        this.season = season;
+        this.monthYear = monthYear;
+    }
+
+    async addPest(pests) {
+        function chunkArray(array, size) {
+            const result = [];
+            for (let i = 0; i < array.length; i += size) {
+                result.push(array.slice(i, i + size));
+            }
+            return result;
+        }
+
+        const batchSize = 20; // Size of each batch
+        const totalRows = pests.length;
+        const pestBatches = chunkArray(pests, batchSize);
+
+        let processedRows = 0; // Keep track of the number of processed rows
+
+        // Function to update progress message
+        const updateProgressMessage = (start, end) => {
+            $("#progressMessage").text(
+                `Uploading ${start}-${end}/${totalRows}`
+            );
+        };
+
+        // Show the loader and disable user interaction
+        $("#loader").show();
+        $("body").addClass("no-scroll"); // Optional: Add a class to disable scrolling
+
+        for (const [index, batch] of pestBatches.entries()) {
+            const start = processedRows + 1;
+            const end = start + batch.length - 1;
+            updateProgressMessage(start, end);
+
+            try {
+                await $.ajax({
+                    url: "/api/pests-batch",
+                    method: "POST",
+                    data: {
+                        pestData: batch,
+                        _token: $('meta[name="csrf-token"]').attr("content"),
+                    },
+                });
+
+                processedRows += batch.length;
+            } catch (xhr) {
+                console.error(
+                    `Error sending batch ${index + 1}:`,
+                    xhr.responseText
+                );
+                // Optionally handle the error or retry
+            }
+        }
+
+        // Hide the loader and re-enable user interaction
+        $("#loader").hide();
+        $("body").removeClass("no-scroll"); // Remove the class to re-enable scrolling
+        toastr.success("Pests uploaded successfully!", "Success", {
+            timeOut: 5000, // 5 seconds
+            positionClass: "toast-top-center",
+            toastClass: "toast-success-custom",
+        });
+
+        getPests();
+    }
+
+    updatePest(updatedPest) {
+        const existingPest = pests.find(
+            (u) => u.recordId === updatedPest.recordId
+        );
+
+        if (existingPest && existingPest.recordId !== updatedPest.recordId) {
+            alert("Pest record ID already exists");
+            return;
+        }
+
+        pests = pests.map((pest) =>
+            pest.recordId === updatedPest.recordId
+                ? { ...pest, ...updatedPest }
+                : pest
+        );
+
+        fetch(`/api/pests/${updatedPest.recordId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedPest),
+        })
+            .then((response) => response.json())
+            .then((data) => {})
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+        getPests();
+    }
+
+    removePest(pests) {
+        $.ajax({
+            url: "/api/pestsByRecords",
+            method: "DELETE",
+            data: {
+                pestData: pests, // Custom key for data
+                _token: $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (response) {},
+            error: function (xhr) {
+                console.error(xhr.responseText);
+            },
+        });
+        getPests();
+    }
+}
+
+function getPests() {
+    // Fetch pests from Laravel backend
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+
+    $.ajax({
+        url: "/api/pests",
+        method: "GET",
+        success: function (response) {
+            pests = response;
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching pests:", error);
+        },
+    });
+}
+
+function initializeMethodsPest() {
+    $(document).ready(function () {
+        let pageSize = 5; // Define page size
+        let currentPage = 1; // Define current page
+
+        // Function to display pests with pagination and search
+        async function displayPest(searchTerm = null) {
+            try {
+                // Construct query parameters for pagination and search
+                let query = `?page=${currentPage}&pageSize=${pageSize}`;
+                if (searchTerm) {
+                    query += `&search=${encodeURIComponent(searchTerm)}`;
+                }
+
+                // Fetch data from the server
+                const response = await fetch(`/api/pests${query}`);
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                const data = await response.json();
+
+                // Clear previous results
+                $("#pestTableBody").empty();
+
+                // Check if there are results
+                if (data.data && data.data.length > 0) {
+                    data.data.forEach(function (pest) {
+                        // Append each row to the table body
+                        $("#pestTableBody").append(`
+                          <tr data-index=${pest.pestId}>
+                              <td>${pest.barangay}</td>
+                              <td>${pest.cropName}</td>
+                              <td>${pest.pestName}</td>
+                              <td>${pest.totalPlanted}</td>
+                              <td>${pest.totalAffected}</td>
+                              <td>${pest.season}</td>
+                              <td>${pest.monthYear}</td>
+                          </tr>
+                      `);
+                    });
+                } else {
+                    // If no results found, display a message
+                    $("#pestTableBody").append(`
+                      <tr>
+                          <td colspan="7">No results found!</td>
+                      </tr>
+                  `);
+                }
+
+                // Update pagination info
+                const totalPages = data.last_page || 1; // Total pages from API response
+                $("#paginationInfo").text(`${data.current_page}/${totalPages}`);
+
+                // Enable/disable pagination buttons based on the current page
+                $("#firstBtn").prop("disabled", data.current_page === 1);
+                $("#prevBtn").prop("disabled", data.prev_page_url === null);
+                $("#nextBtn").prop("disabled", data.next_page_url === null);
+                $("#lastBtn").prop(
+                    "disabled",
+                    data.current_page === totalPages
+                );
+
+                // Reinitialize tablesorter after adding rows
+                $("#pestTable").trigger("update");
+            } catch (error) {
+                console.error("Error fetching pest data:", error);
+                $("#pestTableBody").append(`
+                  <tr>
+                      <td colspan="7">Error loading pest data.</td>
+                  </tr>
+              `);
+            }
+        }
+
+        // Initialize tablesorter
+        $("#pestTable").tablesorter();
+
+        // Search input handler
+        $("#search").on("input", function () {
+            const searchTerm = $("#search").val();
+            displayPest(searchTerm);
+        });
+
+        // Pagination: First button click handler
+        $("#firstBtn").click(function () {
+            currentPage = 1;
+            const searchTerm = $("#search").val();
+            displayPest(searchTerm);
+        });
+
+        // Pagination: Previous button click handler
+        $("#prevBtn").click(function () {
+            if (currentPage > 1) {
+                currentPage--;
+                const searchTerm = $("#search").val();
+                displayPest(searchTerm);
+            }
+        });
+
+        // Pagination: Next button click handler
+        $("#nextBtn").click(function () {
+            currentPage++;
+            const searchTerm = $("#search").val();
+            displayPest(searchTerm);
+        });
+
+        // Pagination: Last button click handler
+        $("#lastBtn").click(function () {
+            const totalPages = $("#paginationInfo").text().split("/")[1]; // Get total pages
+            currentPage = parseInt(totalPages);
+            const searchTerm = $("#search").val();
+            displayPest(searchTerm);
+        });
+
+        // Initial load
+        displayPest();
+    });
+
+    $(document).ready(function () {
+        $(".download-btn").click(function () {
+            // Call the downloadDialog method and handle the promise
+            Dialog.downloadDialog()
+                .then((format) => {
+                    download(format, pests);
+                })
+                .catch((error) => {
+                    console.error("Error:", error); // Handle any errors that occur
+                });
+        });
+    });
+
+    let yearRange = "";
+
+    // Fetch year range once and store it
+    async function initializeYearRange() {
+        yearRange = await getYearRange("Pest");
+    }
+
+    // Call this function when your app or page loads
+    initializeYearRange();
+
+    // Modified download function that uses the stored yearRange
+    function download(format, data) {
+        // Construct the filename using the stored yearRange
+        const filename = `Pests Data ${yearRange}`;
+
+        // Call the appropriate download function based on the format
+        if (format === "csv") {
+            downloadCSV(filename, data);
+        } else if (format === "xlsx") {
+            downloadExcel(filename, data);
+        } else if (format === "pdf") {
+            downloadPDF(filename, data);
+        }
+    }
+
+    function downloadCSV(filename, data) {
+        // Define the header mapping for pest data
+        const headerMap = {
+            barangay: "Barangay",
+            cropName: "Crops Planted",
+            pestName: "Pest Observed",
+            totalPlanted: "Total no. of Trees/Plants Planted",
+            totalAffected: "Total no. of Trees/Plants Affected/Damaged",
+            season: "Season",
+        };
+
+        // Define the order of headers
+        const headersToInclude = [
+            "barangay",
+            "cropName",
+            "pestName",
+            "totalPlanted",
+            "totalAffected",
+            "season",
+        ];
+
+        // Map headers to the desired names
+        const headers = headersToInclude.map((key) => headerMap[key]);
+
+        // Helper function to escape CSV values
+        function escapeCSVValue(value) {
+            if (value === undefined || value === null) return "";
+            if (
+                typeof value === "string" &&
+                (value.includes(",") ||
+                    value.includes('"') ||
+                    value.includes("\n"))
+            ) {
+                value = `"${value.replace(/"/g, '""')}"`;
+            }
+            return value;
+        }
+
+        // Filter data to match the new headers
+        const csvRows = [
+            headers.join(","),
+            ...data.map((row) =>
+                headersToInclude
+                    .map((key) => {
+                        const value = row[key] !== undefined ? row[key] : ""; // Ensure non-null values
+                        return escapeCSVValue(value);
+                    })
+                    .join(",")
+            ),
+        ].join("\n");
+
+        // Create a Blob and trigger download
+        const blob = new Blob([csvRows], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        // Optional: Log download action
+        addDownload(filename, "CSV");
+    }
+
+    function downloadExcel(filename, data) {
+        // Define the header mapping for pest data
+        const headerMap = {
+            barangay: "Barangay",
+            cropName: "Crops Planted",
+            pestName: "Pest Observed",
+            totalPlanted: "Total no. of Trees/Plants Planted",
+            totalAffected: "Total no. of Trees/Plants Affected/Damaged",
+            season: "Season",
+        };
+
+        // Define the order of headers
+        const headersToInclude = [
+            "barangay",
+            "cropName",
+            "totalPlanted",
+            "totalAffected",
+            "pestName",
+            "season",
+        ];
+
+        // Map headers to the desired names
+        const mappedHeaders = headersToInclude.map((key) => headerMap[key]);
+
+        // Filter data to match the new headers
+        const filteredData = data.map((row) => {
+            const filteredRow = {};
+            headersToInclude.forEach((key) => {
+                filteredRow[headerMap[key]] = row[key];
+            });
+            return filteredRow;
+        });
+
+        // Create a new workbook and add a worksheet
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet(filename);
+
+        // Add filtered data to the worksheet
+        worksheet.addRow(mappedHeaders);
+        filteredData.forEach((row) => {
+            worksheet.addRow(
+                headersToInclude.map((header) => {
+                    const value = row[headerMap[header]];
+
+                    return value;
+                })
+            );
+        });
+
+        // Define header and data style
+        const headerStyle = {
+            font: {
+                name: "Calibri",
+                size: 12,
+                bold: true,
+                color: { argb: "FFFFFFFF" }, // White color
+            },
+            fill: {
+                type: "pattern",
+                pattern: "solid",
+                fgColor: { argb: "203764" },
+            },
+            alignment: { horizontal: "center", vertical: "middle" },
+            border: {
+                top: { style: "thin", color: { argb: "FF000000" } }, // Black border
+                right: { style: "thin", color: { argb: "FF000000" } },
+                bottom: { style: "thin", color: { argb: "FF000000" } },
+                left: { style: "thin", color: { argb: "FF000000" } },
+            },
+        };
+
+        const dataStyle = {
+            font: {
+                name: "Calibri",
+                size: 11,
+            },
+            alignment: {
+                horizontal: "center",
+                vertical: "middle",
+                wrapText: true,
+            },
+            border: {
+                top: { style: "thin", color: { argb: "FF000000" } }, // Black border
+                right: { style: "thin", color: { argb: "FF000000" } },
+                bottom: { style: "thin", color: { argb: "FF000000" } },
+                left: { style: "thin", color: { argb: "FF000000" } },
+            },
+        };
+
+        // Apply style to header row
+        const headerRow = worksheet.getRow(1);
+        headerRow.eachCell({ includeEmpty: true }, (cell) => {
+            cell.style = headerStyle;
+        });
+        headerRow.height = 20; // Set header row height
+
+        // Apply style to data rows
+        worksheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
+            if (rowNumber > 1) {
+                // Skip header row
+                row.eachCell({ includeEmpty: true }, (cell) => {
+                    cell.style = dataStyle;
+                });
+            }
+        });
+
+        // Set column widths with padding to prevent overflow
+        worksheet.columns = mappedHeaders.map((header) => ({
+            width: Math.max(header.length, 10) + 5, // Ensure minimum width
+        }));
+
+        // Write workbook to browser
+        workbook.xlsx.writeBuffer().then(function (buffer) {
+            const blob = new Blob([buffer], {
+                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+        addDownload(filename, "XLSX");
+    }
+
+    function downloadPDF(filename, data) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF("landscape"); // Specify landscape orientation
+
+        // Extract all unique keys from the data
+        const allKeys = [...new Set(data.flatMap(Object.keys))];
+
+        // Filter out keys containing "id" and the last two keys
+        const filteredKeys = allKeys.filter(
+            (key) => !key.toLowerCase().includes("id")
+        );
+        const columns = filteredKeys.slice(0, filteredKeys.length - 2);
+
+        // Format headers
+        const headers = columns.map(formatHeader);
+
+        // Function to format numerical values
+        const formatValue = (value) => {
+            if (typeof value === "number") {
+                return value.toFixed(2); // Format numbers to 2 decimal places
+            }
+            return value;
+        };
+
+        // Create the table using all columns and formatted values
+        doc.autoTable({
+            head: [headers],
+            body: data.map((row) =>
+                columns.map((key) => {
+                    let value = row[key];
+                    return formatValue(value);
+                })
+            ),
+            theme: "striped",
+        });
+
+        // Save the PDF
+        doc.save(filename);
+        addDownload(filename, "PDF");
+    }
+
+    function formatHeader(header) {
+        return header
+            .replace(/([a-z])([A-Z])/g, "$1 $2") // Insert space before each capital letter
+            .replace(/_/g, " ") // Replace underscores with spaces if any
+            .split(" ")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ");
+    }
+
+    getPests();
+}
+
+async function processPestData(workbook, cellMappings, id, season, monthYear) {
+    // Select the sheet you want to read from
+    var sheetName = workbook.SheetNames[0]; // Assuming the first sheet
+    var worksheet = workbook.Sheets[sheetName];
+
+    // Find the column index for 'Pest Observed' in cellMappings
+    var pestColumn = getKeyBySubstring(cellMappings, "Pest Observed");
+
+    // Decode the range of the worksheet
+    var range = XLSX.utils.decode_range(worksheet["!ref"]);
+    let pestDatas = [];
+
+    // Loop through rows starting from the first row after the header
+    for (var rowNum = range.s.r + 1; rowNum <= range.e.r; rowNum++) {
+        // Check if the corresponding row in column 'Pest Observed' has a non-empty value
+        var cellAddressPest = pestColumn.charAt(0) + (rowNum + 1); // Dynamically construct column 'Pest Observed' cell address
+        var cellValuePest = worksheet[cellAddressPest]
+            ? worksheet[cellAddressPest].v
+            : "";
+
+        // Skip rows where 'Pest Observed' is empty
+        if (cellValuePest === "" || cellValuePest === "None") {
+            continue; // Skip this row if it doesn't meet the filter criteria
+        }
+
+        // Find the index of the column to the right of 'Pest Observed'
+        var pestColumnIndex = XLSX.utils.decode_cell(pestColumn + "1").c;
+        var totalPlantedColumn =
+            XLSX.utils.encode_col(pestColumnIndex + 1) + (rowNum + 1); // Column to the right
+        var totalAffectedColumn =
+            XLSX.utils.encode_col(pestColumnIndex + 2) + (rowNum + 1); // Column to the next right
+
+        // Read values based on the defined cell mappings
+        var pestData = {};
+        Object.keys(cellMappings).forEach(function (key) {
+            var cellAddress = cellMappings[key].charAt(0) + (rowNum + 1); // Dynamically construct cell address based on key
+            var cellValue = worksheet[cellAddress]
+                ? worksheet[cellAddress].v
+                : "";
+            pestData[key] = cellValue; // Store value for the current key in pestData
+        });
+
+        // Add the values of 'Total no. of Trees/Plants Planted' and 'Total no. of Trees/Plants Affected/Damaged'
+        pestData["TotalPlanted"] = worksheet[totalPlantedColumn]
+            ? worksheet[totalPlantedColumn].v
+            : 0;
+        pestData["TotalAffected"] = worksheet[totalAffectedColumn]
+            ? worksheet[totalAffectedColumn].v
+            : 0;
+
+        // Create a new Pest instance
+        var pest = new Pest(
+            id,
+            getKeyBySubstring(pestData, "Farm Location"),
+            getKeyBySubstring(pestData, "Crops Planted"),
+            getKeyBySubstring(pestData, "Pest Observed"),
+            pestData["TotalPlanted"] || 0,
+            pestData["TotalAffected"] || 0,
+            season,
+            monthYear
+        );
+
+        // Add the new pest instance to pestDatas array
+        pestDatas.push(pest);
+    }
+
+    if (pestDatas.length !== 0) {
+        // Check if the record ID already exists in the pestDatas array
+        var existingPest = pests.find(
+            (p) => p.recordId === pestDatas[0].recordId
+        );
+
+        if (existingPest) {
+            // Remove existing pest before adding the new one
+            await pestDatas[0].removePest(pestDatas);
+        }
+
+        pestDatas[0].addPest(pestDatas.slice(2));
+    }
+    return pests;
+}
+
+// Function to find a key in object containing a substring (case-insensitive and trims extra spaces)
+function getKeyBySubstring(obj, substr) {
+    // Convert substring to lowercase and trim any extra spaces
+    const lowerSubstr = substr.trim().toLowerCase();
+
+    for (let key in obj) {
+        // Convert key to lowercase and trim any extra spaces
+        if (key.trim().toLowerCase().includes(lowerSubstr)) {
+            return obj[key];
+        }
+    }
+
+    return null;
+}
+
+export { Pest, getPests, pests, initializeMethodsPest, processPestData };

@@ -28,9 +28,7 @@ class Barangay {
             body: JSON.stringify(barangay),
         })
             .then((response) => response.json())
-            .then((data) => {
-                
-            })
+            .then((data) => {})
             .catch((error) => {
                 console.error("Error:", error);
             });
@@ -63,9 +61,7 @@ class Barangay {
             body: JSON.stringify(updatedBarangay),
         })
             .then((response) => response.json())
-            .then((data) => {
-                
-            })
+            .then((data) => {})
             .catch((error) => {
                 console.error("Error:", error);
             });
@@ -83,7 +79,6 @@ class Barangay {
                     barangays = barangays.filter(
                         (barangay) => barangay.barangayId !== barangay
                     );
-                    
                 } else if (response.status === 404) {
                     console.error(`Barangay with ID ${barangayId} not found.`);
                 } else {
@@ -115,7 +110,6 @@ function getBarangay() {
             let barangay = response;
 
             barangays = barangay;
-          
         },
         error: function (xhr, status, error) {
             console.error("Error fetching barangays:", error);
@@ -127,7 +121,7 @@ getBarangay();
 
 async function fetchCoordinates(locationName) {
     locationName = `${locationName}, Cabuyao, Laguna, Philippines`;
- 
+
     const response = await fetch(
         `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
             locationName
@@ -144,10 +138,9 @@ async function getCoordinates(locationName) {
     const coordinates = await fetchCoordinates(locationName);
     if (coordinates) {
         const formattedCoordinates = `${coordinates[0]},${coordinates[1]}`;
-       
+
         return formattedCoordinates;
     } else {
-    
         return "Location not found.";
     }
 }
@@ -167,57 +160,62 @@ function initializeMethodsBarangay() {
     var isEdit = false;
 
     async function displayBarangays(barangayName = null) {
-        // Simulate a delay of 1 second
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        try {
+            // Construct query parameters
+            let query = `?page=${currentPage}&pageSize=${pageSize}`;
+            if (barangayName) {
+                query += `&barangayName=${encodeURIComponent(barangayName)}`;
+            }
 
-        $("#barangayTableBody").empty();
+            // Fetch barangays from the server
+            const response = await fetch(`/api/barangays${query}`);
+            const data = await response.json();
 
-        var startIndex = (currentPage - 1) * pageSize;
-        var endIndex = startIndex + pageSize;
-        if (barangayName) {
-            // Display a single barangay if barangayName is provided
-            const foundbarangays = searchBarangay(barangayName);
-            if (foundbarangays.length > 0) {
-                foundbarangays.forEach((barangay) => {
+            barangays = data.data;
+
+            $("#barangayTableBody").empty();
+
+            if (data.data && data.data.length > 0) {
+                // Populate the table with fetched data
+                data.data.forEach((barangay) => {
                     $("#barangayTableBody").append(`
-                <tr data-index=${barangay.barangayId}>
-                  <td style="display: none;">${barangay.barangayId}</td>
-                  <td>${barangay.barangayName}</td>
-                  <td>${barangay.coordinates}</td>
-                </tr>
-              `);
+                        <tr data-index=${barangay.barangayId}>
+                            <td style="display: none;">${barangay.barangayId}</td>
+                            <td>${barangay.barangayName}</td>
+                            <td>${barangay.coordinates}</td>
+                        </tr>
+                    `);
                 });
             } else {
-                // Handle case where barangayName is not provided
+                // Handle case where no barangays are found
                 $("#barangayTableBody").append(`
-              <tr>
-                <td colspan="4">barangay not found!</td>
-              </tr>
+                    <tr>
+                        <td colspan="3">Barangay not found!</td>
+                    </tr>
+                `);
+            }
+
+            // Update pagination info
+            const totalPages = data.last_page || 1; // Total pages from API response
+            $("#paginationInfo").text(`${data.current_page}/${totalPages}`);
+
+            // Enable/disable pagination buttons
+            $("#prevBtn").prop("disabled", data.prev_page_url === null);
+            $("#nextBtn").prop("disabled", data.next_page_url === null);
+        } catch (error) {
+            console.error("Error fetching barangays:", error);
+            $("#barangayTableBody").append(`
+                <tr>
+                    <td colspan="3">Error loading barangays.</td>
+                </tr>
             `);
-            }
-        } else {
-            // Display paginated barangays if no barangayName is provided
-            for (var i = startIndex; i < endIndex; i++) {
-                if (i >= barangays.length) {
-                    break;
-                }
-                var barangay = barangays[i];
-                $("#barangayTableBody").append(`
-            <tr data-index=${barangay.barangayId}>
-              <td style="display: none;">${barangay.barangayId}</td>
-              <td>${barangay.barangayName}</td>
-              <td>${barangay.coordinates}</td>
-            </tr>
-          `);
-            }
         }
     }
 
-    // Display initial barangays
-    displayBarangays();
-
+    // Event listener for search input
     $("#search").on("input", function () {
-        let barangayName = $("#search").val();
+        let barangayName = $(this).val();
+        currentPage = 1; // Reset to the first page when searching
         displayBarangays(barangayName);
     });
 
@@ -225,25 +223,27 @@ function initializeMethodsBarangay() {
     $("#prevBtn").click(function () {
         if (currentPage > 1) {
             currentPage--;
-            displayBarangays();
+            const barangayName = $("#search").val();
+            displayBarangays(barangayName);
         }
     });
 
     // Pagination: Next button click handler
     $("#nextBtn").click(function () {
-        var totalPages = Math.ceil(barangays.length / pageSize);
-        if (currentPage < totalPages) {
-            currentPage++;
-            displayBarangays();
-        }
+        currentPage++;
+        const barangayName = $("#search").val();
+        displayBarangays(barangayName);
     });
+
+    // Display initial barangays
+    displayBarangays();
 
     // Form submission handler (Add or Update barangay)
     $("#submitBtn").click(function (event) {
         event.preventDefault();
 
-        const form = document.getElementById('barangayForm');
-        
+        const form = document.getElementById("barangayForm");
+
         // Check if form is valid
         if (!form.checkValidity()) {
             // If form is invalid, show the built-in validation messages
@@ -259,10 +259,10 @@ function initializeMethodsBarangay() {
                 coordinates = result;
                 if (coordinates === "Location not found.") {
                     toastr.success("Unknown Location in Cabuyao", "Invalid", {
-                      timeOut: 5000, // 5 seconds
-                      positionClass: "toast-top-center",
-                      toastClass: "toast-warning",
-                  });
+                        timeOut: 5000, // 5 seconds
+                        positionClass: "toast-top-center",
+                        toastClass: "toast-warning",
+                    });
                     return;
                 }
                 let barangay = new Barangay(
@@ -285,10 +285,10 @@ function initializeMethodsBarangay() {
                 coordinates = result;
                 if (coordinates === "Location not found.") {
                     toastr.success("Unknown Location in Cabuyao", "Invalid", {
-                      timeOut: 5000, // 5 seconds
-                      positionClass: "toast-top-center",
-                      toastClass: "toast-warning",
-                  });
+                        timeOut: 5000, // 5 seconds
+                        positionClass: "toast-top-center",
+                        toastClass: "toast-warning",
+                    });
                     return;
                 }
                 let barangay = new Barangay(
@@ -376,7 +376,7 @@ function initializeMethodsBarangay() {
             resetFields();
         } else {
             // If Cancel is clicked, do nothing or add additional handling if needed
-          
+
             $("#editBtn").prop("disabled", true);
             $("#deleteBtn").prop("disabled", true);
         }

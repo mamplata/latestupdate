@@ -10,13 +10,32 @@ use Illuminate\Support\Facades\Hash;
 class BarangayController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        // Get all barangays, with admins first, ordered by their ID in descending order
-        $barangays = barangay::orderBy('barangayId', 'desc')->get();
+        $pageSize = $request->query('pageSize'); // Optional page size
+        $barangayName = $request->query('barangayName'); // Optional barangay name filter
 
+        // Build the query
+        $query = Barangay::query();
+
+        if ($barangayName) {
+            // Filter by barangay name if specified
+            $query->where('barangayName', 'like', "%$barangayName%");
+        }
+
+        // Determine whether to paginate or return all
+        if ($pageSize) {
+            // Paginate results if pageSize is specified
+            $barangays = $query->orderBy('barangayId', 'desc')->paginate($pageSize);
+        } else {
+            // Return all results if no pageSize is specified
+            $barangays = $query->orderBy('barangayId', 'desc')->get();
+        }
+
+        // Return barangays as JSON response
         return response()->json($barangays, 200);
     }
+
 
     public function store(Request $request)
     {

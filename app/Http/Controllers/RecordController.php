@@ -15,25 +15,199 @@ use Illuminate\Http\Request;
 
 class RecordController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Get all record, with admins first, ordered by their ID in descending order
-        $records = record::orderBy('recordId', 'desc')->get();
+        // Get the query parameters
+        $pageSize = $request->query('pageSize'); // Default page size is not provided
+        $recordName = $request->query('recordName'); // Optional record name filter
+        $userId = $request->query('userId'); // Optional user ID filter
+        $userRole = $request->query('userRole', 'admin'); // Default user role is 'admin'
 
+        // Build the query
+        $query = Record::query();
+
+        // If recordName is provided, filter by it
+        if ($recordName) {
+            $query->where('nameString', 'like', "%$recordName%");
+        }
+
+        // If userRole is not 'admin' and userId is provided, filter by userId
+        if ($userRole !== 'admin' && $userId) {
+            $query->where('userId', $userId);
+        }
+
+        // If pageSize is provided, paginate the results; otherwise, return all records
+        if ($pageSize) {
+            // Paginate the results if pageSize is specified
+            $records = $query->orderBy('recordId', 'desc')->paginate($pageSize);
+        } else {
+            // Return all records if pageSize is not specified
+            $records = $query->orderBy('recordId', 'desc')->get();
+        }
+
+        // Return the records as a JSON response
         return response()->json($records, 200);
     }
 
-    public function indexByType($type)
-    {
-        // Query records, filter by type and order by recordId in descending order
-        $records = record::where('type', $type)
-            ->orderBy('recordId', 'desc')
-            ->get();
 
-        // Return the response as JSON
-        return response()->json($records, 200);
+    public function getYearRange(Request $request)
+    {
+        // Get the model type from the request, if provided
+        $model = $request->query('model');
+
+        // If no model is provided, we need to find the one with the highest year range
+        if (!$model) {
+            // Array of model names
+            $models = ['RiceProduction', 'Production', 'Price', 'Pest', 'Disease', 'DamageReport', 'SoilHealth'];
+
+            $maxRange = 0; // Track the highest year range
+            $bestModel = ''; // Track the model with the highest range
+
+            // Iterate over models to find the one with the highest year range
+            foreach ($models as $model) {
+                // Get the data for the model
+                $data = $this->getDataForModel($model);
+
+                // If there is data, calculate the year range
+                if ($data) {
+                    // Check if the model is RiceProduction or another model
+                    if ($model === 'RiceProduction') {
+                        // Extract only the year from RiceProduction
+                        $years = $data->map(function ($item) {
+                            return isset($item->year) ? (int)$item->year : null; // Only use the year field
+                        })->filter()->toArray();
+                    } else {
+                        // For all other models, use monthYear to extract the year
+                        $years = $data->map(function ($item) {
+                            preg_match('/\d{4}$/', $item->monthYear, $matches);
+                            return $matches ? (int)$matches[0] : null;
+                        })->filter()->toArray();
+                    }
+
+                    // Calculate the range for this model
+                    if (count($years) > 0) {
+                        $minYear = min($years);
+                        $maxYear = max($years);
+                        $range = $maxYear - $minYear;
+
+                        // Check if this model has the largest range
+                        if ($range > $maxRange) {
+                            $maxRange = $range;
+                            $bestModel = $model;
+                        }
+                    }
+                }
+            }
+
+            // If no model with data is found, return "N/A"
+            if (!$bestModel) {
+                return response()->json(['error' => 'No valid data available'], 400);
+            }
+
+            // If a model with the highest range is found, fetch the data for that model
+            $model = $bestModel;
+        }
+
+        // Get data for the selected model
+        $data = $this->getDataForModel($model);
+
+        // Process the data based on the model type
+        if ($model === 'RiceProduction') {
+            // Extract only the year from RiceProduction
+            $years = $data->map(function ($item) {
+                return isset($item->year) ? (int)$item->year : null; // Only use the year field
+            })->filter()->toArray();
+        } else {
+            // For all other models, use monthYear to extract the year
+            $years = $data->map(function ($item) {
+                preg_match('/\d{4}$/', $item->monthYear, $matches);
+                return $matches ? (int)$matches[0] : null;
+            })->filter()->toArray();
+        }
+
+        if (count($years) === 0) {
+            return response()->json('N/A', 200);
+        }
+
+        $minYear = min($years);
+        $maxYear = max($years);
+
+        // Return the year range
+        return response()->json($minYear === $maxYear ? "$minYear" : "$minYear to $maxYear", 200);
     }
 
+
+    // Helper method to fetch data for a given model
+    private function getDataForModel($model)
+    {
+        switch ($model) {
+            case 'RiceProduction':
+                return RiceProduction::all();
+            case 'Production':
+                return Production::all();
+            case 'Price':
+                return Price::all();
+            case 'Pest':
+                return Pest::all();
+            case 'Disease':
+                return Disease::all();
+            case 'DamageReport':
+                return DamageReport::all();
+            case 'SoilHealth':
+                return SoilHealth::all();
+            default:
+                return null;
+        }
+    }
+
+
+    public function indexByType(Request $request, $dataType)
+    {
+        $pageSize = $request->query('pageSize', 10); // Default page size
+        $recordName = $request->query('recordName'); // Optional record name filter
+
+        // Build the query
+        $query = Record::query();
+
+        // Filter by dataType
+        $query->where('type', $dataType);
+
+        if ($recordName) {
+            // Filter by record name
+            $query->where('name', 'like', "%$recordName%");
+        }
+
+        // Paginate results
+        $records = $query->orderBy('recordId', 'desc')->paginate($pageSize);
+
+        // Add file size to each record
+        $records->getCollection()->transform(function ($record) {
+            if (!empty($record->fileRecord)) {
+                $base64String = $record->fileRecord;
+                $bytes = (strlen($base64String) * 3) / 4 -
+                    (substr($base64String, -2) === '==' ? 2 : (substr($base64String, -1) === '=' ? 1 : 0));
+                $kiloBytes = $bytes / 1024;
+                $megaBytes = $kiloBytes / 1024;
+
+                $record->fileSize = $megaBytes >= 1
+                    ? round($megaBytes, 2) . ' MB'
+                    : round($kiloBytes, 2) . ' KB';
+            } else {
+                $record->fileSize = 'N/A';
+            }
+
+            return $record;
+        });
+
+        // Preserve search and page size parameters in pagination links
+        $records->appends([
+            'recordName' => $recordName,
+            'pageSize' => $pageSize,
+        ]);
+
+        // Return records as JSON response
+        return response()->json($records, 200);
+    }
 
     public function store(Request $request)
     {

@@ -7,13 +7,32 @@ use Illuminate\Http\Request;
 
 class FarmerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Get all farmer, with admins first, ordered by their ID in descending order
-        $farmers = farmer::orderBy('farmerId', 'desc')->get();
+        // Get the pageSize and searchTerm from the request
+        $pageSize = $request->query('pageSize'); // If not provided, it will be null
+        $searchTerm = $request->query('searchTerm'); // Optional search term for farmerName
 
+        // Build the query
+        $query = Farmer::query();
+
+        // If search term is provided, apply the filter for farmerName
+        if ($searchTerm) {
+            $query->where('farmerName', 'like', "%$searchTerm%");
+        }
+
+        // If pageSize is provided, paginate the results; otherwise, return all records
+        if ($pageSize) {
+            $farmers = $query->orderBy('farmerId', 'desc')->paginate($pageSize);
+        } else {
+            $farmers = $query->orderBy('farmerId', 'desc')->get(); // Return all records
+        }
+
+        // Return the results as JSON response
         return response()->json($farmers, 200);
     }
+
+
 
     public function store(Request $request)
     {

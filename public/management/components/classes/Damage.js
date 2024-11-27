@@ -1,17 +1,709 @@
-import Dialog from"../helpers/Dialog.js";import{addDownload,getYearRange}from"../../../js/fetch.js";let damages=[];class Damage{constructor(e,a,t,o,r,n,s,c,d,l){this.recordId=e;this.barangay=a;this.cropName=t;this.variety=o;this.numberOfFarmers=r;this.areaAffected=n;this.yieldLoss=s;this.grandTotalValue=c;this.season=d;this.monthYear=l}async addDamage(e){function a(a,t){const o=[];for(let e=0;e<a.length;e+=t){o.push(a.slice(e,e+t))}return o}const t=20;const o=e.length;const r=a(e,t);let n=0;const s=(e,a)=>{$("#progressMessage").text(`Uploading ${e}-${a}/${o}`)};$("#loader").show();$("body").addClass("no-scroll");for(const[d,l]of r.entries()){const i=n+1;const m=i+l.length-1;s(i,m);try{await $.ajax({url:"/api/damages-batch",method:"POST",data:{damageData:l,_token:$('meta[name="csrf-token"]').attr("content")}});n+=l.length}catch(c){console.error(`Error sending batch ${d+1}:`,c.responseText)}}$("#loader").hide();$("body").removeClass("no-scroll");toastr.success("Damage data uploaded successfully!","Success",{timeOut:5e3,positionClass:"toast-top-center",toastClass:"toast-success-custom"});getDamages()}updateDamage(a){const e=damages.find(e=>e.recordId===a.recordId);if(e&&e.recordId!==a.recordId){alert("Damage ID already exists");return}damages=damages.map(e=>e.recordId===a.recordId?{...e,...a}:e);fetch(`/api/damages/${a.recordId}`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(a)}).then(e=>e.json()).then(e=>{})["catch"](e=>{console.error("Error:",e)});getDamages()}removeDamage(e){$.ajax({url:"/api/damagesByRecords",method:"DELETE",data:{damageData:e,_token:$('meta[name="csrf-token"]').attr("content")},success:function(e){},error:function(e){console.error(e.responseText)}});getDamages()}}function getDamages(){$.ajaxSetup({headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content")}});$.ajax({url:"/api/damages",method:"GET",success:function(e){damages=e;},error:function(e,a,t){console.error("Error fetching damages:",t)}})}function initializeMethodsDamage(){function s(e){const a=e.toLowerCase();const t=damages.filter(e=>{return Object.values(e).some(e=>e.toString().toLowerCase().includes(a))});return t}var c=5;var d=1;async function a(e=null){await new Promise(e=>setTimeout(e,1e3));$("#damageTableBody").empty();var a=(d-1)*c;var t=a+c;const o=e?s(e):damages;if(o.length>0){for(var r=a;r<t;r++){if(r>=o.length){break}var n=o[r];$("#damageTableBody").append(`
-          <tr data-index=${n.damageId}>
-            <td>${n.barangay}</td>
-            <td>${n.cropName}</td>
-            <td>${n.variety}</td>
-            <td>${n.numberOfFarmers}</td>
-            <td>${n.areaAffected}</td>
-            <td>${(n.yieldLoss*100).toFixed(2)}%</td>
-            <td>₱${n.grandTotalValue}</td>
-            <td>${n.season}</td>
-            <td>${n.monthYear}</td>
+import Dialog from "../helpers/Dialog.js";
+import { addDownload, getYearRange } from "../../../js/fetch.js";
+let damages = [];
+
+class Damage {
+    constructor(
+        recordId,
+        barangay,
+        cropName,
+        variety,
+        numberOfFarmers,
+        areaAffected,
+        yieldLoss,
+        grandTotalValue,
+        season,
+        monthYear
+    ) {
+        this.recordId = recordId;
+        this.barangay = barangay;
+        this.cropName = cropName;
+        this.variety = variety;
+        this.numberOfFarmers = numberOfFarmers;
+        this.areaAffected = areaAffected;
+        this.yieldLoss = yieldLoss;
+        this.grandTotalValue = grandTotalValue;
+        this.season = season;
+        this.monthYear = monthYear;
+    }
+
+    async addDamage(damages) {
+        function chunkArray(array, size) {
+            const result = [];
+            for (let i = 0; i < array.length; i += size) {
+                result.push(array.slice(i, i + size));
+            }
+            return result;
+        }
+
+        const batchSize = 20; // Size of each batch
+        const totalRows = damages.length;
+        const damageBatches = chunkArray(damages, batchSize);
+
+        let processedRows = 0; // Keep track of the number of processed rows
+
+        // Function to update progress message
+        const updateProgressMessage = (start, end) => {
+            $("#progressMessage").text(
+                `Uploading ${start}-${end}/${totalRows}`
+            );
+        };
+
+        // Show the loader and disable user interaction
+        $("#loader").show();
+        $("body").addClass("no-scroll"); // Optional: Add a class to disable scrolling
+
+        for (const [index, batch] of damageBatches.entries()) {
+            const start = processedRows + 1;
+            const end = start + batch.length - 1;
+            updateProgressMessage(start, end);
+
+            try {
+                await $.ajax({
+                    url: "/api/damages-batch",
+                    method: "POST",
+                    data: {
+                        damageData: batch, // Custom key for data
+                        _token: $('meta[name="csrf-token"]').attr("content"),
+                    },
+                });
+
+                processedRows += batch.length;
+            } catch (xhr) {
+                console.error(
+                    `Error sending batch ${index + 1}:`,
+                    xhr.responseText
+                );
+                // Optionally handle the error or retry
+            }
+        }
+
+        // Hide the loader and re-enable user interaction
+        $("#loader").hide();
+        $("body").removeClass("no-scroll"); // Remove the class to re-enable scrolling
+        toastr.success("Damage data uploaded successfully!", "Success", {
+            timeOut: 5000, // 5 seconds
+            positionClass: "toast-top-center",
+            toastClass: "toast-success-custom",
+        });
+
+        getDamages(); // Call to refresh the damages data
+    }
+
+    updateDamage(updatedDamage) {
+        const existingDamage = damages.find(
+            (p) => p.recordId === updatedDamage.recordId
+        );
+
+        if (
+            existingDamage &&
+            existingDamage.recordId !== updatedDamage.recordId
+        ) {
+            alert("Damage ID already exists");
+            return;
+        }
+
+        damages = damages.map((damage) =>
+            damage.recordId === updatedDamage.recordId
+                ? { ...damage, ...updatedDamage }
+                : damage
+        );
+
+        fetch(`/api/damages/${updatedDamage.recordId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedDamage),
+        })
+            .then((response) => response.json())
+            .then((data) => {})
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+        getDamages();
+    }
+
+    removeDamage(damages) {
+        $.ajax({
+            url: "/api/damagesByRecords",
+            method: "DELETE",
+            data: {
+                damageData: damages, // Custom key for data
+                _token: $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (response) {},
+            error: function (xhr) {
+                console.error(xhr.responseText);
+            },
+        });
+        getDamages();
+    }
+}
+
+function getDamages() {
+    // Fetch damages from Laravel backend
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+
+    $.ajax({
+        url: "/api/damages",
+        method: "GET",
+        success: function (response) {
+            // Assuming response is an array of damages [{...fields...}, ...]
+            damages = response;
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching damages:", error);
+        },
+    });
+}
+
+function initializeMethodsDamage() {
+    $(document).ready(function () {
+        // Function to display damages
+        var pageSize = 5;
+        var currentPage = 1;
+        async function displayDamage(searchTerm = null) {
+            // Simulate a delay of 1 second (optional, can be removed if not needed)
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+
+            // Clear the table body
+            $("#damageTableBody").empty();
+
+            // Construct query parameters for pagination and search
+            let query = `?page=${currentPage}&pageSize=${pageSize}`;
+            if (searchTerm) {
+                query += `&search=${encodeURIComponent(searchTerm)}`;
+            }
+
+            // Fetch damage data from the server
+            try {
+                const response = await fetch(`/api/damages${query}`);
+                const data = await response.json();
+
+                // Check if there are results
+                if (data.data && data.data.length > 0) {
+                    data.data.forEach(function (damage) {
+                        // Append each row to the table body
+                        $("#damageTableBody").append(`
+                  <tr data-index=${damage.damageId}>
+                      <td>${damage.barangay}</td>
+                      <td>${damage.cropName}</td>
+                      <td>${damage.variety}</td>
+                      <td>${damage.numberOfFarmers}</td>
+                      <td>${damage.areaAffected}</td>
+                      <td>${(damage.yieldLoss * 100).toFixed(2)}%</td>
+                      <td>₱${damage.grandTotalValue}</td>
+                      <td>${damage.season}</td>
+                      <td>${damage.monthYear}</td>
+                  </tr>
+              `);
+                    });
+                } else {
+                    // If no results found, display a message
+                    $("#damageTableBody").append(`
+              <tr>
+                  <td colspan="9">No results found!</td>
+              </tr>
+          `);
+                }
+
+                // Update pagination info
+                const totalPages = data.last_page || 1; // Total pages from API response
+                $("#paginationInfo").text(`${data.current_page}/${totalPages}`);
+
+                // Enable/disable pagination buttons based on the current page
+                $("#firstBtn").prop("disabled", data.current_page === 1);
+                $("#prevBtn").prop("disabled", data.prev_page_url === null);
+                $("#nextBtn").prop("disabled", data.next_page_url === null);
+                $("#lastBtn").prop(
+                    "disabled",
+                    data.current_page === totalPages
+                );
+
+                // Reinitialize tablesorter after adding rows
+                $("#damageTable").trigger("update");
+            } catch (error) {
+                console.error("Error fetching damage data:", error);
+                $("#damageTableBody").append(`
+          <tr>
+              <td colspan="9">Error loading damage data.</td>
           </tr>
-        `)}}else{$("#damageTableBody").append(`
-        <tr>
-          <td colspan="9">No results found!</td>
-        </tr>
-      `)}$("#damageTable").trigger("update")}$("#search").on("input",function(){let e=$("#search").val();a(e)});$("#prevBtn").click(function(){if(d>1){d--;a($("#search").val())}});$("#nextBtn").click(function(){var e=Math.ceil(s($("#search").val()).length/c);if(d<e){d++;a($("#search").val())}});$(document).ready(function(){$(".download-btn").click(function(){Dialog.downloadDialog().then(e=>{t(e,damages)})["catch"](e=>{console.error("Error:",e)})})});let o="";async function e(){o=await getYearRange()}e();function t(e,a){const t=`Damages Report ${o}`;if(e==="csv"){r(t,a)}else if(e==="xlsx"){n(t,a)}else if(e==="pdf"){l(t,a)}}function r(e,a){const t={barangay:"Barangay",cropName:"Commodity",variety:"Variety",numberOfFarmers:"Number of Farmers Affected",areaAffected:"Total Area Affected (ha)",yieldLoss:"Yield Loss (%)",grandTotalValue:"Grand Total Value",season:"Season",monthYear:"Month Year"};const o=["barangay","cropName","variety","numberOfFarmers","areaAffected","yieldLoss","grandTotalValue","season","monthYear"];const r=o.map(e=>t[e]);function n(e){if(e===undefined||e===null)return"";if(typeof e==="string"&&(e.includes(",")||e.includes('"')||e.includes("\n"))){e=`"${e.replace(/"/g,'""')}"`}return e}const s=[r.join(","),...a.map(t=>o.map(e=>{let a=t[e]!==undefined?t[e]:"";if(e==="grandTotalValue"){return a?`₱${parseFloat(a).toFixed(2)}`:""}return n(a)}).join(","))].join("\n");const c=new Blob([s],{type:"text/csv"});const d=URL.createObjectURL(c);const l=document.createElement("a");l.href=d;l.download=e;document.body.appendChild(l);l.click();document.body.removeChild(l);URL.revokeObjectURL(d);addDownload(e,"CSV")}function n(r,e){const o={barangay:"Barangay",cropName:"Commodity",variety:"Variety",numberOfFarmers:"Number of Farmers Affected",areaAffected:"Total Area Affected (ha)",yieldLoss:"Yield Loss (%)",grandTotalValue:"Grand Total Value",season:"Season",monthYear:"Month Year"};const n=["barangay","cropName","variety","numberOfFarmers","areaAffected","yieldLoss","grandTotalValue","season","monthYear"];const a=n.map(e=>o[e]);const t=e.map(a=>{const t={};n.forEach(e=>{t[o[e]]=a[e]});return t});const s=new ExcelJS.Workbook;const c=s.addWorksheet(r);c.addRow(a);t.forEach(t=>{c.addRow(n.map(e=>{const a=t[o[e]];if(e==="grandTotalValue"){return a?`₱${parseFloat(a).toFixed(2)}`:""}return a}))});const d={font:{name:"Calibri",size:12,bold:true,color:{argb:"FFFFFFFF"}},fill:{type:"pattern",pattern:"solid",fgColor:{argb:"203764"}},alignment:{horizontal:"center",vertical:"middle"},border:{top:{style:"thin",color:{argb:"FF000000"}},right:{style:"thin",color:{argb:"FF000000"}},bottom:{style:"thin",color:{argb:"FF000000"}},left:{style:"thin",color:{argb:"FF000000"}}}};const l={font:{name:"Calibri",size:11},alignment:{horizontal:"center",vertical:"middle",wrapText:true},border:{top:{style:"thin",color:{argb:"FF000000"}},right:{style:"thin",color:{argb:"FF000000"}},bottom:{style:"thin",color:{argb:"FF000000"}},left:{style:"thin",color:{argb:"FF000000"}}}};const i=c.getRow(1);i.eachCell({includeEmpty:true},e=>{e.style=d});i.height=20;c.eachRow({includeEmpty:true},(e,a)=>{if(a>1){e.eachCell({includeEmpty:true},e=>{e.style=l})}});c.columns=a.map(e=>({width:Math.max(e.length,10)+5}));s.xlsx.writeBuffer().then(function(e){const a=new Blob([e],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});const t=URL.createObjectURL(a);const o=document.createElement("a");o.href=t;o.download=r;o.click();URL.revokeObjectURL(t)});addDownload(r,"XLSX")}function l(e,a){const{jsPDF:t}=window.jspdf;const o=new t("landscape");const r=[...new Set(a.flatMap(Object.keys))];const n=r.filter(e=>!e.toLowerCase().includes("id"));const s=n.slice(0,n.length-2);const c=s.map(i);const d=e=>{if(typeof e==="number"){return e.toFixed(2)}return e};o.autoTable({head:[c],body:a.map(t=>s.map(e=>{let a=t[e];return d(a)})),theme:"striped"});o.save(e);addDownload(e,"PDF")}function i(e){return e.replace(/([a-z])([A-Z])/g,"$1 $2").replace(/_/g," ").split(" ").map(e=>e.charAt(0).toUpperCase()+e.slice(1)).join(" ")}getDamages();a()}function isNumeric(e){if(!isNaN(e)&&!isNaN(parseFloat(e))){return true}const a=/^\d+-\d+$/;if(a.test(e)){const[t,o]=e.split("-").map(Number);if(!isNaN(t)&&!isNaN(o)&&t<=o){return true}}return false}async function processDamageData(e,o,a,t,r){var n=e.SheetNames[0];var s=e.Sheets[n];var c=getKeyBySubstring(o,"Grand Total Value");var d=XLSX.utils.decode_range(s["!ref"]);let l=[];for(var i=d.s.r+1;i<=d.e.r;i++){var m=c.charAt(0)+(i+1);var g=s[m]?s[m].v:"";if(!isNumeric(g)){continue}var u={};Object.keys(o).forEach(function(e){var a=o[e].charAt(0)+(i+1);var t=s[a]?s[a].v:"";if(e==="Yield Loss (%)"){if(t>1){t/=100}}u[e]=t});var f=new Damage(a,getKeyBySubstring(u,"Barangay"),getKeyBySubstring(u,"Commodity"),getKeyBySubstring(u,"Variety"),getKeyBySubstring(u,"Number of Farmers Affected"),getKeyBySubstring(u,"Total Area Affected"),getKeyBySubstring(u,"Yield Loss"),getKeyBySubstring(u,"Grand Total Value"),t,r);l.push(f)}var h=damages.find(e=>e.recordId===l[0].recordId);if(h){await l[0].removeDamage(l)}l[0].addDamage(l);return damages}function getKeyBySubstring(a,e){const t=e.trim().toLowerCase();for(let e in a){if(e.trim().toLowerCase().includes(t)){return a[e]}}return null}export{Damage,getDamages,damages,initializeMethodsDamage,processDamageData};
+      `);
+            }
+        }
+
+        // Initialize tablesorter
+        $("#damageTable").tablesorter();
+
+        // Search input handler
+        $("#search").on("input", function () {
+            let searchTerm = $("#search").val();
+            displayDamage(searchTerm);
+        });
+
+        // Pagination buttons click handlers
+        $("#firstBtn").click(function () {
+            currentPage = 1;
+            const searchTerm = $("#search").val();
+            displayDamage(searchTerm);
+        });
+
+        $("#prevBtn").click(function () {
+            if (currentPage > 1) {
+                currentPage--;
+                const searchTerm = $("#search").val();
+                displayDamage(searchTerm);
+            }
+        });
+
+        $("#nextBtn").click(function () {
+            currentPage++;
+            const searchTerm = $("#search").val();
+            displayDamage(searchTerm);
+        });
+
+        $("#lastBtn").click(function () {
+            const totalPages = $("#paginationInfo").text().split("/")[1]; // Get total pages
+            currentPage = parseInt(totalPages);
+            const searchTerm = $("#search").val();
+            displayDamage(searchTerm);
+        });
+
+        // Initial load
+        displayDamage();
+    });
+
+    $(document).ready(function () {
+        $(".download-btn").click(function () {
+            // Call the downloadDialog method and handle the promise
+            Dialog.downloadDialog()
+                .then((format) => {
+                    download(format, damages);
+                })
+                .catch((error) => {
+                    console.error("Error:", error); // Handle any errors that occur
+                });
+        });
+    });
+
+    let yearRange = "";
+
+    // Fetch year range once and store it
+    async function initializeYearRange() {
+        yearRange = await getYearRange("DamageReport");
+    }
+
+    // Call this function when your app or page loads
+    initializeYearRange();
+
+    // Modified download function that uses the stored yearRange
+    function download(format, data) {
+        // Construct the filename using the stored yearRange
+        const filename = `Damages Report ${yearRange}`;
+
+        // Call the appropriate download function based on the format
+        if (format === "csv") {
+            downloadCSV(filename, data);
+        } else if (format === "xlsx") {
+            downloadExcel(filename, data);
+        } else if (format === "pdf") {
+            downloadPDF(filename, data);
+        }
+    }
+
+    function downloadCSV(filename, data) {
+        // Define the header mapping for damage data
+        const headerMap = {
+            barangay: "Barangay",
+            cropName: "Commodity",
+            variety: "Variety",
+            numberOfFarmers: "Number of Farmers Affected",
+            areaAffected: "Total Area Affected (ha)",
+            yieldLoss: "Yield Loss (%)",
+            grandTotalValue: "Grand Total Value",
+            season: "Season",
+            monthYear: "Month Year",
+        };
+
+        // Define the order of headers
+        const headersToInclude = [
+            "barangay",
+            "cropName",
+            "variety",
+            "numberOfFarmers",
+            "areaAffected",
+            "yieldLoss",
+            "grandTotalValue",
+            "season",
+            "monthYear",
+        ];
+
+        // Map headers to the desired names
+        const headers = headersToInclude.map((key) => headerMap[key]);
+
+        // Helper function to escape CSV values
+        function escapeCSVValue(value) {
+            if (value === undefined || value === null) return "";
+            if (
+                typeof value === "string" &&
+                (value.includes(",") ||
+                    value.includes('"') ||
+                    value.includes("\n"))
+            ) {
+                value = `"${value.replace(/"/g, '""')}"`;
+            }
+            return value;
+        }
+
+        // Filter data to match the new headers and format values
+        const csvRows = [
+            headers.join(","),
+            ...data.map((row) =>
+                headersToInclude
+                    .map((key) => {
+                        let value = row[key] !== undefined ? row[key] : ""; // Ensure non-null values
+
+                        // Format specific columns with peso sign
+                        if (key === "grandTotalValue") {
+                            return value
+                                ? `₱${parseFloat(value).toFixed(2)}`
+                                : "";
+                        }
+                        return escapeCSVValue(value);
+                    })
+                    .join(",")
+            ),
+        ].join("\n");
+
+        // Create a Blob and trigger download
+        const blob = new Blob([csvRows], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        // Optional: Log download action
+        addDownload(filename, "CSV");
+    }
+
+    function downloadExcel(filename, data) {
+        // Define the header mapping for damage data
+        const headerMap = {
+            barangay: "Barangay",
+            cropName: "Commodity",
+            variety: "Variety",
+            numberOfFarmers: "Number of Farmers Affected",
+            areaAffected: "Total Area Affected (ha)",
+            yieldLoss: "Yield Loss (%)",
+            grandTotalValue: "Grand Total Value",
+            season: "Season",
+            monthYear: "Month Year",
+        };
+
+        // Define the order of headers
+        const headersToInclude = [
+            "barangay",
+            "cropName",
+            "variety",
+            "numberOfFarmers",
+            "areaAffected",
+            "yieldLoss",
+            "grandTotalValue",
+            "season",
+            "monthYear",
+        ];
+
+        // Map headers to the desired names
+        const mappedHeaders = headersToInclude.map((key) => headerMap[key]);
+
+        // Filter data to match the new headers
+        const filteredData = data.map((row) => {
+            const filteredRow = {};
+            headersToInclude.forEach((key) => {
+                filteredRow[headerMap[key]] = row[key];
+            });
+            return filteredRow;
+        });
+
+        // Create a new workbook and add a worksheet
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet(filename);
+
+        // Add filtered data to the worksheet
+        worksheet.addRow(mappedHeaders);
+        filteredData.forEach((row) => {
+            worksheet.addRow(
+                headersToInclude.map((header) => {
+                    const value = row[headerMap[header]];
+                    // Format specific columns with peso sign
+                    if (header === "grandTotalValue") {
+                        return value ? `₱${parseFloat(value).toFixed(2)}` : "";
+                    }
+                    return value;
+                })
+            );
+        });
+
+        // Define header and data style
+        const headerStyle = {
+            font: {
+                name: "Calibri",
+                size: 12,
+                bold: true,
+                color: { argb: "FFFFFFFF" }, // White color
+            },
+            fill: {
+                type: "pattern",
+                pattern: "solid",
+                fgColor: { argb: "203764" },
+            },
+            alignment: { horizontal: "center", vertical: "middle" },
+            border: {
+                top: { style: "thin", color: { argb: "FF000000" } }, // Black border
+                right: { style: "thin", color: { argb: "FF000000" } },
+                bottom: { style: "thin", color: { argb: "FF000000" } },
+                left: { style: "thin", color: { argb: "FF000000" } },
+            },
+        };
+
+        const dataStyle = {
+            font: {
+                name: "Calibri",
+                size: 11,
+            },
+            alignment: {
+                horizontal: "center",
+                vertical: "middle",
+                wrapText: true,
+            },
+            border: {
+                top: { style: "thin", color: { argb: "FF000000" } }, // Black border
+                right: { style: "thin", color: { argb: "FF000000" } },
+                bottom: { style: "thin", color: { argb: "FF000000" } },
+                left: { style: "thin", color: { argb: "FF000000" } },
+            },
+        };
+
+        // Apply style to header row
+        const headerRow = worksheet.getRow(1);
+        headerRow.eachCell({ includeEmpty: true }, (cell) => {
+            cell.style = headerStyle;
+        });
+        headerRow.height = 20; // Set header row height
+
+        // Apply style to data rows
+        worksheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
+            if (rowNumber > 1) {
+                // Skip header row
+                row.eachCell({ includeEmpty: true }, (cell) => {
+                    cell.style = dataStyle;
+                });
+            }
+        });
+
+        // Set column widths with padding to prevent overflow
+        worksheet.columns = mappedHeaders.map((header) => ({
+            width: Math.max(header.length, 10) + 5, // Ensure minimum width
+        }));
+
+        // Write workbook to browser
+        workbook.xlsx.writeBuffer().then(function (buffer) {
+            const blob = new Blob([buffer], {
+                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+        addDownload(filename, "XLSX");
+    }
+
+    function downloadPDF(filename, data) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF("landscape"); // Specify landscape orientation
+
+        // Extract all unique keys from the data
+        const allKeys = [...new Set(data.flatMap(Object.keys))];
+
+        // Filter out keys containing "id" and the last two keys
+        const filteredKeys = allKeys.filter(
+            (key) => !key.toLowerCase().includes("id")
+        );
+        const columns = filteredKeys.slice(0, filteredKeys.length - 2);
+
+        // Format headers
+        const headers = columns.map(formatHeader);
+
+        // Function to format numerical values
+        const formatValue = (value) => {
+            if (typeof value === "number") {
+                return value.toFixed(2); // Format numbers to 2 decimal places
+            }
+            return value;
+        };
+
+        // Create the table using all columns and formatted values
+        doc.autoTable({
+            head: [headers],
+            body: data.map((row) =>
+                columns.map((key) => {
+                    let value = row[key];
+                    return formatValue(value);
+                })
+            ),
+            theme: "striped",
+        });
+
+        // Save the PDF
+        doc.save(filename);
+        addDownload(filename, "PDF");
+    }
+
+    function formatHeader(header) {
+        return header
+            .replace(/([a-z])([A-Z])/g, "$1 $2") // Insert space before each capital letter
+            .replace(/_/g, " ") // Replace underscores with spaces if any
+            .split(" ")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ");
+    }
+
+    getDamages();
+}
+
+// Function to check if the data is numeric or a valid range
+function isNumeric(data) {
+    // Check if the data is a single number
+    if (!isNaN(data) && !isNaN(parseFloat(data))) {
+        return true;
+    }
+
+    // Check if the data is a range in the format 'number-number'
+    const rangePattern = /^\d+-\d+$/;
+    if (rangePattern.test(data)) {
+        const [start, end] = data.split("-").map(Number);
+        // Ensure both parts of the range are valid numbers and the range is valid
+        if (!isNaN(start) && !isNaN(end) && start <= end) {
+            return true;
+        }
+    }
+
+    // If neither check passed, return false
+    return false;
+}
+
+// Function to build and return table rows as an array of Damage instances
+async function processDamageData(
+    workbook,
+    cellMappings,
+    id,
+    season,
+    monthYear
+) {
+    // Select the sheet you want to read from
+    var sheetName = workbook.SheetNames[0]; // Assuming the first sheet
+    var worksheet = workbook.Sheets[sheetName];
+
+    // Find the column index for 'Damage' in cellMappings
+    var damageColumn = getKeyBySubstring(cellMappings, "Grand Total Value");
+
+    // Decode the range of the worksheet
+    var range = XLSX.utils.decode_range(worksheet["!ref"]);
+    let damageDatas = [];
+
+    // Loop through rows starting from the first row after the header
+    for (var rowNum = range.s.r + 1; rowNum <= range.e.r; rowNum++) {
+        // Check if the corresponding row in column 'Damage' has a numeric value or valid range
+        var cellAddressDamage = damageColumn.charAt(0) + (rowNum + 1); // Dynamically construct column 'Damage' cell address
+        var cellValueDamage = worksheet[cellAddressDamage]
+            ? worksheet[cellAddressDamage].v
+            : "";
+
+        // Check if the value is numeric or a valid range
+        if (!isNumeric(cellValueDamage)) {
+            continue; // Skip this row if it doesn't meet the filter criteria
+        }
+
+        // Read values based on the defined cell mappings
+        var damageData = {};
+        Object.keys(cellMappings).forEach(function (key) {
+            var cellAddress = cellMappings[key].charAt(0) + (rowNum + 1); // Dynamically construct cell address based on key
+
+            var cellValue = worksheet[cellAddress]
+                ? worksheet[cellAddress].v
+                : "";
+
+            if (key === "Yield Loss (%)") {
+                if (cellValue > 1) {
+                    cellValue /= 100;
+                }
+            }
+            damageData[key] = cellValue; // Store value for the current key in damageData
+        });
+
+        // Create a new Damage instance
+        var damage = new Damage(
+            id,
+            getKeyBySubstring(damageData, "Barangay"),
+            getKeyBySubstring(damageData, "Commodity"),
+            getKeyBySubstring(damageData, "Variety"),
+            getKeyBySubstring(damageData, "Number of Farmers Affected"),
+            getKeyBySubstring(damageData, "Total Area Affected"),
+            getKeyBySubstring(damageData, "Yield Loss"),
+            getKeyBySubstring(damageData, "Grand Total Value"),
+            season,
+            monthYear
+        );
+
+        // Add the new damage instance to damageDatas array using addDamage method
+        damageDatas.push(damage);
+    }
+
+    // Check if the record ID already exists in the damageDatas array
+    var existingDamage = damages.find(
+        (p) => p.recordId === damageDatas[0].recordId
+    );
+
+    if (existingDamage) {
+        // Remove existing damage before adding the new one
+        await damageDatas[0].removeDamage(damageDatas);
+    }
+
+    damageDatas[0].addDamage(damageDatas);
+    return damages;
+}
+
+// Function to find a key in object containing a substring (case-insensitive and trims extra spaces)
+function getKeyBySubstring(obj, substr) {
+    // Convert substring to lowercase and trim any extra spaces
+    const lowerSubstr = substr.trim().toLowerCase();
+
+    for (let key in obj) {
+        // Convert key to lowercase and trim any extra spaces
+        if (key.trim().toLowerCase().includes(lowerSubstr)) {
+            return obj[key];
+        }
+    }
+
+    return null;
+}
+
+export {
+    Damage,
+    getDamages,
+    damages,
+    initializeMethodsDamage,
+    processDamageData,
+};

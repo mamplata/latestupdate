@@ -36,7 +36,6 @@ class Farmer {
             contentType: "application/json",
             data: JSON.stringify(farmer),
             success: function (data) {
-                getFarmer();
                 // Show success message
                 toastr.success("Farmer added successfully.", "Success", {
                     timeOut: 5000,
@@ -78,7 +77,6 @@ class Farmer {
         })
             .then((response) => response.json())
             .then((data) => {
-                getFarmer();
                 // Show success message
                 toastr.success("Farmer updated successfully.", "Success", {
                     timeOut: 5000,
@@ -103,9 +101,6 @@ class Farmer {
                     farmers = farmers.filter(
                         (farmer) => farmer.farmerId !== farmer
                     );
-
-                    getFarmer();
-                    
                 } else if (response.status === 404) {
                     console.error(`Farmer with ID ${farmerId} not found.`);
                 } else {
@@ -137,7 +132,6 @@ function getFarmer() {
             let farmer = response;
 
             farmers = farmer;
-           
         },
         error: function (xhr, status, error) {
             console.error("Error fetching farmers:", error);
@@ -163,7 +157,6 @@ function getBarangayNames() {
             // Assuming response is an array of barangays
             const barangays = response;
             barangayArray = barangays;
-           
 
             // Populate select dropdown with barangays
             const barangaySelect = $("#barangay-option");
@@ -234,28 +227,31 @@ function initializeMethodsFarmer() {
     var isEdit = false;
 
     async function displayFarmers(searchTerm = null) {
-        // Simulate a delay of 1 second
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        try {
+            // Construct query parameters
+            let query = `?page=${currentPage}&pageSize=${pageSize}`;
+            if (searchTerm) {
+                query += `&searchTerm=${encodeURIComponent(searchTerm)}`;
+            }
 
-        $("#farmerTableBody").empty();
+            // Fetch farmers from the server
+            const response = await fetch(`/api/farmers${query}`);
+            const data = await response.json();
 
-        if (searchTerm) {
-            // Display farmers that match the search term
-            const foundFarmers = searchFarmer(searchTerm);
+            // Clear the table body
+            $("#farmerTableBody").empty();
 
-            // Calculate start and end indices based on current page and page size
-            const startIndex = (currentPage - 1) * pageSize;
-            const endIndex = startIndex + pageSize;
+            farmers = data.data;
 
-            // Paginate the found farmers
-            const paginatedFarmers = foundFarmers.slice(startIndex, endIndex);
-
-            if (paginatedFarmers.length > 0) {
-                paginatedFarmers.forEach((farmer) => {
+            if (data.data && data.data.length > 0) {
+                // Populate the table with fetched data
+                data.data.forEach((farmer) => {
                     $("#farmerTableBody").append(`
                         <tr data-index=${farmer.farmerId}>
                             <td style="display: none;">${farmer.farmerId}</td>
-                            <td>${getBarangayName(farmer.barangayId)}</td>
+                            <td data-barangay-id=${farmer.barangayId}>
+                                ${getBarangayName(farmer.barangayId)}
+                            </td>
                             <td>${farmer.farmerName}</td>
                             <td>${farmer.fieldArea}</td>
                             <td>${farmer.fieldType}</td>
@@ -275,48 +271,28 @@ function initializeMethodsFarmer() {
                     </tr>
                 `);
             }
-        } else {
-            // Display paginated farmers if no searchTerm is provided
-            const paginatedFarmers = farmers.slice(
-                (currentPage - 1) * pageSize,
-                currentPage * pageSize
-            );
 
-            if (paginatedFarmers.length > 0) {
-                paginatedFarmers.forEach((farmer) => {
-                    $("#farmerTableBody").append(`
-                        <tr data-index=${farmer.farmerId}>
-                            <td style="display: none;">${farmer.farmerId}</td>
-                            <td data-barangay-id=${
-                                farmer.barangayId
-                            }>${getBarangayName(farmer.barangayId)}</td>
-                            <td>${farmer.farmerName}</td>
-                            <td>${farmer.fieldArea}</td>
-                            <td>${farmer.fieldType}</td>
-                            <td>${
-                                farmer.phoneNumber !== null
-                                    ? farmer.phoneNumber
-                                    : "NA"
-                            }</td>
-                        </tr>
-                    `);
-                });
-            } else {
-                // Handle case where no farmers are available
-                $("#farmerTableBody").append(`
-                    <tr>
-                        <td colspan="6">No farmers available!</td>
-                    </tr>
-                `);
-            }
+            // Update pagination info
+            const totalPages = data.last_page || 1; // Total pages from API response
+            $("#paginationInfo").text(`${data.current_page}/${totalPages}`);
+
+            // Enable/disable pagination buttons
+            $("#prevBtn").prop("disabled", data.prev_page_url === null);
+            $("#nextBtn").prop("disabled", data.next_page_url === null);
+        } catch (error) {
+            console.error("Error fetching farmers:", error);
+            $("#farmerTableBody").append(`
+                <tr>
+                    <td colspan="6">Error loading farmers.</td>
+                </tr>
+            `);
         }
     }
 
-    // Display initial farmers
-    displayFarmers();
-
+    // Event listener for search input
     $("#search").on("input", function () {
-        let farmerName = $("#search").val();
+        let farmerName = $(this).val();
+        currentPage = 1; // Reset to the first page when searching
         displayFarmers(farmerName);
     });
 
@@ -330,19 +306,19 @@ function initializeMethodsFarmer() {
 
     // Pagination: Next button click handler
     $("#nextBtn").click(function () {
-        var totalPages = Math.ceil(farmers.length / pageSize);
-        if (currentPage < totalPages) {
-            currentPage++;
-            displayFarmers();
-        }
+        currentPage++;
+        displayFarmers();
     });
+
+    // Display initial farmers
+    displayFarmers();
 
     // Form submission handler (Add or Update farmer)
     $("#submitBtn").click(function (event) {
         event.preventDefault();
 
-        const form = document.getElementById('farmerForm');
-        
+        const form = document.getElementById("farmerForm");
+
         // Check if form is valid
         if (!form.checkValidity()) {
             // If form is invalid, show the built-in validation messages
@@ -365,7 +341,7 @@ function initializeMethodsFarmer() {
                 fieldType,
                 phoneNumber
             );
-            
+
             farmer.updateFarmer(farmer);
             selectedRow = null;
             $("#submitBtn").text("Add farmer");
@@ -381,7 +357,7 @@ function initializeMethodsFarmer() {
                 fieldType,
                 phoneNumber
             );
-          
+
             farmer.createFarmer(farmer);
         }
 
@@ -422,7 +398,7 @@ function initializeMethodsFarmer() {
             $("#phoneNumber").val(farmer.phoneNumber);
             $("#barangay-option").val(farmer.barangayId);
             $("#submitBtn").text("Update Farmer");
-        } 
+        }
         $("#farmerTableBody tr").removeClass("selected-row");
         $("#editBtn").prop("disabled", true);
         $("#deleteBtn").prop("disabled", true);
@@ -461,7 +437,7 @@ function initializeMethodsFarmer() {
             isEdit = true;
         } else {
             // If Cancel is clicked, do nothing or add additional handling if needed
-         
+
             $("#editBtn").prop("disabled", true);
             $("#deleteBtn").prop("disabled", true);
         }
@@ -500,7 +476,6 @@ function initializeMethodsFarmer() {
             // Call the downloadDialog method and handle the promise
             Dialog.downloadDialog()
                 .then((format) => {
-                  
                     download(format, farmers);
                 })
                 .catch((error) => {

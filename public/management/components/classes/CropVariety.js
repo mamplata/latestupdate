@@ -55,7 +55,7 @@ class CropVariety {
             });
 
             getCropVarieties();
-          
+
             toastr.success("Crop variety added successfully!", "Success", {
                 timeOut: 5000, // 5 seconds
                 positionClass: "toast-top-center",
@@ -109,12 +109,16 @@ class CropVariety {
             .then((response) => response.json())
             .then((data) => {
                 getCropVarieties();
-          
-                toastr.success("Crop variety updated successfully!", "Success", {
-                    timeOut: 5000, // 5 seconds
-                    positionClass: "toast-top-center",
-                    toastClass: "toast-success-custom",
-                });
+
+                toastr.success(
+                    "Crop variety updated successfully!",
+                    "Success",
+                    {
+                        timeOut: 5000, // 5 seconds
+                        positionClass: "toast-top-center",
+                        toastClass: "toast-success-custom",
+                    }
+                );
             })
             .catch((error) => {
                 console.error("Error:", error);
@@ -133,7 +137,7 @@ class CropVariety {
                     cropVarieties = cropVarieties.filter(
                         (variety) => variety.varietyId !== varietyId
                     );
-                  
+
                     getCropVarieties();
                 } else if (response.status === 404) {
                     console.error(
@@ -168,7 +172,6 @@ function getCropVarieties() {
             let cropVariety = response;
 
             cropVarieties = cropVariety;
-       
         },
         error: function (xhr, status, error) {
             console.error("Error fetching crops:", error);
@@ -193,29 +196,36 @@ function initializeMethodsCropVariety() {
     var variety = null;
 
     async function displayCropVarieties(varietyName = null) {
-        // Simulate a delay of 1 second
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        try {
+            // Construct query parameters
+            let query = `?page=${currentPage}&pageSize=${pageSize}`;
+            if (varietyName) {
+                query += `&varietyName=${encodeURIComponent(varietyName)}`;
+            }
 
-        // Clear the table body
-        $("#cropVarietyTableBody").empty();
+            // Fetch crop varieties from the server
+            const response = await fetch(`/api/crop-varieties${query}`);
+            const data = await response.json();
+            console.log(cropVarieties);
 
-        // Fetch crop names once using getCrop()
-        const crops = await getCrop(); // Assumes getCrop returns a list of { cropId, cropName }
+            cropVarieties = data.data;
 
-        // Create a map of cropId to cropName for easy lookup
-        const cropMap = crops.reduce((map, crop) => {
-            map[crop.cropId] = crop.cropName;
-            return map;
-        }, {});
+            // Fetch crop names for mapping
+            const cropsResponse = await fetch(`/api/crops`);
+            const cropsData = await cropsResponse.json();
 
-        var startIndex = (currentPage - 1) * pageSize;
-        var endIndex = startIndex + pageSize;
+            // Create a map of cropId to cropName for easy lookup
+            const cropMap = cropsData.reduce((map, crop) => {
+                map[crop.cropId] = crop.cropName;
+                return map;
+            }, {});
 
-        if (varietyName) {
-            // Use the searchCropVariety function to find matching varieties
-            const foundVarieties = searchCropVariety(varietyName);
-            if (foundVarieties.length > 0) {
-                foundVarieties.forEach((variety) => {
+            // Clear the table body
+            $("#cropVarietyTableBody").empty();
+
+            if (data.data.length > 0) {
+                // Populate the table with fetched data
+                data.data.forEach((variety) => {
                     const cropName = cropMap[variety.cropId] || "Unknown Crop"; // Get cropName or fallback to 'Unknown Crop'
                     $("#cropVarietyTableBody").append(`
                         <tr data-index="${variety.varietyId}" class="text-center">
@@ -233,44 +243,35 @@ function initializeMethodsCropVariety() {
                     `);
                 });
             } else {
-                // Handle case where varietyName is not found
+                // Handle case where no varieties are found
                 $("#cropVarietyTableBody").append(`
                     <tr>
-                        <td colspan="10">Crop variety not found!</td>
+                        <td colspan="10">No crop varieties found!</td>
                     </tr>
                 `);
             }
-        } else {
-            // Display paginated crop varieties if no varietyName is provided
-            for (var i = startIndex; i < endIndex; i++) {
-                if (i >= cropVarieties.length) {
-                    break;
-                }
-                var variety = cropVarieties[i];
-                const cropName = cropMap[variety.cropId] || "Unknown Crop"; // Get cropName or fallback to 'Unknown Crop'
-                $("#cropVarietyTableBody").append(`
-                    <tr data-index="${variety.varietyId}" class="text-center">
-                        <td style="display: none;">${variety.varietyId}</td>
-                        <td><img src="${variety.cropImg}" alt="${variety.varietyName}" class="img-thumbnail" width="50" height="50"></td>
-                        <td>${variety.varietyName}</td>
-                        <td>${cropName}</td> <!-- Display the associated cropName -->
-                        <td class="crop-cell" title="${variety.color}">${variety.color}</td>
-                        <td class="crop-cell" title="${variety.size}">${variety.size}</td>
-                        <td class="crop-cell" title="${variety.flavor}">${variety.flavor}</td>
-                        <td class="crop-cell" title="${variety.growthConditions}">${variety.growthConditions}</td>
-                        <td class="crop-cell" title="${variety.pestDiseaseResistance}">${variety.pestDiseaseResistance}</td>
-                        <td class="crop-cell" title="${variety.recommendedPractices}">${variety.recommendedPractices}</td>
-                    </tr>
-                `);
-            }
+
+            // Update pagination info
+            const totalPages = data.last_page || 1; // Total pages from API response
+            $("#paginationInfo").text(`${data.current_page}/${totalPages}`);
+
+            // Enable/disable pagination buttons based on the current page
+            $("#prevBtn").prop("disabled", data.prev_page_url === null);
+            $("#nextBtn").prop("disabled", data.next_page_url === null);
+        } catch (error) {
+            console.error("Error fetching crop varieties:", error);
+            $("#cropVarietyTableBody").append(`
+                <tr>
+                    <td colspan="10">Error loading crop varieties.</td>
+                </tr>
+            `);
         }
     }
 
-    // Display initial crop varieties
-    displayCropVarieties();
-
+    // Event listener for search input
     $("#search").on("input", function () {
-        let varietyName = $("#search").val();
+        let varietyName = $(this).val();
+        currentPage = 1; // Reset to the first page when searching
         displayCropVarieties(varietyName);
     });
 
@@ -278,26 +279,28 @@ function initializeMethodsCropVariety() {
     $("#prevBtn").click(function () {
         if (currentPage > 1) {
             currentPage--;
-            displayCropVarieties();
+            const varietyName = $("#search").val();
+            displayCropVarieties(varietyName);
         }
     });
 
     // Pagination: Next button click handler
     $("#nextBtn").click(function () {
-        var totalPages = Math.ceil(crops.length / pageSize);
-        if (currentPage < totalPages) {
-            currentPage++;
-            displayCropVarieties();
-        }
+        currentPage++;
+        const varietyName = $("#search").val();
+        displayCropVarieties(varietyName);
     });
+
+    // Display initial crop varieties
+    displayCropVarieties();
 
     let prevCropVarietyImg = "";
 
     $("#submitBtn").click(function (event) {
         event.preventDefault();
 
-        const form = document.getElementById('cropVarietyForm');
-        
+        const form = document.getElementById("cropVarietyForm");
+
         // Check if form is valid
         if (!form.checkValidity()) {
             // If form is invalid, show the built-in validation messages
@@ -503,7 +506,7 @@ function initializeMethodsCropVariety() {
             resetFields();
         } else {
             // If Cancel is clicked, do nothing or add additional handling if needed
-          
+
             $("#cropVarietyTableBody tr").removeClass("selected-row");
             $("#editBtn").prop("disabled", true);
             $("#deleteBtn").prop("disabled", true);

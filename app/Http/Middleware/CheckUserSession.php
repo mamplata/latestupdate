@@ -6,6 +6,9 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Crypt;
 
 class CheckUserSession
 {
@@ -14,6 +17,7 @@ class CheckUserSession
      */
     public function handle(Request $request, Closure $next)
     {
+
         // Retrieve the token from the cookie
         $token = $request->cookie('auth_token');
 

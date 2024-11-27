@@ -58,9 +58,7 @@ $(document).ready(function () {
                     <li class="nav-item d-flex align-items-center justify-content-center">
                         <a class="nav-link text-white w-100" href="/contact-us">Contact Us</a>
                     </li>
-                    <li class="nav-item d-flex align-items-center justify-content-center">
-                         <button id="toggle-btn" class="en">EN</button>
-                    </li>
+
                 </ul>
             </div>
         </header>
@@ -102,6 +100,15 @@ $(document).ready(function () {
             keys.push($(this).data("key"));
         });
 
+        // Preserve select values
+        const selectStates = {};
+        $("select").each(function () {
+            const key = $(this).data("key");
+            if (key) {
+                selectStates[key] = $(this).val();
+            }
+        });
+
         // Fetch translations
         $.ajax({
             url: "/translate",
@@ -116,6 +123,14 @@ $(document).ready(function () {
                     const key = $(this).data("key");
                     if (translations[key]) {
                         $(this).html(translations[key]);
+                    }
+                });
+
+                // Restore select values
+                $("select").each(function () {
+                    const key = $(this).data("key");
+                    if (key && selectStates[key] !== undefined) {
+                        $(this).val(selectStates[key]);
                     }
                 });
             },
@@ -137,5 +152,10 @@ $(document).ready(function () {
         } else {
             $(this).removeClass("en").addClass("tl").text("TL");
         }
+    });
+
+    // Trigger translation on any select change
+    $("select").change(function () {
+        translate(currentLocale);
     });
 });

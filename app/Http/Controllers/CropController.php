@@ -8,12 +8,31 @@ use Illuminate\Http\Request;
 
 class CropController extends Controller
 {
-    // Fetch all crops, ordered by their ID in descending order
-    public function index()
+    public function index(Request $request)
     {
-        $crops = Crop::orderBy('cropId', 'desc')->get(); // Include varieties
+        $pageSize = $request->query('pageSize'); // Optional page size
+        $cropName = $request->query('cropName'); // Optional crop name filter
+
+        // Build the query
+        $query = Crop::query();
+
+        if ($cropName) {
+            $query->where('cropName', 'like', "%$cropName%"); // Filter by crop name
+        }
+
+        // Determine whether to paginate or return all
+        if ($pageSize) {
+            // Paginate results if pageSize is specified
+            $crops = $query->orderBy('cropId', 'desc')->paginate($pageSize);
+        } else {
+            // Return all results if no pageSize is specified
+            $crops = $query->orderBy('cropId', 'desc')->get();
+        }
+
+        // Return crops as JSON response
         return response()->json($crops, 200);
     }
+
 
     // Store a new crop
     public function store(Request $request)

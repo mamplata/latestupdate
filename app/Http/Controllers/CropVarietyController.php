@@ -8,22 +8,41 @@ use Illuminate\Http\Request;
 
 class CropVarietyController extends Controller
 {
-    // Get all crop varieties, optionally filtered by crop type
+    // Get all crop varieties, optionally filtered by crop type and variety name
     public function index(Request $request)
     {
-        // Optionally filter by cropType
-        $cropType = $request->query('cropType');
+        $pageSize = $request->query('pageSize'); // Optional page size
+        $cropType = $request->query('cropType'); // Optional crop type filter
+        $varietyName = $request->query('varietyName'); // Optional variety name filter
 
-        $query = CropVariety::with('crop'); // Eager load the crop relationship
+        // Build the query with eager loading for crop relationship
+        $query = CropVariety::with('crop');
 
         if ($cropType) {
-            $query->where('cropType', $cropType);
+            // Filter by cropType in the related Crop model
+            $query->whereHas('crop', function ($q) use ($cropType) {
+                $q->where('cropType', $cropType);
+            });
         }
 
-        $varieties = $query->orderBy('varietyId', 'desc')->get();
+        if ($varietyName) {
+            // Filter by varietyName
+            $query->where('varietyName', 'like', "%$varietyName%");
+        }
 
+        // Check if pagination is requested
+        if ($pageSize) {
+            // Paginate results if pageSize is specified
+            $varieties = $query->orderBy('varietyId', 'desc')->paginate($pageSize);
+        } else {
+            // Return all results if no pageSize is specified
+            $varieties = $query->orderBy('varietyId', 'desc')->get();
+        }
+
+        // Return varieties as JSON response
         return response()->json($varieties, 200);
     }
+
 
     // Store a new crop variety
     public function store(Request $request)

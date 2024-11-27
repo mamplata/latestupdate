@@ -32,20 +32,26 @@
         <header class="header-container">
             <!-- Your header content or component -->
         </header>
-
         <main class="main-content mx-5">
+            <div class="d-flex justify-content-end mt-2">
+                <button id="toggle-btn" class="en pe-5 ps-5">EN</button>
+            </div>
             <section>
                 <div class="container-fluid mx-auto cont py-5">
                     <div
                         class="row d-flex align-items-center justify-content-between"
                     >
                         <!-- Left Column -->
-                        <div class="col-md-5 text-md-start order-md-1 order-2 mt-5 mt-lg-0">
+                        <div
+                            class="col-md-5 text-md-start order-md-1 order-2 mt-5 mt-lg-0"
+                        >
                             <div
                                 class="d-flex flex-column justify-content-center align-items-center align-items-md-start"
                             >
                                 <span class="m-0 p-0" style="line-height: 0%">
-                                    <strong data-key="messages.original_natural">Original & Natural</strong>
+                                    <strong data-key="messages.original_natural"
+                                        >Original & Natural</strong
+                                    >
                                 </span>
                                 <img
                                     width="150px"
@@ -85,7 +91,7 @@
                                 href="#about"
                                 class="btn btn-custom d-inline-flex align-items-center justify-content-center w-100"
                             >
-                                <i class="fas fa-info-circle me-2"></i> 
+                                <i class="fas fa-info-circle me-2"></i>
                                 <span data-key="messages.learn_more">
                                     Learn More
                                 </span>
@@ -93,7 +99,9 @@
                         </div>
 
                         <!-- Right Column -->
-                        <div class="col-md-6 d-flex justify-content-center order-md-2 order-1">
+                        <div
+                            class="col-md-6 d-flex justify-content-center order-md-2 order-1"
+                        >
                             <div>
                                 <img
                                     src="img/CAO-1.webp"
@@ -161,8 +169,10 @@
                                 href="#features"
                                 class="btn btn-custom d-inline-flex align-items-center justify-content-center"
                             >
-                                <i class="fas fa-info-circle me-2"></i> View
-                                Features
+                                <i class="fas fa-info-circle me-2"></i>
+                                <span data-key="messages.view_features"
+                                    >View Features</span
+                                >
                             </a>
                         </div>
                     </div>
@@ -343,8 +353,10 @@
                                 href="/seasonal-trends"
                                 class="btn btn-custom d-inline-flex align-items-center justify-content-center"
                             >
-                                <i class="fas fa-info-circle me-2"></i> View
-                                More
+                                <i class="fas fa-info-circle me-2"></i>
+                                <span data-key="messages.view_more"
+                                    >View More</span
+                                >
                             </a>
                         </div>
                         <div class="col-md-5 text-center order-md-2 order-1">
@@ -387,8 +399,10 @@
                                 href="/top-crops"
                                 class="btn btn-custom d-inline-flex align-items-center justify-content-center"
                             >
-                                <i class="fas fa-info-circle me-2"></i> View
-                                More
+                                <i class="fas fa-info-circle me-2"></i>
+                                <span data-key="messages.view_more"
+                                    >View More</span
+                                >
                             </a>
                         </div>
                     </div>
@@ -402,13 +416,14 @@
                             <div class="card text-center w-100">
                                 <div class="card-body">
                                     <h2>
-                                        <strong
-                                            ><em
-                                                >Soil Health Monitoring</em
-                                            ></strong
-                                        >
+                                        <strong>
+                                            <em>Soil Health Monitoring</em>
+                                        </strong>
                                     </h2>
-                                    <p class="mt-4">
+                                    <p
+                                        class="mt-4"
+                                        data-key="messages.soil_description"
+                                    >
                                         This feature empowers agriculturalists
                                         to oversee soil nutrient levels and pH
                                         for farmers, allowing them to provide
@@ -417,9 +432,11 @@
                                     </p>
                                     <h4 class="mt-5">
                                         <em
-                                            >Summary of Soil Health in Cabuyao,
-                                            Laguna:</em
+                                            data-key="messages.soil_summary_title"
                                         >
+                                            Summary of Soil Health in Cabuyao,
+                                            Laguna:
+                                        </em>
                                     </h4>
 
                                     <div class="row mt-4">
@@ -429,8 +446,14 @@
                                             <div
                                                 class="soil-metric-card p-3 bg-light rounded shadow-sm"
                                             >
-                                                <strong>pH Level:</strong>
-                                                <p class="mt-2">
+                                                <strong
+                                                    data-key="messages.soil_ph_title"
+                                                    >pH Level:</strong
+                                                >
+                                                <p
+                                                    class="mt-2"
+                                                    data-key="messages.soil_ph_description"
+                                                >
                                                     Measures the acidity or
                                                     alkalinity of the soil.
                                                 </p>
@@ -443,9 +466,13 @@
                                                 class="soil-metric-card p-3 bg-light rounded shadow-sm"
                                             >
                                                 <strong
+                                                    data-key="messages.soil_nitrogen_title"
                                                     >Nitrogen Content:</strong
                                                 >
-                                                <p class="mt-2">
+                                                <p
+                                                    class="mt-2"
+                                                    data-key="messages.soil_nitrogen_description"
+                                                >
                                                     Amount of nitrogen present
                                                     in the soil, crucial for
                                                     plant growth.
@@ -459,9 +486,13 @@
                                                 class="soil-metric-card p-3 bg-light rounded shadow-sm"
                                             >
                                                 <strong
+                                                    data-key="messages.soil_phosphorus_title"
                                                     >Phosphorus Content:</strong
                                                 >
-                                                <p class="mt-2">
+                                                <p
+                                                    class="mt-2"
+                                                    data-key="messages.soil_phosphorus_description"
+                                                >
                                                     Essential nutrient for root
                                                     development and overall
                                                     plant health.
@@ -475,9 +506,13 @@
                                                 class="soil-metric-card p-3 bg-light rounded shadow-sm"
                                             >
                                                 <strong
+                                                    data-key="messages.soil_potassium_title"
                                                     >Potassium Content:</strong
                                                 >
-                                                <p class="mt-2">
+                                                <p
+                                                    class="mt-2"
+                                                    data-key="messages.soil_potassium_description"
+                                                >
                                                     Important for regulating
                                                     water use and improving
                                                     disease resistance.
@@ -490,8 +525,14 @@
                                             <div
                                                 class="soil-metric-card p-3 bg-light rounded shadow-sm"
                                             >
-                                                <strong>Organic Matter:</strong>
-                                                <p class="mt-2">
+                                                <strong
+                                                    data-key="messages.soil_organic_matter_title"
+                                                    >Organic Matter:</strong
+                                                >
+                                                <p
+                                                    class="mt-2"
+                                                    data-key="messages.soil_organic_matter_description"
+                                                >
                                                     Indicator of soil fertility
                                                     and health.
                                                 </p>
@@ -503,7 +544,10 @@
                                         href="/soil-health"
                                         class="btn btn-custom btn-soil-health mt-5 mb-5"
                                     >
-                                        View More
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        <span data-key="messages.view_more"
+                                            >View More</span
+                                        >
                                     </a>
                                 </div>
                             </div>
@@ -555,7 +599,10 @@
                                 <h4 class="mb-3">
                                     <em>Weather Forecast</em>
                                 </h4>
-                                <p class="mb-4">
+                                <p
+                                    class="mb-4"
+                                    data-key="messages.weather_description"
+                                >
                                     This feature identifies appropriate crops
                                     with favorable value by analyzing data from
                                     past seasons.
@@ -563,26 +610,41 @@
 
                                 <div class="key-metrics">
                                     <h5 class="mb-3">
-                                        <em>Key Weather Metrics:</em>
+                                        <em
+                                            data-key="messages.weather_key_metrics_title"
+                                            >Key Weather Metrics:</em
+                                        >
                                     </h5>
                                     <ul class="list-unstyled">
-                                        <li class="mb-2">
+                                        <li
+                                            class="mb-2"
+                                            data-key="messages.weather_temperature"
+                                        >
                                             <strong>Temperature:</strong>
                                             Provides current and forecasted
                                             temperatures for effective planning.
                                         </li>
-                                        <li class="mb-2">
+                                        <li
+                                            class="mb-2"
+                                            data-key="messages.weather_precipitation"
+                                        >
                                             <strong>Precipitation:</strong>
                                             Insights into rainfall patterns to
                                             help manage irrigation and crop
                                             protection.
                                         </li>
-                                        <li class="mb-2">
+                                        <li
+                                            class="mb-2"
+                                            data-key="messages.weather_humidity"
+                                        >
                                             <strong>Humidity:</strong> Assists
                                             in monitoring conditions that affect
                                             crop health and pest prevalence.
                                         </li>
-                                        <li class="mb-2">
+                                        <li
+                                            class="mb-2"
+                                            data-key="messages.weather_wind_speed"
+                                        >
                                             <strong>Wind Speed:</strong>
                                             Information on wind conditions
                                             relevant for planting and harvesting
@@ -595,8 +657,10 @@
                                     href="/weather-forecast"
                                     class="btn btn-custom mt-4 d-inline-flex align-items-center justify-content-center"
                                 >
-                                    <i class="fas fa-info-circle me-2"></i> View
-                                    More
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <span data-key="messages.view_more"
+                                        >View More</span
+                                    >
                                 </a>
                             </div>
                         </div>
@@ -606,17 +670,21 @@
 
             <section id="section-map">
                 <div class="container-fluid">
-                    <div class="row d-flex align-items-center justify-content-between">
-
-                         <!-- Content Section -->
-                         <div class="col-md-6 mt-4 mt-md-0 order-md-1 order-2">
+                    <div
+                        class="row d-flex align-items-center justify-content-between"
+                    >
+                        <!-- Content Section -->
+                        <div class="col-md-6 mt-4 mt-md-0 order-md-1 order-2">
                             <div
                                 class="content-section text-md-start text-center"
                             >
                                 <h4 class="mb-3">
                                     <em>Geospatial Map Trends</em>
                                 </h4>
-                                <p class="mb-4">
+                                <p
+                                    class="mb-4"
+                                    data-key="messages.map_description"
+                                >
                                     This feature offers a comprehensive map view
                                     displaying various geospatial trends,
                                     allowing for detailed analysis of land use,
@@ -626,21 +694,33 @@
 
                                 <div class="key-metrics">
                                     <h5 class="mb-3">
-                                        <em>Map Trends Overview:</em>
+                                        <em
+                                            data-key="messages.map_key_metrics_title"
+                                            >Map Trends Overview:</em
+                                        >
                                     </h5>
                                     <ul class="list-unstyled">
-                                        <li class="mb-2">
+                                        <li
+                                            class="mb-2"
+                                            data-key="messages.map_land_use"
+                                        >
                                             <strong>Land Use Patterns:</strong>
                                             Visual representation of land
                                             utilization across different
                                             regions.
                                         </li>
-                                        <li class="mb-2">
+                                        <li
+                                            class="mb-2"
+                                            data-key="messages.map_crop_distribution"
+                                        >
                                             <strong>Crop Distribution:</strong>
                                             Insights into where different crops
                                             are grown and their yields.
                                         </li>
-                                        <li class="mb-2">
+                                        <li
+                                            class="mb-2"
+                                            data-key="messages.map_environmental_factors"
+                                        >
                                             <strong
                                                 >Environmental Factors:</strong
                                             >
@@ -648,8 +728,11 @@
                                             health, water availability, and
                                             climate impacts.
                                         </li>
-                                        <li class="mb-2">
-                                            <strong> Historical Data:</strong>
+                                        <li
+                                            class="mb-2"
+                                            data-key="messages.map_historical_data"
+                                        >
+                                            <strong>Historical Data:</strong>
                                             Trends over time to track changes
                                             and inform future decisions.
                                         </li>
@@ -660,8 +743,10 @@
                                     href="/map-trends"
                                     class="btn btn-custom mt-4 d-inline-flex align-items-center justify-content-center"
                                 >
-                                    <i class="fas fa-info-circle me-2"></i> View
-                                    More
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <span data-key="messages.view_more"
+                                        >View More</span
+                                    >
                                 </a>
                             </div>
                         </div>
@@ -687,7 +772,10 @@
                                     <h2>
                                         <strong><em>Feedback</em></strong>
                                     </h2>
-                                    <p class="mt-4">
+                                    <p
+                                        class="mt-4"
+                                        data-key="messages.feedback_description"
+                                    >
                                         The feedback feature allows users to
                                         submit their insights and suggestions
                                         for continuous improvement of the
@@ -696,7 +784,10 @@
                                         users and the development team.
                                     </p>
                                     <h4 class="mt-5">
-                                        <em>Feedback Features:</em>
+                                        <em
+                                            data-key="messages.feedback_features_title"
+                                            >Feedback Features:</em
+                                        >
                                     </h4>
 
                                     <div class="row mt-4">
@@ -707,9 +798,13 @@
                                                 class="feedback-card p-3 bg-light rounded shadow-sm"
                                             >
                                                 <strong
+                                                    data-key="messages.feedback_submit_title"
                                                     >Submit Feedback:</strong
                                                 >
-                                                <p class="mt-2">
+                                                <p
+                                                    class="mt-2"
+                                                    data-key="messages.feedback_submit_description"
+                                                >
                                                     Easy-to-use form for users
                                                     to provide their comments
                                                     and suggestions.
@@ -722,8 +817,14 @@
                                             <div
                                                 class="feedback-card p-3 bg-light rounded shadow-sm"
                                             >
-                                                <strong>Track Feedback:</strong>
-                                                <p class="mt-2">
+                                                <strong
+                                                    data-key="messages.feedback_track_title"
+                                                    >Track Feedback:</strong
+                                                >
+                                                <p
+                                                    class="mt-2"
+                                                    data-key="messages.feedback_track_description"
+                                                >
                                                     View the status of submitted
                                                     feedback and any responses.
                                                 </p>
@@ -735,10 +836,14 @@
                                             <div
                                                 class="feedback-card p-3 bg-light rounded shadow-sm"
                                             >
-                                                <strong></strong>
-                                                    Engage with Users:</strong
+                                                <strong
+                                                    data-key="messages.feedback_engage_title"
+                                                    >Engage with Users:</strong
                                                 >
-                                                <p class="mt-2">
+                                                <p
+                                                    class="mt-2"
+                                                    data-key="messages.feedback_engage_description"
+                                                >
                                                     Facilitate ongoing
                                                     communication between the
                                                     AgroConnect team and its
@@ -752,7 +857,10 @@
                                         href="/contact-us"
                                         class="btn btn-custom btn-feedback mt-5 mb-5"
                                     >
-                                        View More
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        <span data-key="messages.view_more"
+                                            >View More</span
+                                        >
                                     </a>
                                 </div>
                             </div>

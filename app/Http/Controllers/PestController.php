@@ -7,10 +7,39 @@ use Illuminate\Http\Request;
 
 class PestController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Get all pests, ordered by their ID in descending order
-        $pests = Pest::orderBy('pestId', 'desc')->get();
+        // Get the search term, page size, and current page from the request
+        $searchTerm = $request->query('search'); // Search term for pests
+        $pageSize = $request->query('pageSize'); // Default page size of 10
+        $page = $request->query('page', 1); // Current page
+
+        // Build the query to retrieve pests
+        $query = Pest::query();
+
+        // Apply search filter if search term is provided
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('barangay', 'like', "%$searchTerm%")
+                    ->orWhere('cropName', 'like', "%$searchTerm%")
+                    ->orWhere('pestName', 'like', "%$searchTerm%")
+                    ->orWhere('totalPlanted', 'like', "%$searchTerm%")
+                    ->orWhere('totalAffected', 'like', "%$searchTerm%")
+                    ->orWhere('season', 'like', "%$searchTerm%")
+                    ->orWhere('monthYear', 'like', "%$searchTerm%");
+            });
+        }
+
+        // If no pagination is needed (i.e., no 'page' parameter), return all pests
+        if (!$pageSize) {
+            // Return all pests without pagination if no page or search term is provided
+            $pests = $query->orderBy('pestId', 'desc')->get(); // Use get() for fetching all records
+            return response()->json($pests, 200);
+        }
+
+        // Apply pagination if pagination parameters are provided
+        $pests = $query->orderBy('pestId', 'desc')
+            ->paginate($pageSize, ['*'], 'page', $page);
 
         return response()->json($pests, 200);
     }

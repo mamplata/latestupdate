@@ -1,8 +1,12 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\TrimTrailingSlashes;
+use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 Route::get('/', function () {
     return view('index');
@@ -91,13 +95,17 @@ Route::get('/print-map-trends{any?}', function () {
     return redirect()->route('print-map-trends');
 })->where('any', '.*');
 
-Route::get('/management-admin', function () {
-    return view('management.admin.index');
-})->name('admin');
 
-Route::get('/management-agriculturist', function () {
-    return view('management.agriculturist.index');
-})->name('agriculturist');
+Route::middleware(['web', 'auth:sanctum'])->group(function () {
+    Route::get('/management-admin', function () {
+        return view('management.admin.index');
+    })->name('admin');
+
+    Route::get('/management-agriculturist', function () {
+        return view('management.agriculturist.index');
+    })->name('agriculturist');
+    Route::get('/management-login',  [UserController::class, 'page'])->name('login');
+});
 
 Route::get('/management-login', function () {
     return view('management.login.index');

@@ -1,16 +1,693 @@
-import Dialog from"../helpers/Dialog.js";import{addDownload,getYearRange}from"../../../js/fetch.js";let riceProductions=[];class RiceProduction{constructor(e,o,t,r,n,c,a,i,s){this.recordId=e;this.barangay=o;this.cropName=t;this.areaPlanted=r;this.monthHarvested=n;this.volumeProduction=c;this.averageYield=a;this.season=i;this.year=s}async addRiceProduction(e){function o(o,t){const r=[];for(let e=0;e<o.length;e+=t){r.push(o.slice(e,e+t))}return r}const t=20;const r=e.length;const n=o(e,t);let c=0;const a=(e,o)=>{$("#progressMessage").text(`Uploading ${e}-${o}/${r}`)};$("#loader").show();$("body").addClass("no-scroll");for(const[s,d]of n.entries()){const l=c+1;const u=l+d.length-1;a(l,u);try{await $.ajax({url:"/api/riceProductions-batch",method:"POST",data:{riceProductionData:d,_token:$('meta[name="csrf-token"]').attr("content")}});c+=d.length}catch(i){console.error(`Error sending batch ${s+1}:`,i.responseText)}}$("#loader").hide();$("body").removeClass("no-scroll");toastr.success("File uploaded successfully!","Success",{timeOut:5e3,positionClass:"toast-top-center",toastClass:"toast-success-custom"});getRiceProduction()}updateRiceProduction(o){const e=riceProductions.find(e=>e.riceProductionId===o.riceProductionId);if(e&&e.riceProductionId!==o.riceProductionId){alert("riceProduction ID already exists");return}riceProductions=riceProductions.map(e=>e.recordId===o.recordId?{...e,...o}:e);fetch(`/api/riceProductions/${o.riceProductionId}`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(o)}).then(e=>e.json()).then(e=>{})["catch"](e=>{console.error("Error:",e)});getRiceProduction()}removeRiceProduction(e){$.ajax({url:"/api/riceProductionsByRecords",method:"DELETE",data:{riceProductionData:e,_token:$('meta[name="csrf-token"]').attr("content")},success:function(e){},error:function(e){console.error(e.responseText)}});getRiceProduction()}}async function getRiceProduction(){$.ajaxSetup({headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content")}});return new Promise((o,r)=>{$.ajax({url:"/api/riceProductions",method:"GET",success:function(e){riceProductions=e;o(riceProductions)},error:function(e,o,t){console.error("Error fetching riceProductions:",t);r(t)}})})}function initializeMethodsRiceProduction(){function a(e){const o=e.toLowerCase();const t=riceProductions.filter(e=>{return Object.values(e).some(e=>e.toString().toLowerCase().includes(o))});return t}var i=5;var s=1;async function o(e=null){await new Promise(e=>setTimeout(e,1e3));$("#riceProductionTableBody").empty();var o=(s-1)*i;var t=o+i;const r=e?a(e):riceProductions;if(r.length>0){for(var n=o;n<t;n++){if(n>=r.length){break}var c=r[n];$("#riceProductionTableBody").append(`
-                    <tr data-index=${c.riceProductionId}>
-                        <td>${c.barangay}</td>
-                        <td>${c.cropName}</td>
-                        <td>${c.areaPlanted}</td>
-                        <td>${c.monthHarvested}</td>
-                        <td>${c.volumeProduction.toFixed(2)}</td>
-                        <td>${c.averageYield.toFixed(2)}</td>
-                        <td>${c.season}</td>
-                        <td>${c.year}</td>
-                    </tr>
-        `)}}else{$("#riceProductionTableBody").append(`
-        <tr>
-          <td colspan="12">No results found!</td>
-        </tr>
-      `)}$("#riceProductionTable").trigger("update")}$("#search").on("input",function(){let e=$("#search").val();o(e)});$("#prevBtn").click(function(){if(s>1){s--;o($("#search").val())}});$("#nextBtn").click(function(){var e=Math.ceil(a($("#search").val()).length/i);if(s<e){s++;o($("#search").val())}});$(document).ready(function(){$(".download-btn").click(function(){Dialog.downloadDialog().then(e=>{t(e,riceProductions)})["catch"](e=>{console.error("Error:",e)})})});let r="";async function e(){r=await getYearRange()}e();function t(e,o){const t=`riceProduction Data ${r}`;if(e==="csv"){c(t,o)}else if(e==="xlsx"){l(t,o)}else if(e==="pdf"){u(t,o)}}function d(e){return e.replace(/([a-z])([A-Z])/g,"$1 $2").replace(/_/g," ").replace(/\b\w/g,e=>e.toUpperCase())}function n(e){if(typeof e==="string"&&(e.includes(",")||e.includes("\n")||e.includes('"'))){e='"'+e.replace(/"/g,'""')+'"'}return e}function c(e,o){const t={barangay:"Barangay",cropName:"Commodity",areaPlanted:"Area Planted (ha)",monthHarvested:"Month Harvested",volumeProduction:"Volume of Production (ha)",averageYield:"Average Yield (ha)",season:"Season",year:"Year"};const r=["barangay","cropName","areaPlanted","monthHarvested","volumeProduction","averageYield","season","year"];const n=r.map(e=>t[e]);function c(e){if(e===undefined||e===null)return"";if(typeof e==="string"&&(e.includes(",")||e.includes('"')||e.includes("\n"))){e=`"${e.replace(/"/g,'""')}"`}return e}const a=[n.join(","),...o.map(t=>r.map(e=>{let o=t[e]!==undefined?t[e]:"";return c(o)}).join(","))].join("\n");const i=new Blob([a],{type:"text/csv"});const s=URL.createObjectURL(i);const d=document.createElement("a");d.href=s;d.download=e;document.body.appendChild(d);d.click();document.body.removeChild(d);URL.revokeObjectURL(s);addDownload(e,"CSV")}function l(n,e){const r={barangay:"Barangay",cropName:"Commodity",areaPlanted:"Area Planted (ha)",monthHarvested:"Month Harvested",volumeProduction:"Volume of Production (ha)",averageYield:"Average Yield (ha)",season:"Season",year:"Year"};const c=["barangay","cropName","areaPlanted","monthHarvested","volumeProduction","averageYield","season","year"];const o=c.map(e=>r[e]);const t=e.map(t=>{return c.reduce((e,o)=>{e[r[o]]=t[o];return e},{})});const a=new ExcelJS.Workbook;const i=a.addWorksheet(n);i.addRow(o);t.forEach(o=>{i.addRow(c.map(e=>o[r[e]]))});const s={font:{name:"Calibri",size:12,bold:true,color:{argb:"FFFFFFFF"}},fill:{type:"pattern",pattern:"solid",fgColor:{argb:"203764"}},alignment:{horizontal:"center",vertical:"middle"},border:{top:{style:"thin",color:{argb:"FF000000"}},right:{style:"thin",color:{argb:"FF000000"}},bottom:{style:"thin",color:{argb:"FF000000"}},left:{style:"thin",color:{argb:"FF000000"}}}};const d={font:{name:"Calibri",size:11},alignment:{horizontal:"center",vertical:"middle",wrapText:true},border:{top:{style:"thin",color:{argb:"FF000000"}},right:{style:"thin",color:{argb:"FF000000"}},bottom:{style:"thin",color:{argb:"FF000000"}},left:{style:"thin",color:{argb:"FF000000"}}}};i.getRow(1).eachCell(e=>{e.style=s});i.eachRow({includeEmpty:true},(e,o)=>{if(o>1){e.eachCell(e=>{e.style=d})}});i.columns=o.map(e=>({width:Math.max(e.length,10)+5}));a.xlsx.writeBuffer().then(e=>{const o=new Blob([e],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});const t=URL.createObjectURL(o);const r=document.createElement("a");r.href=t;r.download=n;document.body.appendChild(r);r.click();document.body.removeChild(r);URL.revokeObjectURL(t)});addDownload(n,"XLSX")}function u(e,o){const{jsPDF:t}=window.jspdf;const r=new t("landscape");const n=[...new Set(o.flatMap(Object.keys))];const c=n.filter(e=>!e.toLowerCase().includes("id"));const a=c.slice(0,c.length-2);const i=a.map(d);const s=e=>{if(typeof e==="number"){return e.toFixed(2)}return e};r.autoTable({head:[i],body:o.map(t=>a.map(e=>{let o=t[e];return s(o)})),theme:"striped"});r.save(e);addDownload(e,"PDF")}function d(e){return e.replace(/([a-z])([A-Z])/g,"$1 $2").replace(/_/g," ").split(" ").map(e=>e.charAt(0).toUpperCase()+e.slice(1)).join(" ")}async function g(){try{await getRiceProduction();o()}catch(e){console.error("Failed to initialize riceProduction display:",e)}}g()}async function processRiceProductionData(e,r,o,t,n){var c=e.SheetNames[0];var a=e.Sheets[c];var i=getKeyBySubstring(r,"Volume of Production");var s=XLSX.utils.decode_range(a["!ref"]);let d=[];for(var l=s.s.r+1;l<=s.e.r;l++){var u=i.charAt(0)+(l+1);var g=a[u]?a[u].v:"";if(!isNumeric(g)){continue}var h={};Object.keys(r).forEach(function(e){var o=r[e].charAt(0)+(l+1);var t=a[o]?a[o].v:"";h[e]=t});var m=new RiceProduction(o,getKeyBySubstring(h,"Barangay"),getKeyBySubstring(h,"Commodity"),getKeyBySubstring(h,"Area Planted"),getKeyBySubstring(h,"Month Harvested"),getKeyBySubstring(h,"Volume of Production"),getKeyBySubstring(h,"Average Yield"),t,n);d.push(m)}var f=riceProductions.find(e=>e.recordId===d[0].recordId);if(f){await d[0].removeRiceProduction(d)}d[0].addRiceProduction(d);return riceProductions}function isNumeric(e){return!isNaN(parseFloat(e))&&isFinite(e)}function getKeyBySubstring(o,e){const t=e.trim().toLowerCase();for(let e in o){if(e.trim().toLowerCase().includes(t)){return o[e]}}return null}export{RiceProduction,getRiceProduction,riceProductions,initializeMethodsRiceProduction,processRiceProductionData};
+import Dialog from "../helpers/Dialog.js";
+import { addDownload, getYearRange } from "../../../js/fetch.js";
+let riceProductions = [];
+
+class RiceProduction {
+    constructor(
+        recordId,
+        barangay,
+        cropName,
+        areaPlanted,
+        monthHarvested,
+        volumeProduction,
+        averageYield,
+        season,
+        year
+    ) {
+        this.recordId = recordId;
+        this.barangay = barangay;
+        this.cropName = cropName;
+        this.areaPlanted = areaPlanted;
+        this.monthHarvested = monthHarvested;
+        this.volumeProduction = volumeProduction;
+        this.averageYield = averageYield;
+        this.season = season;
+        this.year = year;
+    }
+
+    async addRiceProduction(riceProductions) {
+        function chunkArray(array, size) {
+            const result = [];
+            for (let i = 0; i < array.length; i += size) {
+                result.push(array.slice(i, i + size));
+            }
+            return result;
+        }
+        const batchSize = 20; // Size of each batch
+        const totalRows = riceProductions.length;
+        const riceProductionBatches = chunkArray(riceProductions, batchSize);
+
+        let processedRows = 0; // Keep track of the number of processed rows
+
+        // Function to update progress message
+        const updateProgressMessage = (start, end) => {
+            $("#progressMessage").text(
+                `Uploading ${start}-${end}/${totalRows}`
+            );
+        };
+
+        // Show the loader and disable user interaction
+        $("#loader").show();
+        $("body").addClass("no-scroll"); // Optional: Add a class to disable scrolling
+
+        for (const [index, batch] of riceProductionBatches.entries()) {
+            const start = processedRows + 1;
+            const end = start + batch.length - 1;
+            updateProgressMessage(start, end);
+
+            try {
+                await $.ajax({
+                    url: "/api/riceProductions-batch",
+                    method: "POST",
+                    data: {
+                        riceProductionData: batch,
+                        _token: $('meta[name="csrf-token"]').attr("content"),
+                    },
+                });
+
+                processedRows += batch.length;
+            } catch (xhr) {
+                console.error(
+                    `Error sending batch ${index + 1}:`,
+                    xhr.responseText
+                );
+                // Optionally handle the error or retry
+            }
+        }
+
+        // Hide the loader and re-enable user interaction
+        $("#loader").hide();
+        $("body").removeClass("no-scroll"); // Remove the class to re-enable scrolling
+        toastr.success("File uploaded successfully!", "Success", {
+            timeOut: 5000, // 5 seconds
+            positionClass: "toast-top-center",
+            toastClass: "toast-success-custom",
+        });
+
+        getRiceProduction();
+    }
+
+    updateRiceProduction(updatedRiceProduction) {
+        const existingRiceProduction = riceProductions.find(
+            (u) => u.riceProductionId === updatedRiceProduction.riceProductionId
+        );
+
+        if (
+            existingRiceProduction &&
+            existingRiceProduction.riceProductionId !==
+                updatedRiceProduction.riceProductionId
+        ) {
+            alert("riceProduction ID already exists");
+            return;
+        }
+
+        riceProductions = riceProductions.map((riceProduction) =>
+            riceProduction.recordId === updatedRiceProduction.recordId
+                ? { ...riceProduction, ...updatedRiceProduction }
+                : riceProduction
+        );
+
+        fetch(
+            `/api/riceProductions/${updatedRiceProduction.riceProductionId}`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(updatedRiceProduction),
+            }
+        )
+            .then((response) => response.json())
+            .then((data) => {})
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+        getRiceProduction();
+    }
+
+    removeRiceProduction(riceProductions) {
+        $.ajax({
+            url: "/api/riceProductionsByRecords",
+            method: "DELETE",
+            data: {
+                riceProductionData: riceProductions, // Custom key for data
+                _token: $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (response) {},
+            error: function (xhr) {
+                console.error(xhr.responseText);
+            },
+        });
+        getRiceProduction();
+    }
+}
+
+async function getRiceProduction() {
+    // Fetch riceProductions from Laravel backend
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+
+    // Return a promise
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: "/api/riceProductions",
+            method: "GET",
+            success: function (response) {
+                // Assuming response is an array of riceProductions [{...fields...}, ...]
+                riceProductions = response; // Store the riceProductions globally or return them
+
+                resolve(riceProductions); // Resolve the promise with the riceProductions
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching riceProductions:", error);
+                reject(error); // Reject the promise on error
+            },
+        });
+    });
+}
+
+function initializeMethodsRiceProduction() {
+    $(document).ready(function () {
+        // Function to search rice productions based on a search term
+        let pageSize = 5;
+        let currentPage = 1;
+
+        // Function to display rice production data with pagination and search
+        async function displayRiceProduction(searchTerm = null) {
+            try {
+                // Construct query parameters for pagination and search
+                let query = `?page=${currentPage}&pageSize=${pageSize}`;
+                if (searchTerm) {
+                    query += `&searchTerm=${encodeURIComponent(searchTerm)}`;
+                }
+
+                // Fetch rice production data from the server
+                const response = await fetch(`/api/riceProductions${query}`);
+                const data = await response.json();
+
+                riceProductions = data.data;
+
+                // Clear previous results
+                $("#riceProductionTableBody").empty();
+
+                if (data.data.length > 0) {
+                    data.data.forEach((riceProduction) => {
+                        $("#riceProductionTableBody").append(`
+                  <tr data-index="${riceProduction.riceProductionId}">
+                      <td>${riceProduction.barangay}</td>
+                      <td>${riceProduction.cropName}</td>
+                      <td>${riceProduction.areaPlanted}</td>
+                      <td>${riceProduction.monthHarvested}</td>
+                      <td>${riceProduction.volumeProduction.toFixed(2)}</td>
+                      <td>${riceProduction.averageYield.toFixed(2)}</td>
+                      <td>${riceProduction.season}</td>
+                      <td>${riceProduction.year}</td>
+                  </tr>
+              `);
+                    });
+                } else {
+                    $("#riceProductionTableBody").append(`
+              <tr>
+                  <td colspan="8">No results found!</td>
+              </tr>
+          `);
+                }
+
+                // Update pagination info
+                const totalPages = data.last_page || 1; // Total pages from API response
+                $("#paginationInfo").text(`${data.current_page}/${totalPages}`);
+
+                // Enable/disable pagination buttons based on the current page
+                $("#prevBtn").prop("disabled", data.prev_page_url === null);
+                $("#nextBtn").prop("disabled", data.next_page_url === null);
+                $("#firstBtn").prop("disabled", currentPage === 1);
+                $("#lastBtn").prop("disabled", currentPage === totalPages);
+            } catch (error) {
+                console.error("Error fetching rice production:", error);
+                $("#riceProductionTableBody").append(`
+          <tr>
+              <td colspan="8">Error loading rice production data.</td>
+          </tr>
+      `);
+            }
+        }
+
+        // Pagination: First button click handler
+        $("#firstBtn").click(function () {
+            currentPage = 1;
+            const searchTerm = $("#search").val();
+            displayRiceProduction(searchTerm);
+        });
+
+        // Pagination: Previous button click handler
+        $("#prevBtn").click(function () {
+            if (currentPage > 1) {
+                currentPage--;
+                const searchTerm = $("#search").val();
+                displayRiceProduction(searchTerm);
+            }
+        });
+
+        // Pagination: Next button click handler
+        $("#nextBtn").click(function () {
+            currentPage++;
+            const searchTerm = $("#search").val();
+            displayRiceProduction(searchTerm);
+        });
+
+        // Pagination: Last button click handler
+        $("#lastBtn").click(function () {
+            // Get the total pages from the backend API
+            const totalPages = $("#paginationInfo").text().split("/")[1]; // Get total pages
+            currentPage = parseInt(totalPages);
+            const searchTerm = $("#search").val();
+            displayRiceProduction(searchTerm);
+        });
+
+        // Initial load
+        displayRiceProduction();
+    });
+
+    $(document).ready(function () {
+        $(".download-btn").click(async function () {
+            try {
+                // Get the rice data asynchronously
+                let riceData = await getRiceProduction();
+
+                // Call the download dialog and await the promise
+                let format = await Dialog.downloadDialog();
+
+                // Log the rice data for debugging purposes
+                console.log(riceData);
+
+                // Perform the download with the selected format and data
+                download(format, riceData);
+            } catch (error) {
+                // Handle any errors that occur during the asynchronous operations
+                console.error("Error:", error);
+            }
+        });
+    });
+
+    let yearRange = "";
+
+    // Fetch year range once and store it
+    async function initializeYearRange() {
+        yearRange = await getYearRange("RiceProduction");
+    }
+
+    // Call this function when your app or page loads
+    initializeYearRange();
+
+    // Modified download function that uses the stored yearRange
+    function download(format, data) {
+        // Construct the filename using the stored yearRange
+        const filename = `riceProduction Data ${yearRange}`;
+
+        // Call the appropriate download function based on the format
+        if (format === "csv") {
+            downloadCSV(filename, data);
+        } else if (format === "xlsx") {
+            downloadExcel(filename, data);
+        } else if (format === "pdf") {
+            downloadPDF(filename, data);
+        }
+    }
+
+    function formatHeader(key) {
+        return key
+            .replace(/([a-z])([A-Z])/g, "$1 $2")
+            .replace(/_/g, " ")
+            .replace(/\b\w/g, (char) => char.toUpperCase());
+    }
+
+    function escapeCSVValue(value) {
+        if (
+            typeof value === "string" &&
+            (value.includes(",") || value.includes("\n") || value.includes('"'))
+        ) {
+            value = '"' + value.replace(/"/g, '""') + '"';
+        }
+        return value; // Return escaped value
+    }
+
+    function downloadCSV(filename, data) {
+        // Define the header mapping for riceProduction data
+        const headerMap = {
+            barangay: "Barangay",
+            cropName: "Commodity",
+            areaPlanted: "Area Planted (ha)",
+            monthHarvested: "Month Harvested",
+            volumeProduction: "Volume of Production (ha)",
+            averageYield: "Average Yield (ha)",
+            season: "Season",
+            year: "Year",
+        };
+
+        // Define the order of headers
+        const headersToInclude = [
+            "barangay",
+            "cropName",
+            "areaPlanted",
+            "monthHarvested",
+            "volumeProduction",
+            "averageYield",
+            "season",
+            "year",
+        ];
+
+        // Map headers to the desired names
+        const headers = headersToInclude.map((key) => headerMap[key]);
+
+        // Helper function to escape CSV values
+        function escapeCSVValue(value) {
+            if (value === undefined || value === null) return "";
+            if (
+                typeof value === "string" &&
+                (value.includes(",") ||
+                    value.includes('"') ||
+                    value.includes("\n"))
+            ) {
+                value = `"${value.replace(/"/g, '""')}"`;
+            }
+            return value;
+        }
+
+        // Filter data to match the new headers and format values
+        const csvRows = [
+            headers.join(","),
+            ...data.map((row) =>
+                headersToInclude
+                    .map((key) => {
+                        let value = row[key] !== undefined ? row[key] : ""; // Ensure non-null values
+
+                        return escapeCSVValue(value);
+                    })
+                    .join(",")
+            ),
+        ].join("\n");
+
+        // Create a Blob and trigger download
+        const blob = new Blob([csvRows], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        // Optional: Log download action
+        addDownload(filename, "CSV");
+    }
+
+    function downloadExcel(filename, data) {
+        // Define the header mapping for riceProduction data
+        const headerMap = {
+            barangay: "Barangay",
+            cropName: "Commodity",
+            areaPlanted: "Area Planted (ha)",
+            monthHarvested: "Month Harvested",
+            volumeProduction: "Volume of Production (ha)",
+            averageYield: "Average Yield (ha)",
+            season: "Season",
+            year: "Year",
+        };
+
+        // Define the order of headers
+        const headersToInclude = [
+            "barangay",
+            "cropName",
+            "areaPlanted",
+            "monthHarvested",
+            "volumericeProduction",
+            "averageYield",
+            "season",
+            "year",
+        ];
+
+        // Map headers to the desired names
+        const mappedHeaders = headersToInclude.map((key) => headerMap[key]);
+
+        // Filter data to match the new headers
+        const filteredData = data.map((row) => {
+            const filteredRow = {};
+            headersToInclude.forEach((key) => {
+                filteredRow[headerMap[key]] = row[key];
+            });
+            return filteredRow;
+        });
+
+        // Create a new workbook and add a worksheet
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet(filename);
+
+        // Add filtered data to the worksheet
+        worksheet.addRow(mappedHeaders);
+        filteredData.forEach((row) => {
+            worksheet.addRow(
+                headersToInclude.map((header) => {
+                    const value = row[headerMap[header]];
+                    // Format specific columns with peso sign
+                    return value;
+                })
+            );
+        });
+
+        // Define header and data style
+        const headerStyle = {
+            font: {
+                name: "Calibri",
+                size: 12,
+                bold: true,
+                color: { argb: "FFFFFFFF" }, // White color
+            },
+            fill: {
+                type: "pattern",
+                pattern: "solid",
+                fgColor: { argb: "203764" },
+            },
+            alignment: { horizontal: "center", vertical: "middle" },
+            border: {
+                top: { style: "thin", color: { argb: "FF000000" } }, // Black border
+                right: { style: "thin", color: { argb: "FF000000" } },
+                bottom: { style: "thin", color: { argb: "FF000000" } },
+                left: { style: "thin", color: { argb: "FF000000" } },
+            },
+        };
+
+        const dataStyle = {
+            font: {
+                name: "Calibri",
+                size: 11,
+            },
+            alignment: {
+                horizontal: "center",
+                vertical: "middle",
+                wrapText: true,
+            },
+            border: {
+                top: { style: "thin", color: { argb: "FF000000" } }, // Black border
+                right: { style: "thin", color: { argb: "FF000000" } },
+                bottom: { style: "thin", color: { argb: "FF000000" } },
+                left: { style: "thin", color: { argb: "FF000000" } },
+            },
+        };
+
+        // Apply style to header row
+        const headerRow = worksheet.getRow(1);
+        headerRow.eachCell({ includeEmpty: true }, (cell) => {
+            cell.style = headerStyle;
+        });
+        headerRow.height = 20; // Set header row height
+
+        // Apply style to data rows
+        worksheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
+            if (rowNumber > 1) {
+                // Skip header row
+                row.eachCell({ includeEmpty: true }, (cell) => {
+                    cell.style = dataStyle;
+                });
+            }
+        });
+
+        // Set column widths with padding to prevent overflow
+        worksheet.columns = mappedHeaders.map((header) => ({
+            width: Math.max(header.length, 10) + 5, // Ensure minimum width
+        }));
+
+        // Write workbook to browser
+        workbook.xlsx.writeBuffer().then(function (buffer) {
+            const blob = new Blob([buffer], {
+                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+        addDownload(filename, "XLSX");
+    }
+
+    function downloadPDF(filename, data) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF("landscape"); // Specify landscape orientation
+
+        // Extract all unique keys from the data
+        const allKeys = [...new Set(data.flatMap(Object.keys))];
+
+        // Filter out keys containing "id" and the last two keys
+        const filteredKeys = allKeys.filter(
+            (key) => !key.toLowerCase().includes("id")
+        );
+        const columns = filteredKeys.slice(0, filteredKeys.length - 2);
+
+        // Format headers
+        const headers = columns.map(formatHeader);
+
+        // Function to format numerical values
+        const formatValue = (value) => {
+            if (typeof value === "number") {
+                return value.toFixed(2); // Format numbers to 2 decimal places
+            }
+            return value;
+        };
+
+        // Create the table using all columns and formatted values
+        doc.autoTable({
+            head: [headers],
+            body: data.map((row) =>
+                columns.map((key) => {
+                    let value = row[key];
+                    return formatValue(value);
+                })
+            ),
+            theme: "striped",
+        });
+
+        // Save the PDF
+        doc.save(filename);
+        addDownload(filename, "PDF");
+    }
+
+    function formatHeader(header) {
+        return header
+            .replace(/([a-z])([A-Z])/g, "$1 $2") // Insert space before each capital letter
+            .replace(/_/g, " ") // Replace underscores with spaces if any
+            .split(" ")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ");
+    }
+}
+
+// Function to build and return table rows as an array of riceProduction instances
+// Function to build and return table rows as an array of riceProduction instances
+async function processRiceProductionData(
+    workbook,
+    cellMappings,
+    id,
+    season,
+    year
+) {
+    // Select the sheet you want to read from
+    var sheetName = workbook.SheetNames[0]; // Assuming the first sheet
+    var worksheet = workbook.Sheets[sheetName];
+
+    // Find the column index for 'Volume of riceProduction' in cellMappings (or any other key you want to check)
+    var riceProductionVolumeColumn = getKeyBySubstring(
+        cellMappings,
+        "Volume of Production"
+    );
+
+    // Decode the range of the worksheet
+    var range = XLSX.utils.decode_range(worksheet["!ref"]);
+    let riceProductionDatas = [];
+
+    // Loop through rows starting from the first row after the header
+    for (var rowNum = range.s.r + 1; rowNum <= range.e.r; rowNum++) {
+        // Check if the corresponding row in column 'Volume of riceProduction' has a numeric value or valid range
+        var cellAddressRiceProduction =
+            riceProductionVolumeColumn.charAt(0) + (rowNum + 1); // Dynamically construct column 'Volume of riceProduction' cell address
+        var cellValueRiceProduction = worksheet[cellAddressRiceProduction]
+            ? worksheet[cellAddressRiceProduction].v
+            : "";
+
+        // Check if the value is numeric or a valid range
+        if (!isNumeric(cellValueRiceProduction)) {
+            continue; // Skip this row if it doesn't meet the filter criteria
+        }
+
+        // Read values based on the defined cell mappings
+        var riceProductionData = {};
+        Object.keys(cellMappings).forEach(function (key) {
+            var cellAddress = cellMappings[key].charAt(0) + (rowNum + 1); // Dynamically construct cell address based on key
+            var cellValue = worksheet[cellAddress]
+                ? worksheet[cellAddress].v
+                : "";
+            riceProductionData[key] = cellValue; // Store value for the current key in riceProductionData
+        });
+
+        // Create a new riceProduction instance
+        var riceProduction = new RiceProduction(
+            id,
+            getKeyBySubstring(riceProductionData, "Barangay"),
+            getKeyBySubstring(riceProductionData, "Commodity"),
+            getKeyBySubstring(riceProductionData, "Area Planted"),
+            getKeyBySubstring(riceProductionData, "Month Harvested"),
+            getKeyBySubstring(riceProductionData, "Volume of Production"),
+            getKeyBySubstring(riceProductionData, "Average Yield"),
+            season,
+            year
+        );
+
+        // Add the new riceProduction instance to riceProductionDatas array
+        riceProductionDatas.push(riceProduction);
+    }
+
+    // Check if the record ID already exists in the riceProductionDatas array
+    var existingRiceProduction = riceProductions.find(
+        (p) => p.recordId === riceProductionDatas[0].recordId
+    );
+
+    if (existingRiceProduction) {
+        // Remove existing riceProduction before adding the new one
+        await riceProductionDatas[0].removeRiceProduction(riceProductionDatas);
+    }
+
+    riceProductionDatas[0].addRiceProduction(riceProductionDatas);
+    return riceProductions;
+}
+
+// Helper function to check if a value is numeric
+function isNumeric(value) {
+    return !isNaN(parseFloat(value)) && isFinite(value);
+}
+
+// Function to find a key in object containing a substring (case-insensitive and trims extra spaces)
+function getKeyBySubstring(obj, substr) {
+    // Convert substring to lowercase and trim any extra spaces
+    const lowerSubstr = substr.trim().toLowerCase();
+
+    for (let key in obj) {
+        // Convert key to lowercase and trim any extra spaces
+        if (key.trim().toLowerCase().includes(lowerSubstr)) {
+            return obj[key];
+        }
+    }
+
+    return null;
+}
+
+export {
+    RiceProduction,
+    getRiceProduction,
+    riceProductions,
+    initializeMethodsRiceProduction,
+    processRiceProductionData,
+};

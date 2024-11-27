@@ -8,13 +8,44 @@ use Illuminate\Http\Request;
 
 class ProductionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Get all productions, ordered by their ID in descending order
-        $productions = Production::orderBy('productionId', 'desc')->get();
+        $search = $request->query('search'); // Search query
+        $pageSize = $request->query('pageSize', null); // Page size, default to null if not provided
+        $page = $request->query('page', 1); // Current page
+
+        $query = Production::query();
+
+        // Apply search filter if provided
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('barangay', 'like', "%$search%")
+                    ->orWhere('cropName', 'like', "%$search%")
+                    ->orWhere('variety', 'like', "%$search%")
+                    ->orWhere('areaPlanted', 'like', "%$search%")
+                    ->orWhere('monthPlanted', 'like', "%$search%")
+                    ->orWhere('monthHarvested', 'like', "%$search%")
+                    ->orWhere('volumeProduction', 'like', "%$search%")
+                    ->orWhere('productionCost', 'like', "%$search%")
+                    ->orWhere('price', 'like', "%$search%")
+                    ->orWhere('volumeSold', 'like', "%$search%")
+                    ->orWhere('season', 'like', "%$search%")
+                    ->orWhere('monthYear', 'like', "%$search%");
+            });
+        }
+
+        // If no search query and no pageSize is provided, return all records
+        if (!$pageSize) {
+            $productions = $query->orderBy('productionId', 'desc')->get(); // No pagination, return all results
+        } else {
+            // Apply pagination if search query or pageSize is provided
+            $productions = $query->orderBy('productionId', 'desc')
+                ->paginate($pageSize ?: 10, ['*'], 'page', $page); // Default pageSize to 10 if not provided
+        }
 
         return response()->json($productions, 200);
     }
+
 
     public function store(Request $request)
     {

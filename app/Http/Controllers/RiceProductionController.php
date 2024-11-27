@@ -9,11 +9,38 @@ use Illuminate\Support\Facades\Log;
 
 class RiceProductionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Get all productions, ordered by their ID in descending order
-        $productions = RiceProduction::orderBy('riceProductionId', 'desc')->get();
+        // Get the search term and page size from the request
+        $searchTerm = $request->query('searchTerm'); // Search term for all columns
+        $pageSize = $request->query('pageSize', null); // Null by default if not provided
 
+        // Build the query to retrieve rice productions
+        $query = RiceProduction::query();
+
+        if ($searchTerm) {
+            // Apply search to all columns if a search term is provided
+            $query->where(function ($query) use ($searchTerm) {
+                $query->where('barangay', 'like', "%$searchTerm%")
+                    ->orWhere('cropName', 'like', "%$searchTerm%")
+                    ->orWhere('areaPlanted', 'like', "%$searchTerm%")
+                    ->orWhere('monthHarvested', 'like', "%$searchTerm%")
+                    ->orWhere('volumeProduction', 'like', "%$searchTerm%")
+                    ->orWhere('averageYield', 'like', "%$searchTerm%")
+                    ->orWhere('season', 'like', "%$searchTerm%")
+                    ->orWhere('year', 'like', "%$searchTerm%");
+            });
+        }
+
+        // If no page size is specified, return all records
+        if ($pageSize === null) {
+            $productions = $query->orderBy('riceProductionId', 'desc')->get(); // No pagination
+        } else {
+            // Paginate results based on the provided page size
+            $productions = $query->orderBy('riceProductionId', 'desc')->paginate($pageSize);
+        }
+
+        // Return the data as a JSON response
         return response()->json($productions, 200);
     }
 

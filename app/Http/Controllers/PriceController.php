@@ -7,13 +7,41 @@ use Illuminate\Http\Request;
 
 class PriceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Get all prices, ordered by their ID in descending order
-        $prices = Price::orderBy('priceId', 'desc')->get();
+        // Get the search term, page size, and current page from the request
+        $searchTerm = $request->query('search'); // Search term for filtering prices
+        $pageSize = $request->query('pageSize'); // Default page size of 10 if not provided
+        $page = $request->query('page', 1); // Current page, default to 1 if not provided
 
+        // Build the query to retrieve prices
+        $query = Price::query();
+
+        // Apply search filter if a search term is provided
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('cropName', 'like', "%$searchTerm%")
+                    ->orWhere('price', 'like', "%$searchTerm%")
+                    ->orWhere('season', 'like', "%$searchTerm%")
+                    ->orWhere('monthYear', 'like', "%$searchTerm%");
+            });
+        }
+
+        // If neither pageSize nor searchTerm is provided, return all prices without pagination
+        if (!$pageSize) {
+            // Return all prices if no pagination or search term is provided
+            $prices = $query->orderBy('priceId', 'desc')->get(); // Fetch all records without pagination
+            return response()->json($prices, 200);
+        }
+
+        // Apply pagination if pageSize is provided
+        $prices = $query->orderBy('priceId', 'desc')
+            ->paginate($pageSize, ['*'], 'page', $page);
+
+        // Return the paginated prices as JSON response
         return response()->json($prices, 200);
     }
+
 
     public function store(Request $request)
     {

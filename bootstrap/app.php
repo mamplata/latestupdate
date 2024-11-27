@@ -18,9 +18,16 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->api(prepend: [
             AttachSanctumTokenFromCookie::class,
         ]);
+        $middleware->web(prepend: [
+            AttachSanctumTokenFromCookie::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+        ]);
         $middleware->alias([
-            'check.user' => CheckUserSession::class,
+            'check.user.session' => CheckUserSession::class,
             'trailing.slash' => TrimTrailingSlashes::class,
+            'role' => \App\Http\Middleware\RoleMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

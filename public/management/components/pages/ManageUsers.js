@@ -70,7 +70,8 @@ export default function initDashboard() {
       
             <div class="text-right mt-3">
               <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
-              <button id="nextBtn" class="btn btn-green">Next</button>
+              <button id="nextBtn" class="btn btn-green mr-2">Next</button>
+              <span id="paginationInfo" class="fs-5">1/2</span>
             </div>
           </div>
         </div>
@@ -79,60 +80,79 @@ export default function initDashboard() {
             var selectedRow = null;
             var pageSize = 5;
             var currentPage = 1;
+            let users = [];
             var user = null;
 
             async function displayUsers(username = null) {
-                // Simulate a delay of 1 second
-                await new Promise((resolve) => setTimeout(resolve, 1000));
+                try {
+                    let query = `?page=${currentPage}&pageSize=${pageSize}`;
+                    if (username) {
+                        query += `&username=${encodeURIComponent(username)}`;
+                    }
 
-                $("#userTableBody").empty();
+                    const response = await fetch(`/api/users${query}`);
+                    const data = await response.json();
 
-                var startIndex = (currentPage - 1) * pageSize;
-                var endIndex = startIndex + pageSize;
-                if (username) {
-                    // Display a single user if username is provided
-                    const foundUsers = searchUser(username);
-                    if (foundUsers.length > 0) {
-                        foundUsers.forEach((user) => {
+                    // Assign fetched users to the global 'users' array
+                    users = data.data;
+
+                    // Populate table
+                    $("#userTableBody").empty();
+
+                    if (users.length > 0) {
+                        users.forEach((user) => {
                             $("#userTableBody").append(`
-                  <tr data-index=${user.userId}>
-                    <td style="display: none;">${user.userId}</td>
-                    <td>${user.firstName}</td>
-                    <td>${user.lastName}</td>
-                    <td>${user.username}</td>  
-                    <td>${user.role}</td>                      
-                    <td><button class="btn btn-sm btn-green">Change Password</button></td>
-                  </tr>
-                `);
+                                <tr data-index="${user.userId}">
+                                    <td style="display: none;">${user.userId}</td>
+                                    <td>${user.firstName}</td>
+                                    <td>${user.lastName}</td>
+                                    <td>${user.username}</td>
+                                    <td>${user.role}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-green" onclick="changePassword(${user.userId})">
+                                            Change Password
+                                        </button>
+                                    </td>
+                                </tr>
+                            `);
                         });
                     } else {
-                        // Handle case where username is not provided
                         $("#userTableBody").append(`
-                <tr>
-                  <td colspan="4">User not found!</td>
-                </tr>
-              `);
+                            <tr>
+                                <td colspan="5">No users found!</td>
+                            </tr>
+                        `);
                     }
-                } else {
-                    // Display paginated users if no username is provided
-                    for (var i = startIndex; i < endIndex; i++) {
-                        if (i >= users.length) {
-                            break;
-                        }
-                        var user = users[i];
-                        $("#userTableBody").append(`
-              <tr data-index=${user.userId}>
-                <td style="display: none;">${user.userId}</td>
-                <td>${user.firstName}</td>
-                <td>${user.lastName}</td>
-                <td>${user.username}</td>
-                <td>${user.role}</td>
-                <td><button class="btn btn-sm btn-green" onclick="changePassword(${user.userId})">Change Password</button></td>
-              </tr>
-            `);
-                    }
+
+                    // Update pagination info
+                    const totalPages = data.last_page || 1; // Assuming 'last_page' exists in API response
+                    $("#paginationInfo").text(`${currentPage}/${totalPages}`); // Update page number display
+                    $("#prevBtn").prop("disabled", data.prev_page_url === null); // Disable/enable 'previous' button
+                    $("#nextBtn").prop("disabled", data.next_page_url === null); // Disable/enable 'next' button
+                } catch (error) {
+                    console.error("Error fetching users:", error);
                 }
             }
+
+            // Event listeners for pagination buttons
+            $("#prevBtn").click(function () {
+                if (currentPage > 1) {
+                    currentPage--;
+                    displayUsers();
+                }
+            });
+
+            $("#nextBtn").click(function () {
+                currentPage++;
+                displayUsers();
+            });
+
+            // Event listener for search input
+            $("#search").on("input", function () {
+                const searchTerm = $(this).val();
+                currentPage = 1; // Reset to the first page
+                displayUsers(searchTerm);
+            });
 
             window.changePassword = async function (userId) {
                 const res = await Dialog.changePasswordDialog(
@@ -162,28 +182,6 @@ export default function initDashboard() {
 
             // Display initial users
             displayUsers();
-
-            $("#search").on("input", function () {
-                let searchTerm = $(this).val();
-                displayUsers(searchTerm);
-            });
-
-            // Pagination: Previous button click handler
-            $("#prevBtn").click(function () {
-                if (currentPage > 1) {
-                    currentPage--;
-                    displayUsers();
-                }
-            });
-
-            // Pagination: Next button click handler
-            $("#nextBtn").click(function () {
-                var totalPages = Math.ceil(users.length / pageSize);
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    displayUsers();
-                }
-            });
 
             // Form submission handler (Add or Update user)
             $("#submitBtn").click(function (event) {
@@ -258,7 +256,6 @@ export default function initDashboard() {
                     $("#userForm")[0].reset();
                     selectedRow = null;
                     $("#userTableBody tr").removeClass("selected-row");
-                    getUser();
                     displayUsers();
                 } catch (error) {
                     // Handle any errors during the process

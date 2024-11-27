@@ -7,13 +7,45 @@ use Illuminate\Http\Request;
 
 class DamageReportController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Get all damage reports, ordered by their ID in descending order
-        $damageReports = DamageReport::orderBy('damageId', 'desc')->get();
+        // Get the search term, page size, and current page from the request
+        $searchTerm = $request->query('search'); // Search term for filtering damage reports
+        $pageSize = $request->query('pageSize', 10); // Default page size of 10 if not provided
+        $page = $request->query('page', 1); // Current page, default to 1 if not provided
+
+        // Build the query to retrieve damage reports
+        $query = DamageReport::query();
+
+        // Apply search filter if a search term is provided
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('barangay', 'like', "%$searchTerm%")
+                    ->orWhere('cropName', 'like', "%$searchTerm%")
+                    ->orWhere('variety', 'like', "%$searchTerm%")
+                    ->orWhere('numberOfFarmers', 'like', "%$searchTerm%")
+                    ->orWhere('areaAffected', 'like', "%$searchTerm%")
+                    ->orWhere('yieldLoss', 'like', "%$searchTerm%")
+                    ->orWhere('grandTotalValue', 'like', "%$searchTerm%")
+                    ->orWhere('season', 'like', "%$searchTerm%")
+                    ->orWhere('monthYear', 'like', "%$searchTerm%");
+            });
+        }
+
+        // If no page or search term is provided, return all damage reports without pagination
+        if (!$pageSize && !$searchTerm) {
+            // Return all damage reports if no pagination or search term is provided
+            $damageReports = $query->orderBy('damageId', 'desc')->get(); // Fetch all records without pagination
+            return response()->json($damageReports, 200);
+        }
+
+        // Apply pagination if page and search term are provided
+        $damageReports = $query->orderBy('damageId', 'desc')
+            ->paginate($pageSize, ['*'], 'page', $page);
 
         return response()->json($damageReports, 200);
     }
+
 
     public function store(Request $request)
     {

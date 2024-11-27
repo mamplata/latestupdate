@@ -1,4 +1,80 @@
-import{initializeMethodsCrop}from"../classes/Crop.js";import{getCrop}from"../../../js/fetch.js";import{initializeMethodsCropVariety}from"../classes/CropVariety.js";import{initializeMethodsBarangay}from"../classes/Barangay.js";import{initializeMethodsFarmer,getBarangayNames}from"../classes/Farmer.js";import{initializeMethodsRecord}from"../classes/Record.js";import Dialog from"../helpers/Dialog.js";function loadMonthYear(){$(document).ready(function(){var e=(new Date).getFullYear();var t=$("#yearSelect");for(var o=e;o>=e-10;o--){t.append($("<option>",{value:o,text:o}))}});$(document).ready(function(){var e=["January","February","March","April","May","June","July","August","September","October","November","December"];var t=(new Date).getMonth();var o=e[t];$("#monthPicker select").val(o)})}function initializeMaintenanceMenu(e){$("#maintenance-content").empty();switch(e){case"crop":initializeCropView();break;case"crop_variety":initializeCropVarietyView();break;case"barangay":initializeBarangayView();break;case"farmer":initializeFarmerView();break;case"riceProduction":initializeRiceProductionView();break;case"hvcProduction":initializeHVCProductionView();break;case"price":initializePriceMonitoringView();break;case"pestDisease":initializePestReportsView();break;case"damage":initializeDamageReportsView();break;case"soilHealth":initializeSoilHealthView();break;default:initializeBarangayView()}}function initializeCropView(){$("#maintenance-content").html(`
+import { initializeMethodsCrop } from "../classes/Crop.js";
+import { getCrop } from "../../../js/fetch.js";
+import { initializeMethodsCropVariety } from "../classes/CropVariety.js";
+import { initializeMethodsBarangay } from "../classes/Barangay.js";
+import {
+    initializeMethodsFarmer,
+    getBarangayNames,
+} from "../classes/Farmer.js";
+import { initializeMethodsRecord } from "../classes/Record.js";
+import Dialog from "../helpers/Dialog.js";
+function loadMonthYear() {
+    $(document).ready(function () {
+        var e = new Date().getFullYear();
+        var t = $("#yearSelect");
+        for (var o = e; o >= e - 10; o--) {
+            t.append($("<option>", { value: o, text: o }));
+        }
+    });
+    $(document).ready(function () {
+        var e = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+        ];
+        var t = new Date().getMonth();
+        var o = e[t];
+        $("#monthPicker select").val(o);
+    });
+}
+function initializeMaintenanceMenu(e) {
+    $("#maintenance-content").empty();
+    switch (e) {
+        case "crop":
+            initializeCropView();
+            break;
+        case "crop_variety":
+            initializeCropVarietyView();
+            break;
+        case "barangay":
+            initializeBarangayView();
+            break;
+        case "farmer":
+            initializeFarmerView();
+            break;
+        case "riceProduction":
+            initializeRiceProductionView();
+            break;
+        case "hvcProduction":
+            initializeHVCProductionView();
+            break;
+        case "price":
+            initializePriceMonitoringView();
+            break;
+        case "pestDisease":
+            initializePestReportsView();
+            break;
+        case "damage":
+            initializeDamageReportsView();
+            break;
+        case "soilHealth":
+            initializeSoilHealthView();
+            break;
+        default:
+            initializeBarangayView();
+    }
+}
+function initializeCropView() {
+    $("#maintenance-content").html(`
   <div class="row d-flex align-items-start mt-5"> <!-- Aligns items at the top -->
     <div class="col-md-4">
       <form id="cropForm" class="form-spacing"> <!-- Add class for spacing -->
@@ -89,12 +165,30 @@ import{initializeMethodsCrop}from"../classes/Crop.js";import{getCrop}from"../../
       </div>
       
       <div class="text-right">
-        <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
-        <button id="nextBtn" class="btn btn-green">Next</button>
+      <button id="prevBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-left"></i> <!-- Previous Page Icon -->
+      </button>
+      <button id="nextBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
+      </button>
+        <span id="paginationInfo" class="fs-5">1/2</span>
       </div>
     </div>
   </div>
-`);initializeMethodsCrop();$("#unit").change(function(){const e=$(this).val();if(e==="kg"){$("#weightDiv").hide();$("#weight").val("1.00")}else{$("#weightDiv").show()}})}function initializeCropVarietyView(){$("#maintenance-content").html(`
+`);
+    initializeMethodsCrop();
+    $("#unit").change(function () {
+        const e = $(this).val();
+        if (e === "kg") {
+            $("#weightDiv").hide();
+            $("#weight").val("1.00");
+        } else {
+            $("#weightDiv").show();
+        }
+    });
+}
+function initializeCropVarietyView() {
+    $("#maintenance-content").html(`
       <div class="row d-flex justify-content-between align-items-start mt-5">
           <div class="col-md-4">
               <form id="cropVarietyForm" class="form-spacing">
@@ -181,12 +275,43 @@ import{initializeMethodsCrop}from"../classes/Crop.js";import{getCrop}from"../../
               </div>
               
               <div class="text-right">
-                  <button id="prevVarietyBtn" class="btn btn-green mr-2">Previous</button>
-                  <button id="nextVarietyBtn" class="btn btn-green">Next</button>
+      <button id="prevBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-left"></i> <!-- Previous Page Icon -->
+      </button>
+      <button id="nextBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
+      </button>
+                <span id="paginationInfo" class="fs-5">1/2</span>
               </div>
           </div>
       </div>
-  `);$(document).ready(function(){getCrop().then(function(e){let t=$("#cropId");t.empty();t.append('<option value="" disabled selected>Select Associated Crop</option>');e.forEach(function(e){t.append('<option value="'+e.cropId+'">'+e.cropName+"</option>")})})["catch"](function(e){console.error("Error fetching crops:",e)})});initializeMethodsCropVariety()}function initializeBarangayView(){$("#maintenance-content").html(`
+  `);
+    $(document).ready(function () {
+        getCrop()
+            .then(function (e) {
+                let t = $("#cropId");
+                t.empty();
+                t.append(
+                    '<option value="" disabled selected>Select Associated Crop</option>'
+                );
+                e.forEach(function (e) {
+                    t.append(
+                        '<option value="' +
+                            e.cropId +
+                            '">' +
+                            e.cropName +
+                            "</option>"
+                    );
+                });
+            })
+            ["catch"](function (e) {
+                console.error("Error fetching crops:", e);
+            });
+    });
+    initializeMethodsCropVariety();
+}
+function initializeBarangayView() {
+    $("#maintenance-content").html(`
   <div class="row d-flex justify-content-between align-items-start mt-5">
     <div class="col-md-4">
       <form id="barangayForm" class="form-spacing">
@@ -217,12 +342,21 @@ import{initializeMethodsCrop}from"../classes/Crop.js";import{getCrop}from"../../
         </table>
       </div>
       <div class="text-right">
-        <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
-        <button id="nextBtn" class="btn btn-green">Next</button>
+      <button id="prevBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-left"></i> <!-- Previous Page Icon -->
+      </button>
+      <button id="nextBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
+      </button>
+        <span id="paginationInfo" class="fs-5">1/2</span>
       </div>
     </div>
   </div>
-`);initializeMethodsBarangay()}function initializeFarmerView(){$("#maintenance-content").html(`
+`);
+    initializeMethodsBarangay();
+}
+function initializeFarmerView() {
+    $("#maintenance-content").html(`
     <div class="row d-flex justify-content-between align-items-start mt-5">
       <div class="col-md-4">
         <form id="farmerForm" class="form-spacing">
@@ -286,8 +420,13 @@ import{initializeMethodsCrop}from"../classes/Crop.js";import{getCrop}from"../../
         </div>
         
         <div class="text-right">
-          <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
-          <button id="nextBtn" class="btn btn-green">Next</button>
+      <button id="prevBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-left"></i> <!-- Previous Page Icon -->
+      </button>
+      <button id="nextBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
+      </button>
+          <span id="paginationInfo" class="fs-5">1/2</span>
         </div>
       </div>
     </div>
@@ -295,7 +434,12 @@ import{initializeMethodsCrop}from"../classes/Crop.js";import{getCrop}from"../../
     <div class="text-center mt-3">
       <button id="downloadBtn" class="download-btn btn btn-primary">Download Farmers</button>
     </div>
-  `);getBarangayNames();initializeMethodsFarmer()}function initializeRiceProductionView(){$("#maintenance-content").html(`
+  `);
+    getBarangayNames();
+    initializeMethodsFarmer();
+}
+function initializeRiceProductionView() {
+    $("#maintenance-content").html(`
   <div class="row d-flex justify-content-between align-items-start mt-5">
     <div class="col-md-4">
       <form id="recordForm" enctype="multipart/form-data" class="form-spacing">
@@ -367,12 +511,20 @@ import{initializeMethodsCrop}from"../classes/Crop.js";import{getCrop}from"../../
       </div>
       
       <div class="text-right">
-        <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
-        <button id="nextBtn" class="btn btn-green">Next</button>
+      <button id="prevBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-left"></i> <!-- Previous Page Icon -->
+      </button>
+      <button id="nextBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
+      </button>
+        <span id="paginationInfo" class="fs-5">1/2</span>
       </div>
     </div>
   </div>
-`);$(document).ready(function(){$("#infoBtn").click(function(){let e=`
+`);
+    $(document).ready(function () {
+        $("#infoBtn").click(function () {
+            let e = `
 <p>To upload your records successfully, please follow the instructions below using the provided template:</p>
 
 <ol>
@@ -402,7 +554,15 @@ Confirm that your file was uploaded correctly and check for any validation messa
 </ol>
 
 <p>By adhering to these instructions and utilizing the provided template, you ensure that your data is recorded accurately and efficiently.</p>
-`;Dialog.showInfoModal(e)})});initializeMethodsRecord("riceProduction");loadMonthYear()}function initializeHVCProductionView(){$("#maintenance-content").html(`
+`;
+            Dialog.showInfoModal(e);
+        });
+    });
+    initializeMethodsRecord("riceProduction");
+    loadMonthYear();
+}
+function initializeHVCProductionView() {
+    $("#maintenance-content").html(`
     <div class="row d-flex justify-content-between align-items-start mt-5">
       <div class="col-md-4">
         <form id="recordForm" enctype="multipart/form-data" class="form-spacing">
@@ -496,12 +656,20 @@ Confirm that your file was uploaded correctly and check for any validation messa
         </div>
         
         <div class="text-right">
-          <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
-          <button id="nextBtn" class="btn btn-green">Next</button>
+      <button id="prevBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-left"></i> <!-- Previous Page Icon -->
+      </button>
+      <button id="nextBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
+      </button>
+        <span id="paginationInfo" class="fs-5">1/2</span>
         </div>
       </div>
     </div>
-  `);$(document).ready(function(){$("#infoBtn").click(function(){let e=`
+  `);
+    $(document).ready(function () {
+        $("#infoBtn").click(function () {
+            let e = `
 <p>To upload your records successfully, please follow the instructions below using the provided template:</p>
 
 <ol>
@@ -535,7 +703,15 @@ Confirm that your file was uploaded correctly and check for any validation messa
 </ol>
 
 <p>By adhering to these instructions and utilizing the provided template, you ensure that your data is recorded accurately and efficiently.</p>
-`;Dialog.showInfoModal(e)})});initializeMethodsRecord("production");loadMonthYear()}function initializePriceMonitoringView(){$("#maintenance-content").html(`
+`;
+            Dialog.showInfoModal(e);
+        });
+    });
+    initializeMethodsRecord("production");
+    loadMonthYear();
+}
+function initializePriceMonitoringView() {
+    $("#maintenance-content").html(`
         <div class="row d-flex justify-content-between align-items-start mt-5">
           <div class="col-md-4">
             <form id="recordForm" enctype="multipart/form-data" class="form-spacing">
@@ -629,12 +805,20 @@ Confirm that your file was uploaded correctly and check for any validation messa
             </div>
             
             <div class="text-right">
-              <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
-              <button id="nextBtn" class="btn btn-green">Next</button>
+      <button id="prevBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-left"></i> <!-- Previous Page Icon -->
+      </button>
+      <button id="nextBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
+      </button>
+          <span id="paginationInfo" class="fs-5">1/2</span>
             </div>
           </div>
         </div>
-      `);$(document).ready(function(){$("#infoBtn").click(function(){let e=`
+      `);
+    $(document).ready(function () {
+        $("#infoBtn").click(function () {
+            let e = `
   <p>To upload your price records successfully, please follow the instructions below using the provided template:</p>
 
 <ol>
@@ -660,7 +844,15 @@ Confirm that your file was uploaded correctly and check for any validation messa
 </ol>
 
 <p>By adhering to these instructions and utilizing the provided template, you ensure that your price data is recorded accurately and efficiently.</p>
-`;Dialog.showInfoModal(e)})});initializeMethodsRecord("price");loadMonthYear()}function initializePestReportsView(){$("#maintenance-content").html(`
+`;
+            Dialog.showInfoModal(e);
+        });
+    });
+    initializeMethodsRecord("price");
+    loadMonthYear();
+}
+function initializePestReportsView() {
+    $("#maintenance-content").html(`
       <div class="row d-flex justify-content-between align-items-start mt-5">
         <div class="col-md-4">
           <form id="recordForm" enctype="multipart/form-data" class="form-spacing">
@@ -754,12 +946,20 @@ Confirm that your file was uploaded correctly and check for any validation messa
           </div>
           
           <div class="text-right">
-            <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
-            <button id="nextBtn" class="btn btn-green">Next</button>
+      <button id="prevBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-left"></i> <!-- Previous Page Icon -->
+      </button>
+      <button id="nextBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
+      </button>
+            <span id="paginationInfo" class="fs-5">1/2</span>
           </div>
         </div>
       </div>
-    `);$(document).ready(function(){$("#infoBtn").click(function(){let e=`
+    `);
+    $(document).ready(function () {
+        $("#infoBtn").click(function () {
+            let e = `
 <p>To upload your pest and disease records successfully, please follow the instructions below using the provided template:</p>
 
 <ol>
@@ -794,7 +994,15 @@ Confirm that your file was uploaded correctly and check for any validation messa
 </ol>
 
 <p>By adhering to these instructions and utilizing the provided template, you ensure that your pest and disease data is recorded accurately and efficiently.</p>
-`;Dialog.showInfoModal(e)})});initializeMethodsRecord("pestDisease");loadMonthYear()}function initializeDamageReportsView(){$("#maintenance-content").html(`
+`;
+            Dialog.showInfoModal(e);
+        });
+    });
+    initializeMethodsRecord("pestDisease");
+    loadMonthYear();
+}
+function initializeDamageReportsView() {
+    $("#maintenance-content").html(`
     <div class="row d-flex justify-content-between align-items-start mt-5">
       <div class="col-md-4">
         <form id="recordForm" enctype="multipart/form-data" class="form-spacing">
@@ -897,12 +1105,20 @@ Confirm that your file was uploaded correctly and check for any validation messa
         </div>
         
         <div class="text-right">
-          <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
-          <button id="nextBtn" class="btn btn-green">Next</button>
+      <button id="prevBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-left"></i> <!-- Previous Page Icon -->
+      </button>
+      <button id="nextBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
+      </button>
+          <span id="paginationInfo" class="fs-5">1/2</span>
         </div>
       </div>
     </div>
-  `);$(document).ready(function(){$("#infoBtn").click(function(){let e=`
+  `);
+    $(document).ready(function () {
+        $("#infoBtn").click(function () {
+            let e = `
 <p style="margin-bottom: 15px;">To upload your damage reports successfully, please follow the instructions below using the provided template:</p>
 
 <ol style="margin-bottom: 15px;">
@@ -932,7 +1148,15 @@ Confirm that your file was uploaded correctly and check for any validation messa
 </ol>
 
 <p style="margin-bottom: 15px;">By adhering to these instructions and utilizing the provided template, you ensure that your damage reports are recorded accurately and efficiently.</p>
-`;Dialog.showInfoModal(e)})});initializeMethodsRecord("damage");loadMonthYear()}function initializeSoilHealthView(){$("#maintenance-content").html(`
+`;
+            Dialog.showInfoModal(e);
+        });
+    });
+    initializeMethodsRecord("damage");
+    loadMonthYear();
+}
+function initializeSoilHealthView() {
+    $("#maintenance-content").html(`
     <div class="row d-flex justify-content-between align-items-start mt-5">
       <div class="col-md-4">
         <form id="recordForm" enctype="multipart/form-data" class="form-spacing">
@@ -1026,12 +1250,20 @@ Confirm that your file was uploaded correctly and check for any validation messa
         </div>
         
         <div class="text-right">
-          <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
-          <button id="nextBtn" class="btn btn-green">Next</button>
+                 <button id="prevBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-left"></i> <!-- Previous Page Icon -->
+      </button>
+      <button id="nextBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
+      </button>
+          <span id="paginationInfo" class="fs-5">1/2</span>
         </div>
       </div>
     </div>
-  `);$(document).ready(function(){$("#infoBtn").click(function(){let e=`
+  `);
+    $(document).ready(function () {
+        $("#infoBtn").click(function () {
+            let e = `
 <p>To upload your soil health records successfully, please follow the instructions below using the provided template:</p>
 
 <ol>
@@ -1067,4 +1299,11 @@ Confirm that your file was uploaded correctly and check for any validation messa
 </ol>
 
 <p>By adhering to these instructions and utilizing the provided template, you ensure that your soil health data is recorded accurately and efficiently.</p>
-`;Dialog.showInfoModal(e)})});initializeMethodsRecord("soilHealth");loadMonthYear()}export{initializeMaintenanceMenu};
+`;
+            Dialog.showInfoModal(e);
+        });
+    });
+    initializeMethodsRecord("soilHealth");
+    loadMonthYear();
+}
+export { initializeMaintenanceMenu };

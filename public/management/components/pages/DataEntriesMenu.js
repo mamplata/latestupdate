@@ -1,4 +1,40 @@
-import{initializeMethodsPest}from"../classes/Pest.js";import{initializeMethodsDisease}from"../classes/Disease.js";import{initializeMethodsProduction}from"../classes/Production.js";import{initializeMethodsRiceProduction}from"../classes/RiceProduction.js";import{initializeMethodsSoilHealth}from"../classes/SoilHealth.js";import{initializeMethodsPrice}from"../classes/Price.js";import{initializeMethodsDamage}from"../classes/Damage.js";function initializeDataEntriesMenu(t){$("#maintenance-content").empty();switch(t){case"riceProductions":initializeRiceProductionView();break;case"productions":initializeProductionView();break;case"prices":initializePriceView();break;case"pests":initializePestView();break;case"diseases":initializeDiseaseView();break;case"damages":initializeDamageView();break;case"soil_healths":initializeSoilHealthsView();break;default:initializeRiceProductionView()}}function initializeRiceProductionView(){$("#entries-content").html(`
+import { initializeMethodsPest } from "../classes/Pest.js";
+import { initializeMethodsDisease } from "../classes/Disease.js";
+import { initializeMethodsProduction } from "../classes/Production.js";
+import { initializeMethodsRiceProduction } from "../classes/RiceProduction.js";
+import { initializeMethodsSoilHealth } from "../classes/SoilHealth.js";
+import { initializeMethodsPrice } from "../classes/Price.js";
+import { initializeMethodsDamage } from "../classes/Damage.js";
+function initializeDataEntriesMenu(t) {
+    $("#maintenance-content").empty();
+    switch (t) {
+        case "riceProductions":
+            initializeRiceProductionView();
+            break;
+        case "productions":
+            initializeProductionView();
+            break;
+        case "prices":
+            initializePriceView();
+            break;
+        case "pests":
+            initializePestView();
+            break;
+        case "diseases":
+            initializeDiseaseView();
+            break;
+        case "damages":
+            initializeDamageView();
+            break;
+        case "soil_healths":
+            initializeSoilHealthsView();
+            break;
+        default:
+            initializeRiceProductionView();
+    }
+}
+function initializeRiceProductionView() {
+    $("#entries-content").html(`
   <div class="row d-flex justify-content-between align-items-center mt-5">
     <div class="col">
       <div class="table-responsive">
@@ -21,15 +57,36 @@ import{initializeMethodsPest}from"../classes/Pest.js";import{initializeMethodsDi
         </table>
       </div>
       <div class="text-right">
-        <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
-        <button id="nextBtn" class="btn btn-green">Next</button>
+          <!-- Buttons with Font Awesome icons -->
+      <button id="firstBtn" class="btn btn-green mr-2">
+          <i class="fas fa-angle-double-left"></i> <!-- First Page Icon -->
+      </button>
+      <button id="prevBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-left"></i> <!-- Previous Page Icon -->
+      </button>
+      <button id="nextBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
+      </button>
+      <button id="lastBtn" class="btn btn-green mr-2">
+          <i class="fas fa-angle-double-right"></i> <!-- Last Page Icon -->
+      </button>
+          <span id="paginationInfo" class="fs-5">1/2</span>
       </div>
     </div>
   </div>
   <div class="text-center mt-3">
     <button id="downloadBtn" class="download-btn btn btn-primary">Download Rice Productions</button>
   </div>
-`);initializeMethodsRiceProduction();$("#riceProductionTable").tablesorter({theme:"bootstrap",widgets:["zebra"],widgetOptions:{cssIcon:"tablesorter-header-icon"}})}function initializeProductionView(){$("#entries-content").html(`
+`);
+    initializeMethodsRiceProduction();
+    $("#riceProductionTable").tablesorter({
+        theme: "bootstrap",
+        widgets: ["zebra"],
+        widgetOptions: { cssIcon: "tablesorter-header-icon" },
+    });
+}
+function initializeProductionView() {
+    $("#entries-content").html(`
     <div class="row d-flex justify-content-between align-items-center mt-5">
       <div class="col">
         <div class="table-responsive">
@@ -56,15 +113,36 @@ import{initializeMethodsPest}from"../classes/Pest.js";import{initializeMethodsDi
           </table>
         </div>
         <div class="text-right">
-          <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
-          <button id="nextBtn" class="btn btn-green">Next</button>
+           <!-- Buttons with Font Awesome icons -->
+      <button id="firstBtn" class="btn btn-green mr-2">
+          <i class="fas fa-angle-double-left"></i> <!-- First Page Icon -->
+      </button>
+      <button id="prevBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-left"></i> <!-- Previous Page Icon -->
+      </button>
+      <button id="nextBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
+      </button>
+      <button id="lastBtn" class="btn btn-green mr-2">
+          <i class="fas fa-angle-double-right"></i> <!-- Last Page Icon -->
+      </button>
+          <span id="paginationInfo" class="fs-5">1/2</span>
         </div>
       </div>
     </div>
     <div class="text-center mt-3">
       <button id="downloadBtn" class="download-btn btn btn-primary">Download Productions</button>
     </div>
-  `);initializeMethodsProduction();$("#productionTable").tablesorter({theme:"bootstrap",widgets:["zebra"],widgetOptions:{cssIcon:"tablesorter-header-icon"}})}function initializePriceView(){$("#entries-content").html(`
+  `);
+    initializeMethodsProduction();
+    $("#productionTable").tablesorter({
+        theme: "bootstrap",
+        widgets: ["zebra"],
+        widgetOptions: { cssIcon: "tablesorter-header-icon" },
+    });
+}
+function initializePriceView() {
+    $("#entries-content").html(`
     <div class="row d-flex justify-content-between align-items-center mt-5">
       <div class="col">
         <div class="table-responsive">
@@ -83,15 +161,36 @@ import{initializeMethodsPest}from"../classes/Pest.js";import{initializeMethodsDi
           </table>
         </div>
         <div class="text-right">
-          <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
-          <button id="nextBtn" class="btn btn-green">Next</button>
+          <!-- Buttons with Font Awesome icons -->
+      <button id="firstBtn" class="btn btn-green mr-2">
+          <i class="fas fa-angle-double-left"></i> <!-- First Page Icon -->
+      </button>
+      <button id="prevBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-left"></i> <!-- Previous Page Icon -->
+      </button>
+      <button id="nextBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
+      </button>
+      <button id="lastBtn" class="btn btn-green mr-2">
+          <i class="fas fa-angle-double-right"></i> <!-- Last Page Icon -->
+      </button>
+          <span id="paginationInfo" class="fs-5">1/2</span>
         </div>
       </div>
     </div>
     <div class="text-center mt-3">
       <button id="downloadBtn" class="download-btn btn btn-primary">Download Prices</button>
     </div>
-  `);initializeMethodsPrice();$("#priceTable").tablesorter({theme:"bootstrap",widgets:["zebra"],widgetOptions:{cssIcon:"tablesorter-header-icon"}})}function initializePestView(){$("#entries-content").html(`
+  `);
+    initializeMethodsPrice();
+    $("#priceTable").tablesorter({
+        theme: "bootstrap",
+        widgets: ["zebra"],
+        widgetOptions: { cssIcon: "tablesorter-header-icon" },
+    });
+}
+function initializePestView() {
+    $("#entries-content").html(`
     <div class="row d-flex justify-content-between align-items-center mt-5">
       <div class="col">
         <div class="table-responsive">
@@ -113,15 +212,36 @@ import{initializeMethodsPest}from"../classes/Pest.js";import{initializeMethodsDi
           </table>
         </div>
         <div class="text-right">
-          <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
-          <button id="nextBtn" class="btn btn-green">Next</button>
+           <!-- Buttons with Font Awesome icons -->
+      <button id="firstBtn" class="btn btn-green mr-2">
+          <i class="fas fa-angle-double-left"></i> <!-- First Page Icon -->
+      </button>
+      <button id="prevBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-left"></i> <!-- Previous Page Icon -->
+      </button>
+      <button id="nextBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
+      </button>
+      <button id="lastBtn" class="btn btn-green mr-2">
+          <i class="fas fa-angle-double-right"></i> <!-- Last Page Icon -->
+      </button>
+          <span id="paginationInfo" class="fs-5">1/2</span>
         </div>
       </div>
     </div>
     <div class="text-center mt-3">
       <button id="downloadBtn" class="download-btn btn btn-primary">Download Pests</button>
     </div>
-  `);initializeMethodsPest();$("#pestTable").tablesorter({theme:"bootstrap",widgets:["zebra"],widgetOptions:{cssIcon:"tablesorter-header-icon"}})}function initializeDiseaseView(){$("#entries-content").html(`
+  `);
+    initializeMethodsPest();
+    $("#pestTable").tablesorter({
+        theme: "bootstrap",
+        widgets: ["zebra"],
+        widgetOptions: { cssIcon: "tablesorter-header-icon" },
+    });
+}
+function initializeDiseaseView() {
+    $("#entries-content").html(`
     <div class="row d-flex justify-content-between align-items-center mt-5">
       <div class="col">
         <div class="table-responsive">
@@ -143,15 +263,36 @@ import{initializeMethodsPest}from"../classes/Pest.js";import{initializeMethodsDi
           </table>
         </div>
         <div class="text-right">
-          <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
-          <button id="nextBtn" class="btn btn-green">Next</button>
+          <!-- Buttons with Font Awesome icons -->
+      <button id="firstBtn" class="btn btn-green mr-2">
+          <i class="fas fa-angle-double-left"></i> <!-- First Page Icon -->
+      </button>
+      <button id="prevBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-left"></i> <!-- Previous Page Icon -->
+      </button>
+      <button id="nextBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
+      </button>
+      <button id="lastBtn" class="btn btn-green mr-2">
+          <i class="fas fa-angle-double-right"></i> <!-- Last Page Icon -->
+      </button>
+          <span id="paginationInfo" class="fs-5">1/2</span>
         </div>
       </div>
     </div>
     <div class="text-center mt-3">
       <button id="downloadBtn" class="download-btn btn btn-primary">Download Diseases</button>
     </div>
-  `);initializeMethodsDisease();$("#diseaseTable").tablesorter({theme:"bootstrap",widgets:["zebra"],widgetOptions:{cssIcon:"tablesorter-header-icon"}})}function initializeDamageView(){$("#entries-content").html(`
+  `);
+    initializeMethodsDisease();
+    $("#diseaseTable").tablesorter({
+        theme: "bootstrap",
+        widgets: ["zebra"],
+        widgetOptions: { cssIcon: "tablesorter-header-icon" },
+    });
+}
+function initializeDamageView() {
+    $("#entries-content").html(`
     <div class="row d-flex justify-content-between align-items-center mt-5">
       <div class="col">
         <div class="table-responsive">
@@ -175,15 +316,36 @@ import{initializeMethodsPest}from"../classes/Pest.js";import{initializeMethodsDi
           </table>
         </div>
         <div class="text-right">
-          <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
-          <button id="nextBtn" class="btn btn-green">Next</button>
+         <!-- Buttons with Font Awesome icons -->
+      <button id="firstBtn" class="btn btn-green mr-2">
+          <i class="fas fa-angle-double-left"></i> <!-- First Page Icon -->
+      </button>
+      <button id="prevBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-left"></i> <!-- Previous Page Icon -->
+      </button>
+      <button id="nextBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
+      </button>
+      <button id="lastBtn" class="btn btn-green mr-2">
+          <i class="fas fa-angle-double-right"></i> <!-- Last Page Icon -->
+      </button>
+          <span id="paginationInfo" class="fs-5">1/2</span>
         </div>
       </div>
     </div>
     <div class="text-center mt-3">
       <button id="downloadBtn" class="download-btn btn btn-primary">Download Damage Reports</button>
     </div>
-  `);initializeMethodsDamage();$("#diseaseTable").tablesorter({theme:"bootstrap",widgets:["zebra"],widgetOptions:{cssIcon:"tablesorter-header-icon"}})}function initializeSoilHealthsView(){$("#entries-content").html(`
+  `);
+    initializeMethodsDamage();
+    $("#diseaseTable").tablesorter({
+        theme: "bootstrap",
+        widgets: ["zebra"],
+        widgetOptions: { cssIcon: "tablesorter-header-icon" },
+    });
+}
+function initializeSoilHealthsView() {
+    $("#entries-content").html(`
     <div class="row d-flex justify-content-between align-items-center mt-5">
       <div class="col">
         <div class="table-responsive">
@@ -209,12 +371,32 @@ import{initializeMethodsPest}from"../classes/Pest.js";import{initializeMethodsDi
           </table>
         </div>
         <div class="text-right">
-          <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
-          <button id="nextBtn" class="btn btn-green">Next</button>
+       <!-- Buttons with Font Awesome icons -->
+      <button id="firstBtn" class="btn btn-green mr-2">
+          <i class="fas fa-angle-double-left"></i> <!-- First Page Icon -->
+      </button>
+      <button id="prevBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-left"></i> <!-- Previous Page Icon -->
+      </button>
+      <button id="nextBtn" class="btn btn-green mr-2">
+          <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
+      </button>
+      <button id="lastBtn" class="btn btn-green mr-2">
+          <i class="fas fa-angle-double-right"></i> <!-- Last Page Icon -->
+      </button>
+          <span id="paginationInfo" class="fs-5">1/2</span>
         </div>
       </div>
     </div>
     <div class="text-center mt-3">
       <button id="downloadBtn" class="download-btn btn btn-primary">Download Soil Healths</button>
     </div>
-  `);initializeMethodsSoilHealth();$("#soilHealthTable").tablesorter({theme:"bootstrap",widgets:["zebra"],widgetOptions:{cssIcon:"tablesorter-header-icon"}})}export{initializeDataEntriesMenu};
+  `);
+    initializeMethodsSoilHealth();
+    $("#soilHealthTable").tablesorter({
+        theme: "bootstrap",
+        widgets: ["zebra"],
+        widgetOptions: { cssIcon: "tablesorter-header-icon" },
+    });
+}
+export { initializeDataEntriesMenu };

@@ -12,16 +12,49 @@ use Illuminate\Support\Facades\RateLimiter;
 class UserController extends Controller
 {
 
-    public function index()
-    {
-        // Get all users, excluding those with the role 'guest', with admins first, ordered by their ID in descending order
-        $users = User::where('role', '<>', 'guest') // Exclude users with the role 'guest'
-            ->orderByRaw("CASE WHEN role = 'admin' THEN 0 ELSE 1 END") // Order by role, admins first
-            ->orderBy('userId', 'desc') // Then order by userId in descending order
-            ->get();
 
+    public function page(Request $request)
+    {
+        // Retrieve the token from the cookie
+        $token = $request->cookie('auth_token');
+
+        if (!$token) {
+            // Token is missing
+            return response()->json(['message' => 'No Token Provided'], 401);
+        }
+    }
+    public function index(Request $request)
+    {
+        // Get the pageSize and username from the request
+        $pageSize = $request->query('pageSize'); // If not provided, it will be null
+        $username = $request->query('username'); // Optional username search query
+
+        // Build the query
+        $query = User::where('role', '<>', 'guest') // Exclude users with the role 'guest'
+            ->orderByRaw("CASE WHEN role = 'admin' THEN 0 ELSE 1 END") // Order by role, admins first
+            ->orderBy('userId', 'desc'); // Then order by userId in descending order
+
+        // If username is provided, filter by it
+        if ($username) {
+            $query->where(function ($subQuery) use ($username) {
+                $subQuery->where('username', 'like', "%$username%")
+                    ->orWhere('firstName', 'like', "%$username%")
+                    ->orWhere('lastName', 'like', "%$username%");
+            });
+        }
+
+        // If pageSize is provided, paginate the results, otherwise, return all records
+        if ($pageSize) {
+            $users = $query->paginate($pageSize);
+        } else {
+            $users = $query->get(); // Get all records if no pageSize is provided
+        }
+
+        // Return the results as JSON
         return response()->json($users, 200);
     }
+
+
 
 
     public function store(Request $request)
@@ -101,44 +134,28 @@ class UserController extends Controller
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
-    
-        // Define rate limiter key for the username
-        $key = 'login.' . $request->username;
-    
-        // Check if the user has exceeded the maximum login attempts
-        if (RateLimiter::tooManyAttempts($key, 5)) {  // 5 attempts limit
-            $seconds = RateLimiter::availableIn($key); // Get time remaining for the lockout
-            throw ValidationException::withMessages([
-                'username' => ['Too many login attempts. Please try again in ' . $seconds . ' seconds.'],
-            ]);
-        }
-    
+
         // Find the user by username
         $user = User::where('username', $request->username)->first();
-    
+
         // Check if user exists and password is correct
         if (!$user || !Hash::check($request->password, $user->password)) {
-            // Increment the failed login attempts
-            RateLimiter::hit($key, 60); // Lockout period of 1 minute (60 seconds)
             throw ValidationException::withMessages([
                 'username' => ['The provided credentials are incorrect.'],
             ]);
         }
-    
-        // Reset the login attempts after a successful login
-        RateLimiter::clear($key);
-    
+
         // Create a new token
         $token = $user->createToken('Personal Access Token', [], now()->addDays(7))->plainTextToken;
-    
+
         // Set a session cookie to store the token (no expiration set, so it will expire when the browser is closed)
         $cookie = cookie('auth_token', $token, 0, null, null, false, true); // HttpOnly = true
-    
+
         // Return the user and token information with the cookie
         return response()->json([
             'user' => $user,
             'token' => $token
-        ])->cookie($cookie);
+        ])->withCookie($cookie);
     }
 
 

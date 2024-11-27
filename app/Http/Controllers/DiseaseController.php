@@ -7,13 +7,43 @@ use Illuminate\Http\Request;
 
 class DiseaseController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Get all diseases, ordered by their ID in descending order
-        $diseases = Disease::orderBy('diseaseId', 'desc')->get();
+        // Get the search term, page size, and current page from the request
+        $searchTerm = $request->query('search'); // Search term for filtering diseases
+        $pageSize = $request->query('pageSize');
+        $page = $request->query('page', 1); // Current page, default to 1 if not provided
 
-        return response()->json($diseases, 200);
+        // Build the query to retrieve disease reports
+        $query = Disease::query();
+
+        // Apply search filter if a search term is provided
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('barangay', 'like', "%$searchTerm%")
+                    ->orWhere('cropName', 'like', "%$searchTerm%")
+                    ->orWhere('diseaseName', 'like', "%$searchTerm%")
+                    ->orWhere('totalPlanted', 'like', "%$searchTerm%")
+                    ->orWhere('totalAffected', 'like', "%$searchTerm%")
+                    ->orWhere('season', 'like', "%$searchTerm%")
+                    ->orWhere('monthYear', 'like', "%$searchTerm%");
+            });
+        }
+
+        // If no page or search term is provided, return all disease reports without pagination
+        if (!$pageSize) {
+            // Return all disease reports if no pagination or search term is provided
+            $diseaseReports = $query->orderBy('diseaseId', 'desc')->get(); // Fetch all records without pagination
+            return response()->json($diseaseReports, 200);
+        }
+
+        // Apply pagination if page and search term are provided
+        $diseaseReports = $query->orderBy('diseaseId', 'desc')
+            ->paginate($pageSize, ['*'], 'page', $page);
+
+        return response()->json($diseaseReports, 200);
     }
+
 
     public function store(Request $request)
     {
