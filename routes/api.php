@@ -21,14 +21,13 @@ use App\Http\Controllers\RiceProductionController;
 use Illuminate\Support\Facades\Auth;
 
 // Public routes (no authentication required)
+
 Route::post('/login', [UserController::class, 'login']);
 
 Route::get('/crops', [CropController::class, 'index']);
 Route::get('/crops/{id}', [CropController::class, 'show']);
 Route::get('/crop-varieties', [CropVarietyController::class, 'index']);
 Route::get('/barangays', [BarangayController::class, 'index']);
-Route::get('/farmers', [FarmerController::class, 'index']);
-Route::get('/records', [RecordController::class, 'index']);
 Route::get('/riceProductions', [RiceProductionController::class, 'index']);
 Route::get('/productions', [ProductionController::class, 'index']);
 Route::get('/production/total-area-planted/{cropId}/{variety}', [ProductionController::class, 'getTotalAreaPlanted']);
@@ -37,7 +36,6 @@ Route::get('/pests', [PestController::class, 'index']);
 Route::get('/diseases', [DiseaseController::class, 'index']);
 Route::get('/damages', [DamageReportController::class, 'index']);
 Route::get('/soilhealths', [SoilHealthController::class, 'index']);
-Route::get('/concerns', [ConcernController::class, 'index']);
 Route::get('/weatherforecasts', [WeatherForecastController::class, 'index']);
 Route::get('/data-year', [RecordController::class, 'getYearRange']);
 
@@ -52,15 +50,19 @@ Route::get('/weather-keys', function () {
 
 // Protected routes (authentication required)
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/farmers', [FarmerController::class, 'index']);
+    Route::get('/records', [RecordController::class, 'index']);
     // Api for users
-    Route::get('/users', [UserController::class, 'index']);
-    Route::post('/users', [UserController::class, 'store']);
-    Route::get('/users/{id}', [UserController::class, 'show']);
-    Route::put('/users/{id}', [UserController::class, 'update']);
-    Route::delete('/users/{id}', [UserController::class, 'destroy']);
-    Route::post('/logout', [UserController::class, 'logout']);
-    Route::post('/admin/change-password/{user}', [UserController::class, 'adminChangePassword']);
+    Route::middleware('role:admin')->group(function () {
+        Route::get('/users', [UserController::class, 'index']);
+        Route::post('/users', [UserController::class, 'store']);
+        Route::get('/users/{id}', [UserController::class, 'show']);
+        Route::put('/users/{id}', [UserController::class, 'update']);
+        Route::delete('/users/{id}', [UserController::class, 'destroy']);
+        Route::post('/admin/change-password/{user}', [UserController::class, 'adminChangePassword']);
+    });
 
+    Route::post('/logout', [UserController::class, 'logout']);
     // Api for crops
     Route::post('/crops', [CropController::class, 'store']);
     Route::put('/crops/{id}', [CropController::class, 'update']);
@@ -105,7 +107,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/productions-batch', [ProductionController::class, 'storeBatch']);
     Route::delete('/productionsByRecords', [ProductionController::class, 'destroyBatch']);
     Route::post('/productions/update-month-year', [ProductionController::class, 'updateMonthYear']);
-
 
     // Api for prices
     Route::post('/prices', [PriceController::class, 'store']);
@@ -153,6 +154,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/soilhealths/update-month-year', [SoilHealthController::class, 'updateMonthYear']);
 
     // Api for concerns
+    Route::get('/concerns', [ConcernController::class, 'index'])->middleware('role:admin');
     Route::get('/concerns/{id}', [ConcernController::class, 'show']);
     Route::put('/concerns/{id}', [ConcernController::class, 'update']);
     Route::delete('/concerns/{id}', [ConcernController::class, 'destroy']);
@@ -175,11 +177,29 @@ Route::post('/downloads/add', [DownloadController::class, 'addDownload']);
 Route::get('check-user', function (Request $request) {
     $user = $request->attributes->get('user');
 
+    // Check if user is authenticated and valid
+    if (!$user) {
+        return response()->json([
+            'message' => 'Invalid Token',
+        ], 401);
+    }
+
+    // Redirect based on user role
+    $redirectUrl = null;
+    if ($user->role === 'admin') {
+        $redirectUrl = '/management-admin#dashboard';
+    } elseif ($user->role === 'agriculturist') {
+        $redirectUrl = '/management-agriculturist#dashboard';
+    }
+
+    // Return user data and optional redirect URL
     return response()->json([
         'message' => 'Token is valid',
-        'user' => $user
+        'user' => $user,
+        'redirect_url' => $redirectUrl,
     ]);
 })->middleware('check.user.session');
+
 
 // Crops Selection Api
 Route::get('/unique-crop-names', [CropController::class, 'getUniqueCropNames']);

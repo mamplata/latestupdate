@@ -12,9 +12,8 @@ class User {
     }
 
     createUser(user) {
-        const existingUser = users.data.find(
-            (u) => u.username === user.username
-        );
+        console.log(users);
+        const existingUser = users.find((u) => u.username === user.username);
 
         if (existingUser) {
             alert("Username already exists");
@@ -30,7 +29,6 @@ class User {
         })
             .then((response) => response.json())
             .then((data) => {
-                getUser();
                 // Show success message
                 toastr.success("User added successfully.", "Success", {
                     timeOut: 5000,
@@ -44,7 +42,7 @@ class User {
     }
 
     updateUser(updatedUser) {
-        const existingUser = users.data.find(
+        const existingUser = users.find(
             (u) => u.username === updatedUser.username
         );
 
@@ -53,7 +51,7 @@ class User {
             return;
         }
 
-        users.data = users.data.map((user) =>
+        users = users.map((user) =>
             user.userId === updatedUser.userId
                 ? { ...user, ...updatedUser }
                 : user
@@ -68,7 +66,6 @@ class User {
         })
             .then((response) => response.json())
             .then((data) => {
-                getUser();
                 toastr.success("User updated successfully.", "Success", {
                     timeOut: 5000,
                     positionClass: "toast-top-center",
@@ -89,9 +86,7 @@ class User {
         })
             .then((response) => {
                 if (response.status === 204) {
-                    users.data = users.data.filter(
-                        (user) => user.userId !== userId
-                    );
+                    users = users.filter((user) => user.userId !== userId);
                 } else if (response.status === 404) {
                     console.error(`User with ID ${userId} not found.`);
                 } else {

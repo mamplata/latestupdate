@@ -10,37 +10,33 @@ $(document).ready(function () {
     $(document).ready(function () {
         $("#infoBtn").click(function () {
             let htmlScript = `
-       <p>Welcome to the Soil Health Monitoring page. (Maligayang pagdating sa pahina ng Pagsubaybay sa Kalusugan ng Lupa.) This tool allows you to monitor and analyze the average soil health in Cabuyao by tracking key soil parameters. (Ang tool na ito ay nagbibigay-daan sa iyo upang subaybayan at suriin ang karaniwang kalusugan ng lupa sa Cabuyao sa pamamagitan ng pagsubaybay sa mga pangunahing parameter ng lupa.) Follow these instructions to use the tool effectively: (Sundin ang mga tagubiling ito upang magamit ang tool nang epektibo:)</p>
+<p>Welcome to the Soil Health Monitoring page. This tool allows you to monitor and analyze the average soil health in Cabuyao by tracking key soil parameters. Follow these instructions to use the tool effectively:</p>
 
 <ol>
-  <li><strong>Monitor Soil Health:</strong><br>
-  (Subaybayan ang Kalusugan ng Lupa:) This page provides an overview of soil health based on data collected from soil test kits provided to local farmers. (Ang pahinang ito ay nagbibigay ng pangkalahatang ideya ng kalusugan ng lupa batay sa datos na nakalap mula sa mga soil test kit na ibinigay sa mga lokal na magsasaka.) Key parameters monitored include: (Kasama sa mga pangunahing parameter na sinusubaybayan ang:)
+  <li><strong>Monitor Soil Health:</strong><br> This page provides an overview of soil health based on data collected from soil test kits provided to local farmers. Key parameters monitored include:
     <ul>
-      <li><strong>Nitrogen (N):</strong> The amount of nitrogen in the soil, which is essential for plant growth. (<strong>Nitrogen (N):</strong> Ang dami ng nitrogen sa lupa, na mahalaga para sa paglaki ng halaman.)</li>
-      <li><strong>Phosphorus (P):</strong> The amount of phosphorus present, which supports root development and energy transfer. (<strong>Phosphorus (P):</strong> Ang dami ng phosphorus na naroroon, na sumusuporta sa pagbuo ng ugat at paglipat ng enerhiya.)</li>
-      <li><strong>Potassium (K):</strong> The amount of potassium, which helps in disease resistance and overall plant health. (<strong>Potassium (K):</strong> Ang dami ng potassium, na tumutulong sa paglaban sa sakit at pangkalahatang kalusugan ng halaman.)</li>
-      <li><strong>pH Levels:</strong> The acidity or alkalinity of the soil, affecting nutrient availability and microbial activity. (<strong>Antas ng pH:</strong> Ang kaasiman o kaalkalinahan ng lupa, na nakakaapekto sa pagkakaroon ng sustansya at aktibidad ng mikrobyo.)</li>
-      <li><strong>General Rating:</strong> An overall rating of soil fertility based on the combined results of NPK and pH levels. (<strong>Pangkalahatang Rating:</strong> Isang pangkalahatang rating ng kasapatan ng lupa batay sa pinagsamang resulta ng NPK at antas ng pH.)</li>
+      <li><strong>Nitrogen (N):</strong> The amount of nitrogen in the soil, which is essential for plant growth.</li>
+      <li><strong>Phosphorus (P):</strong> The amount of phosphorus present, which supports root development and energy transfer.</li>
+      <li><strong>Potassium (K):</strong> The amount of potassium, which helps in disease resistance and overall plant health.</li>
+      <li><strong>pH Levels:</strong> The acidity or alkalinity of the soil, affecting nutrient availability and microbial activity.</li>
+      <li><strong>General Rating:</strong> An overall rating of soil fertility based on the combined results of NPK and pH levels.</li>
     </ul>
   </li>
 
-  <li><strong>View Average Soil Health:</strong><br>
-  (Tingnan ang Karaniwang Kalusugan ng Lupa:) The page displays average values for NPK, pH, and general rating across different fields and areas within Cabuyao. (Ipinapakita ng pahina ang karaniwang mga halaga ng NPK, pH, at pangkalahatang rating sa iba't ibang mga bukid at lugar sa loob ng Cabuyao.) This helps in understanding the overall soil health in the city. (Ito ay tumutulong sa pag-unawa sa pangkalahatang kalusugan ng lupa sa lungsod.)</li>
+  <li><strong>View Average Soil Health:</strong><br> The page displays average values for NPK, pH, and general rating across different fields and areas within Cabuyao. This helps in understanding the overall soil health in the city.</li>
 
-  <li><strong>Update Soil Health Records:</strong><br>
-  (I-update ang mga Rekord ng Kalusugan ng Lupa:) Regular updates are made based on new soil test results. (Ang regular na pag-update ay ginagawa batay sa mga bagong resulta ng pagsusuri sa lupa.) Farmers are encouraged to submit their soil test data to ensure continuous monitoring and accurate assessments. (Ang mga magsasaka ay hinihikayat na magsumite ng kanilang datos sa pagsusuri ng lupa upang matiyak ang tuloy-tuloy na pagsubaybay at tumpak na pagtatasa.)</li>
+  <li><strong>Update Soil Health Records:</strong><br> Regular updates are made based on new soil test results. Farmers are encouraged to submit their soil test data to ensure continuous monitoring and accurate assessments.</li>
 
-  <li><strong>Download Soil Health Data:</strong><br>
-  (I-download ang Datos ng Kalusugan ng Lupa:) You can download the soil health data in various formats for offline review and analysis: (Maaari mong i-download ang datos ng kalusugan ng lupa sa iba't ibang format para sa pagsusuri at pagrepaso offline:)
+  <li><strong>Download Soil Health Data:</strong><br> You can download the soil health data in various formats for offline review and analysis:
     <ul>
-      <li><strong>CSV:</strong> Download raw soil health data in CSV format for use in data analysis tools. (<strong>CSV:</strong> I-download ang hilaw na datos ng kalusugan ng lupa sa format ng CSV para magamit sa mga tool sa pagsusuri ng datos.)</li>
-      <li><strong>Excel:</strong> Download the data in Excel format, including formatted tables for easy review and manipulation. (<strong>Excel:</strong> I-download ang datos sa format ng Excel, kasama ang mga naka-format na talahanayan para sa madaling pagsusuri at manipulasyon.)</li>
-      <li><strong>PDF:</strong> Download a summary of soil health data through a table, in PDF format for sharing or reporting. (<strong>PDF:</strong> I-download ang buod ng datos ng kalusugan ng lupa sa isang talahanayan, sa format na PDF para sa pagbabahagi o pag-uulat.)</li>
+      <li><strong>CSV:</strong> Download raw soil health data in CSV format for use in data analysis tools.</li>
+      <li><strong>Excel:</strong> Download the data in Excel format, including formatted tables for easy review and manipulation.</li>
+      <li><strong>PDF:</strong> Download a summary of soil health data through a table, in PDF format for sharing or reporting.</li>
     </ul>
   </li>
 </ol>
 
-<p>This tool is designed to provide comprehensive monitoring of soil health in Cabuyao. (Ang tool na ito ay idinisenyo upang magbigay ng komprehensibong pagsubaybay sa kalusugan ng lupa sa Cabuyao.) By utilizing the provided data and download options, you can keep track of soil conditions and make informed decisions to maintain and improve soil fertility in the area. (Sa pamamagitan ng paggamit ng ibinigay na datos at mga opsyon sa pag-download, maaari mong subaybayan ang kondisyon ng lupa at gumawa ng mahusay na mga desisyon upang mapanatili at mapabuti ang kasapatan ng lupa sa lugar.)</p>
+<p>This tool is designed to provide comprehensive monitoring of soil health in Cabuyao. By utilizing the provided data and download options, you can keep track of soil conditions and make informed decisions to maintain and improve soil fertility in the area.</p>
 
         `;
 
@@ -234,28 +230,28 @@ $(document).ready(function () {
                         nitrogen: {
                             level: "High",
                             description:
-                                "Nitrogen is crucial for rice, promoting leaf and tiller growth, and enhancing grain yield. Rice plants typically require higher nitrogen levels, particularly during the vegetative stage for robust growth and development. (Mahalaga ang nitrogen para sa palay, na nagtataguyod ng paglaki ng dahon at suwi, at nagpapataas ng ani ng butil. Karaniwang nangangailangan ang palay ng mas mataas na antas ng nitrogen, lalo na sa yugto ng vegetative para sa matatag na paglaki at pag-unlad.)",
+                                "Nitrogen is crucial for rice, promoting leaf and tiller growth, and enhancing grain yield. Rice plants typically require higher nitrogen levels, particularly during the vegetative stage for robust growth and development.",
                         },
                         phosphorus: {
                             level: "Moderate",
                             description:
-                                "Phosphorus supports root development and early growth in rice plants. It is also important for energy transfer and grain formation. Rice usually needs moderate amounts of phosphorus. (Ang posporus ay sumusuporta sa pagbuo ng ugat at maagang paglaki ng palay. Mahalaga rin ito para sa paglipat ng enerhiya at pagbuo ng butil. Karaniwang nangangailangan ang palay ng katamtamang dami ng posporus.)",
+                                "Phosphorus supports root development and early growth in rice plants. It is also important for energy transfer and grain formation. Rice usually needs moderate amounts of phosphorus.",
                         },
                         potassium: {
                             level: "Moderate to High",
                             description:
-                                "Potassium is essential for improving disease resistance, water regulation, and grain quality in rice. It helps in strengthening plant cells and is important for grain filling, so moderate to high levels of potassium are required. (Ang potasa ay mahalaga para mapabuti ang resistensya sa sakit, regulasyon ng tubig, at kalidad ng butil sa palay. Tumutulong ito sa pagpapalakas ng mga selula ng halaman at mahalaga para sa pagpuno ng butil, kaya't kinakailangan ang katamtaman hanggang mataas na antas ng potasa.)",
+                                "Potassium is essential for improving disease resistance, water regulation, and grain quality in rice. It helps in strengthening plant cells and is important for grain filling, so moderate to high levels of potassium are required.",
                         },
                     },
                     ph: {
                         level: "Moderate",
                         description:
-                            "A pH level between 5.5 and 7.0 is considered moderate, supporting nutrient availability for rice. (Ang antas ng pH sa pagitan ng 5.5 at 7.0 ay itinuturing na katamtaman, na sumusuporta sa pagkakaroon ng sustansya para sa palay.)",
+                            "A pH level between 5.5 and 7.0 is considered moderate, supporting nutrient availability for rice.",
                     },
                     generalRating: {
                         rating: "Moderate",
                         description:
-                            "A general rating of 'Moderate' is optimal for rice. High nutrient levels can lead to lodging. (Ang pangkalahatang rating na 'Katamtaman' ay pinakamainam para sa palay. Ang mataas na antas ng sustansya ay maaaring magdulot ng pagbagsak ng halaman.)",
+                            "A general rating of 'Moderate' is optimal for rice. High nutrient levels can lead to lodging.",
                     },
                 },
                 vegetables: {
@@ -263,28 +259,28 @@ $(document).ready(function () {
                         nitrogen: {
                             level: "Moderate to High",
                             description:
-                                "Vegetables generally require balanced NPK ratios. Leafy greens benefit from higher nitrogen levels, while root vegetables thrive on higher potassium. (Ang mga gulay ay karaniwang nangangailangan ng balanseng NPK ratio. Ang mga madahong gulay ay nakikinabang sa mas mataas na antas ng nitrogen, habang ang mga ugat na gulay ay umuunlad sa mas mataas na potasa.)",
+                                "Vegetables generally require balanced NPK ratios. Leafy greens benefit from higher nitrogen levels, while root vegetables thrive on higher potassium.",
                         },
                         phosphorus: {
                             level: "Moderate",
                             description:
-                                "Phosphorus is vital for root development and flower formation in many vegetable crops. (Mahalaga ang posporus para sa pagbuo ng ugat at pagbuo ng bulaklak sa maraming uri ng gulay.)",
+                                "Phosphorus is vital for root development and flower formation in many vegetable crops.",
                         },
                         potassium: {
                             level: "Moderate",
                             description:
-                                "Adequate potassium is crucial for water regulation and overall plant health. (Ang sapat na potasa ay mahalaga para sa regulasyon ng tubig at pangkalahatang kalusugan ng halaman.)",
+                                "Adequate potassium is crucial for water regulation and overall plant health.",
                         },
                     },
                     ph: {
                         level: "Moderate",
                         description:
-                            "A pH of 6.0 to 7.0 is considered moderate and is ideal for most vegetables, promoting nutrient uptake. (Ang pH na 6.0 hanggang 7.0 ay itinuturing na katamtaman at perpekto para sa karamihan ng mga gulay, na nagtataguyod ng pagsipsip ng sustansya.)",
+                            "A pH of 6.0 to 7.0 is considered moderate and is ideal for most vegetables, promoting nutrient uptake.",
                     },
                     generalRating: {
                         rating: "High",
                         description:
-                            "Aim for a general rating of 'High' to ensure optimal growth and yield for most vegetable crops. (Layuning magkaroon ng pangkalahatang rating na 'Mataas' upang matiyak ang pinakamainam na paglaki at ani ng karamihan sa mga pananim na gulay.)",
+                            "Aim for a general rating of 'High' to ensure optimal growth and yield for most vegetable crops.",
                     },
                 },
                 fruits: {
@@ -292,28 +288,28 @@ $(document).ready(function () {
                         nitrogen: {
                             level: "Moderate",
                             description:
-                                "Fruits generally benefit from moderate nitrogen levels to support leaf growth without sacrificing fruit development. (Ang mga prutas ay karaniwang nakikinabang sa katamtamang antas ng nitrogen upang suportahan ang paglaki ng dahon nang hindi isinasakripisyo ang pagbuo ng prutas.)",
+                                "Fruits generally benefit from moderate nitrogen levels to support leaf growth without sacrificing fruit development.",
                         },
                         phosphorus: {
                             level: "Moderate",
                             description:
-                                "Important during the flowering stage to promote fruit set and development. (Mahalaga sa yugto ng pamumulaklak upang itaguyod ang pagbuo at pag-unlad ng prutas.)",
+                                "Important during the flowering stage to promote fruit set and development.",
                         },
                         potassium: {
                             level: "High",
                             description:
-                                "Essential for fruit quality and yield, especially during the maturation phase. (Mahalaga para sa kalidad at ani ng prutas, lalo na sa yugto ng paghinog.)",
+                                "Essential for fruit quality and yield, especially during the maturation phase.",
                         },
                     },
                     ph: {
                         level: "Moderate",
                         description:
-                            "A slightly acidic pH of 6.0 to 6.8 is considered moderate for many fruit-bearing plants, helping to maximize nutrient absorption. (Ang bahagyang acidic na pH na 6.0 hanggang 6.8 ay itinuturing na katamtaman para sa maraming halaman na namumunga, na tumutulong upang mapalaki ang pagsipsip ng sustansya.)",
+                            "A slightly acidic pH of 6.0 to 6.8 is considered moderate for many fruit-bearing plants, helping to maximize nutrient absorption.",
                     },
                     generalRating: {
                         rating: "Moderate to High",
                         description:
-                            "A general rating of 'Moderate' to 'High' is recommended for fruit crops, as it ensures good growth and quality. (Ang pangkalahatang rating na 'Katamtaman' hanggang 'Mataas' ay inirerekomenda para sa mga pananim na prutas, dahil ito ay nagsisiguro ng mahusay na paglaki at kalidad.)",
+                            "A general rating of 'Moderate' to 'High' is recommended for fruit crops, as it ensures good growth and quality.",
                     },
                 },
             };

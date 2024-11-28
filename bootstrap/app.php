@@ -19,10 +19,13 @@ return Application::configure(basePath: dirname(__DIR__))
             AttachSanctumTokenFromCookie::class,
         ]);
         $middleware->web(prepend: [
+            \Illuminate\Session\Middleware\StartSession::class,
             AttachSanctumTokenFromCookie::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-            \Illuminate\Session\Middleware\StartSession::class,
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            Laravel\Sanctum\Http\Middleware\AuthenticateSession::class,
+            Illuminate\Cookie\Middleware\EncryptCookies::class,
+            Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
         ]);
         $middleware->alias([
             'check.user.session' => CheckUserSession::class,

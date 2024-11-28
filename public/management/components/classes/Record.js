@@ -256,11 +256,12 @@ function initializeMethodsRecord(dataType) {
 
     async function displayRecords(recordName = null) {
         try {
-            // Construct the API query parameters
-            let query = `/api/records/${dataType}?page=${currentPage}&pageSize=${pageSize}`;
+            let query = `/api/records/${dataType}?page=${currentPage}&pageSize=${pageSize}&userRole=${user.role}&userId=${user.userId}`;
             if (recordName) {
                 query += `&recordName=${encodeURIComponent(recordName)}`;
             }
+
+            console.log(user.userId);
 
             // Fetch records from the server
             const response = await fetch(query, {

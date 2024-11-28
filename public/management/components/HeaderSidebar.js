@@ -2,57 +2,6 @@ export let user;
 import Dialog from "./helpers/Dialog.js";
 
 $(document).ready(function () {
-    $("body").prepend(`
-        <!-- Loading screen -->
-        <div id="loadingScreen" class="loading-overlay1">
-            <div class="spinner-container1">
-                <div class="spinner-grow" role="status"></div>
-                <div class="spinner-grow" role="status"></div>
-                <div class="spinner-grow" role="status"></div>
-                <p class="loading-message1">Please wait while we load content...</p>
-            </div>
-        </div>
-    `);
-
-    function showLoadingScreen() {
-        $("#loadingScreen").fadeIn();
-        // Optionally, set a timeout to auto-hide after a certain time
-        setTimeout(function () {
-            $("#loadingScreen").fadeOut();
-        }, 2000); // 2 seconds delay
-    }
-
-    // Show loading screen on initial load
-    $(document).ready(function () {
-        showLoadingScreen();
-    });
-
-    // Show loading screen on URL change (for SPA)
-    $(window).on("popstate", function () {
-        showLoadingScreen();
-    });
-
-    // If you're using a routing library, you might need to bind this to the route change event.
-    // Example for a hypothetical router event:
-    $(document).on("routeChange", function () {
-        showLoadingScreen();
-    });
-
-    // Prevent loading screen on logout
-    $(".logout a").on("click", function (event) {
-        // Prevent the loading screen from showing
-        event.stopPropagation(); // Prevents event from bubbling up
-        // Proceed with the logout process
-        // Optionally, you can perform additional actions here, like confirming logout, etc.
-    });
-
-    // Show loading screen only if it's not a logout action
-    $(document).on("click", "a", function (event) {
-        if (!$(this).closest(".logout").length) {
-            showLoadingScreen();
-        }
-    });
-
     async function getCsrfToken() {
         return $('meta[name="csrf-token"]').attr("content");
     }
@@ -89,7 +38,28 @@ $(document).ready(function () {
             if (response.message !== "Invalid Token") {
                 user = response.user;
                 console.log(user.role);
-                load();
+
+                // If user exists, show loading screen and then load content
+                if (user) {
+                    $("body").prepend(`
+                        <!-- Loading screen -->
+                        <div id="loadingScreen" class="loading-overlay1">
+                            <div class="spinner-container1">
+                                <div class="spinner-grow" role="status"></div>
+                                <div class="spinner-grow" role="status"></div>
+                                <div class="spinner-grow" role="status"></div>
+                                <p class="loading-message1">Please wait while we load content...</p>
+                            </div>
+                        </div>
+                    `);
+                    showLoadingScreen();
+                }
+
+                // If redirect_url is set, redirect the user
+                if (response.redirect_url) {
+                    window.location.href = response.redirect_url;
+                    load();
+                }
             } else {
                 window.location.href = "/management-login";
             }
@@ -99,15 +69,55 @@ $(document).ready(function () {
         }
     }
 
+    // Show loading screen function
+    function showLoadingScreen() {
+        $("#loadingScreen").fadeIn();
+        // Optionally, set a timeout to auto-hide after a certain time
+        setTimeout(function () {
+            $("#loadingScreen").fadeOut();
+        }, 2000); // 2 seconds delay
+    }
+
     // Initialize CSRF token handling and token validation
     initialize();
 
-    function load() {
-        // Set default hash to #dashboard if no hash is present
-        if (!window.location.hash) {
-            window.location.hash = "#dashboard";
-        }
+    // Prevent loading screen on logout
+    $(".logout a").on("click", function (event) {
+        // Prevent the loading screen from showing
+        event.stopPropagation(); // Prevents event from bubbling up
+        // Proceed with the logout process
+        // Optionally, you can perform additional actions here, like confirming logout, etc.
+    });
 
+    // Show loading screen only if it's not a logout action
+    $(document).on("click", "a", function (event) {
+        if (!$(this).closest(".logout").length && user) {
+            showLoadingScreen();
+        }
+    });
+
+    // Show loading screen on initial load
+    $(window).on("load", function () {
+        if (user) {
+            showLoadingScreen();
+        }
+    });
+
+    // Show loading screen on URL change (for SPA)
+    $(window).on("popstate", function () {
+        if (user) {
+            showLoadingScreen();
+        }
+    });
+
+    // Example for a hypothetical router event:
+    $(document).on("routeChange", function () {
+        if (user) {
+            showLoadingScreen();
+        }
+    });
+
+    function load() {
         // Function to load content from a JavaScript module file into main content area
         async function loadContent(url) {
             try {
@@ -124,7 +134,7 @@ $(document).ready(function () {
         }
 
         $("head").prepend(`
-            <link rel="icon" href="../../../img/logo.webp" type="image/png">   
+            <link rel="icon" href="../../../img/logo.webp" type="image/webp">   
         `);
         $("body").prepend(`
             <div class="wrapper">
@@ -149,7 +159,7 @@ $(document).ready(function () {
                 </div>
         
                 <!-- Sidebar and Content Wrapper -->
-                <div class="content-wrapper d-flex justify-content-between">
+                <div class="content-wrapper d-flex">
                     <!-- Sidebar -->
                     <nav id="sidebar" class="sidebar collapse">
                         <!-- Close button for small screens -->
@@ -176,7 +186,7 @@ $(document).ready(function () {
                     </nav>
         
                     <!-- Main Content Area -->
-                    <main role="main" id="main-content" class="content col-lg-10">
+                    <main role="main" id="main-content" class="content ml-sm-auto col-lg-10 pr-4">
                         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <h1 class="h2">Main Content</h1>
                         </div>

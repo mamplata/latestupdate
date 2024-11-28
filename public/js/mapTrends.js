@@ -23,45 +23,44 @@ let currentType;
 $(document).ready(function () {
     $("#infoBtn").click(function () {
         let e = `
-  <p>Welcome to the Map Trends page. (Maligayang pagdating sa pahina ng Map Trends.) This tool helps you analyze and visualize agricultural trends by barangay location using geo-tagging. (Ang tool na ito ay tumutulong sa iyo na suriin at makita ang mga uso sa agrikultura batay sa lokasyon ng barangay gamit ang geo-tagging.) Follow these instructions to use the tool effectively: (Sundin ang mga tagubiling ito upang magamit ang tool nang epektibo:)</p>
+<p>Welcome to the Map Trends page. This tool helps you analyze and visualize agricultural trends by barangay location using geo-tagging. Follow these instructions to use the tool effectively:</p>
 
 <ol>
   <li><strong>Select Your Parameters:</strong><br>
-  (Piliin ang Iyong Mga Parameter:) Use the dropdown menus and filters to choose the specific criteria you want to analyze, such as production volume, pest occurrences, or disease incidents. (Gamitin ang mga dropdown menu at filter upang pumili ng mga partikular na pamantayan na nais mong suriin, tulad ng dami ng produksyon, mga insidente ng peste, o mga insidente ng sakit.)</li>
+  Use the dropdown menus and filters to choose the specific criteria you want to analyze, such as production volume, pest occurrences, or disease incidents.</li>
 
   <li><strong>View Map Trends:</strong><br>
-  (Tingnan ang Mga Uso sa Mapa:) The map will display barangays with geo-tags indicating the level of production volume, pest, and disease occurrences. (Ipinapakita ng mapa ang mga barangay na may geo-tag na nagpapahiwatig ng antas ng dami ng produksyon, peste, at mga insidente ng sakit.) Areas are categorized as: (Ang mga lugar ay ikinategorya bilang:)
+  The map will display barangays with geo-tags indicating the level of production volume, pest, and disease occurrences. Areas are categorized as:
     <ul>
-      <li><strong>Low:</strong> Indicating minimal activity or low values in the selected criteria. (<strong>Mababa:</strong> Nagpapahiwatig ng minimal na aktibidad o mababang halaga sa napiling pamantayan.)</li>
-      <li><strong>Moderate:</strong> Showing average levels of activity or medium values. (<strong>Katamtaman:</strong> Nagpapakita ng katamtamang antas ng aktibidad o mga medium na halaga.)</li>
-      <li><strong>High:</strong> Highlighting areas with high levels of production, pest, or disease occurrences. (<strong>Mataas:</strong> Binibigyang-diin ang mga lugar na may mataas na antas ng produksyon, peste, o mga insidente ng sakit.)</li>
+      <li><strong>Low:</strong> Indicating minimal activity or low values in the selected criteria.</li>
+      <li><strong>Moderate:</strong> Showing average levels of activity or medium values.</li>
+      <li><strong>High:</strong> Highlighting areas with high levels of production, pest, or disease occurrences.</li>
     </ul>
   </li>
 
   <li><strong>Analyze Data:</strong><br>
-  (Suriin ang Datos:) Utilize the map's visual representation to identify trends and patterns in different barangays. (Gamitin ang visual na representasyon ng mapa upang matukoy ang mga uso at pattern sa iba't ibang barangay.) Click on specific geo-tags or areas for detailed information about production volume, pest occurrences, or disease incidents. (I-click ang mga partikular na geo-tag o lugar para sa detalyadong impormasyon tungkol sa dami ng produksyon, mga insidente ng peste, o mga insidente ng sakit.)</li>
+  Utilize the map's visual representation to identify trends and patterns in different barangays. Click on specific geo-tags or areas for detailed information about production volume, pest occurrences, or disease incidents.</li>
 
   <li><strong>Explore Detailed Information:</strong><br>
-  (Galugarin ang Detalyadong Impormasyon:) Clicking on a geo-tagged barangay will open a modal with more detailed information, such as: (Ang pag-click sa isang geo-tagged na barangay ay magbubukas ng isang modal na may mas detalyadong impormasyon, tulad ng:)
+  Clicking on a geo-tagged barangay will open a modal with more detailed information, such as:
     <ul>
-      <li><strong>Production Volume:</strong> Detailed statistics on crop production in that barangay. (<strong>Dami ng Produksyon:</strong> Mga detalyadong istatistika tungkol sa produksyon ng pananim sa barangay na iyon.)</li>
-      <li><strong>Pest and Disease Data:</strong> Information on pest and disease occurrences and their impact. (<strong>Datos ng Peste at Sakit:</strong> Impormasyon tungkol sa mga insidente ng peste at sakit at ang kanilang epekto.)</li>
-      <li><strong>Additional Insights:</strong> Other relevant data points to help understand the local agricultural situation. (<strong>Karagdagang Kaalaman:</strong> Iba pang mahahalagang datos upang maunawaan ang lokal na kalagayan ng agrikultura.)</li>
+      <li><strong>Production Volume:</strong> Detailed statistics on crop production in that barangay.</li>
+      <li><strong>Pest and Disease Data:</strong> Information on pest and disease occurrences and their impact.</li>
+      <li><strong>Additional Insights:</strong> Other relevant data points to help understand the local agricultural situation.</li>
     </ul>
   </li>
 
   <li><strong>Download Data:</strong><br>
-  (I-download ang Datos:) You can download the data in various formats for further analysis: (Maaari mong i-download ang datos sa iba't ibang format para sa karagdagang pagsusuri:)
+  You can download the data in various formats for further analysis:
     <ul>
-      <li><strong>CSV:</strong> Download raw data in CSV format for use in spreadsheet applications or data analysis tools. (<strong>CSV:</strong> I-download ang hilaw na datos sa format ng CSV para magamit sa mga aplikasyon ng spreadsheet o mga tool sa pagsusuri ng datos.)</li>
-      <li><strong>Excel:</strong> Download the data in Excel format, which includes formatted tables for easy review and manipulation. (<strong>Excel:</strong> I-download ang datos sa format ng Excel, na naglalaman ng mga naka-format na talahanayan para sa madaling pagsusuri at manipulasyon.)</li>
-      <li><strong>PDF:</strong> Download charts and visualizations in PDF format for easy sharing and reporting. (<strong>PDF:</strong> I-download ang mga chart at visualisasyon sa format ng PDF para sa madaling pagbabahagi at pag-uulat.)</li>
+      <li><strong>CSV:</strong> Download raw data in CSV format for use in spreadsheet applications or data analysis tools.</li>
+      <li><strong>Excel:</strong> Download the data in Excel format, which includes formatted tables for easy review and manipulation.</li>
+      <li><strong>PDF:</strong> Download charts and visualizations in PDF format for easy sharing and reporting.</li>
     </ul>
   </li>
 </ol>
 
-<p>This tool is designed to provide a comprehensive view of agricultural trends by barangay, utilizing geo-tagging to make localized data analysis easier and more informative. (Ang tool na ito ay idinisenyo upang magbigay ng komprehensibong pananaw ng mga uso sa agrikultura sa bawat barangay, gamit ang geo-tagging upang gawing mas madali at mas makabuluhan ang lokal na pagsusuri ng datos.) The download options allow you to export and work with your data in multiple formats. (Ang mga opsyon sa pag-download ay nagpapahintulot sa iyo na i-export at gamitin ang iyong datos sa iba't ibang format.)</p>
-
+<p>This tool is designed to provide a comprehensive view of agricultural trends by barangay, utilizing geo-tagging to make localized data analysis easier and more informative. The download options allow you to export and work with your data in multiple formats.</p>
     `;
         Dialog.showInfoModal(e);
     });
@@ -217,14 +216,10 @@ function interpret(e, a, t) {
     let u = `
 <div class="container mt-5">
     <h3 class="text-success" style="font-size: 1.8rem;">
-        ${t.replace(/\b\w/g, (e) =>
-            e.toUpperCase()
-        )} for <strong>${o}</strong> (${t.replace(/\b\w/g, (e) =>
-        e.toUpperCase()
-    )} para sa <strong>${o}</strong>)
+        ${t.replace(/\b\w/g, (e) => e.toUpperCase())} for <strong>${o}</strong>
     </h3>
     <p class="text-muted">
-        This analysis is about ${o}'s performance in the barangay, aiding in resource allocation metrics and decision-making based on trends and growth rates. (Ang pagsusuring ito ay tungkol sa pagganap ng ${o} sa barangay, na tumutulong sa mga sukatan ng alokasyon ng mapagkukunan at paggawa ng desisyon batay sa mga uso at antas ng paglago.)
+        This analysis is about ${o}'s performance in the barangay, aiding in resource allocation metrics and decision-making based on trends and growth rates. 
     </p>
 
     <div class="row">
@@ -238,7 +233,7 @@ function interpret(e, a, t) {
         <div class="col-md-4">
             <div class="card" style="background-color: #e0f7fa;">
                 <div class="card-header" style="background-color: #4CAF50; color: white;">
-                    <h5 class="mb-0">Ranking (Ranggo)</h5>
+                    <h5 class="mb-0">Ranking</h5>
                 </div>
                 <ul class="list-group list-group-flush">
                     ${d}
@@ -249,7 +244,7 @@ function interpret(e, a, t) {
             </div>
         </div>
     </div>
-    <small class="text-muted">Note: Findings are based on available data only. (Tandaan: Ang mga natuklasan ay batay lamang sa magagamit na datos.)</small>
+    <small class="text-muted">Note: Findings are based on available data only. </small>
 </div>
 `;
 

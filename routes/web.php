@@ -95,8 +95,7 @@ Route::get('/print-map-trends{any?}', function () {
     return redirect()->route('print-map-trends');
 })->where('any', '.*');
 
-
-Route::middleware(['web', 'auth:sanctum'])->group(function () {
+Route::middleware(['web'])->group(function () {
     Route::get('/management-admin', function () {
         return view('management.admin.index');
     })->name('admin');
@@ -104,7 +103,6 @@ Route::middleware(['web', 'auth:sanctum'])->group(function () {
     Route::get('/management-agriculturist', function () {
         return view('management.agriculturist.index');
     })->name('agriculturist');
-    Route::get('/management-login',  [UserController::class, 'page'])->name('login');
 });
 
 Route::get('/management-login', function () {

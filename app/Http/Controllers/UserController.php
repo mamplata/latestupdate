@@ -6,23 +6,13 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
-
-
-    public function page(Request $request)
-    {
-        // Retrieve the token from the cookie
-        $token = $request->cookie('auth_token');
-
-        if (!$token) {
-            // Token is missing
-            return response()->json(['message' => 'No Token Provided'], 401);
-        }
-    }
     public function index(Request $request)
     {
         // Get the pageSize and username from the request
@@ -53,9 +43,6 @@ class UserController extends Controller
         // Return the results as JSON
         return response()->json($users, 200);
     }
-
-
-
 
     public function store(Request $request)
     {
@@ -126,7 +113,6 @@ class UserController extends Controller
         }
     }
 
-
     public function login(Request $request)
     {
         // Validate request input
@@ -155,9 +141,8 @@ class UserController extends Controller
         return response()->json([
             'user' => $user,
             'token' => $token
-        ])->withCookie($cookie);
+        ])->cookie($cookie);
     }
-
 
     /**
      * Log out the user.

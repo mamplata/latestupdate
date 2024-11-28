@@ -171,7 +171,7 @@ function initializeCropView() {
       <button id="nextBtn" class="btn btn-green mr-2">
           <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
       </button>
-        <span id="paginationInfo" class="fs-5">1/2</span>
+        <span id="paginationInfo" class="fs-5">1/1</span>
       </div>
     </div>
   </div>
@@ -281,7 +281,7 @@ function initializeCropVarietyView() {
       <button id="nextBtn" class="btn btn-green mr-2">
           <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
       </button>
-                <span id="paginationInfo" class="fs-5">1/2</span>
+                <span id="paginationInfo" class="fs-5">1/1</span>
               </div>
           </div>
       </div>
@@ -348,7 +348,7 @@ function initializeBarangayView() {
       <button id="nextBtn" class="btn btn-green mr-2">
           <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
       </button>
-        <span id="paginationInfo" class="fs-5">1/2</span>
+        <span id="paginationInfo" class="fs-5">1/1</span>
       </div>
     </div>
   </div>
@@ -426,7 +426,7 @@ function initializeFarmerView() {
       <button id="nextBtn" class="btn btn-green mr-2">
           <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
       </button>
-          <span id="paginationInfo" class="fs-5">1/2</span>
+          <span id="paginationInfo" class="fs-5">1/1</span>
         </div>
       </div>
     </div>
@@ -517,7 +517,7 @@ function initializeRiceProductionView() {
       <button id="nextBtn" class="btn btn-green mr-2">
           <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
       </button>
-        <span id="paginationInfo" class="fs-5">1/2</span>
+        <span id="paginationInfo" class="fs-5">1/1</span>
       </div>
     </div>
   </div>
@@ -662,7 +662,7 @@ function initializeHVCProductionView() {
       <button id="nextBtn" class="btn btn-green mr-2">
           <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
       </button>
-        <span id="paginationInfo" class="fs-5">1/2</span>
+        <span id="paginationInfo" class="fs-5">1/1</span>
         </div>
       </div>
     </div>
@@ -811,7 +811,7 @@ function initializePriceMonitoringView() {
       <button id="nextBtn" class="btn btn-green mr-2">
           <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
       </button>
-          <span id="paginationInfo" class="fs-5">1/2</span>
+          <span id="paginationInfo" class="fs-5">1/1</span>
             </div>
           </div>
         </div>
@@ -952,7 +952,7 @@ function initializePestReportsView() {
       <button id="nextBtn" class="btn btn-green mr-2">
           <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
       </button>
-            <span id="paginationInfo" class="fs-5">1/2</span>
+            <span id="paginationInfo" class="fs-5">1/1</span>
           </div>
         </div>
       </div>
@@ -1111,7 +1111,7 @@ function initializeDamageReportsView() {
       <button id="nextBtn" class="btn btn-green mr-2">
           <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
       </button>
-          <span id="paginationInfo" class="fs-5">1/2</span>
+          <span id="paginationInfo" class="fs-5">1/1</span>
         </div>
       </div>
     </div>
@@ -1256,7 +1256,7 @@ function initializeSoilHealthView() {
       <button id="nextBtn" class="btn btn-green mr-2">
           <i class="fas fa-chevron-right"></i> <!-- Next Page Icon -->
       </button>
-          <span id="paginationInfo" class="fs-5">1/2</span>
+          <span id="paginationInfo" class="fs-5">1/1</span>
         </div>
       </div>
     </div>

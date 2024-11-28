@@ -13,36 +13,36 @@ import Dialog from "../management/components/helpers/Dialog.js";
 $(document).ready(function () {
     $("#infoBtn").click(function () {
         let e = `
- <div>
-     <p>Welcome to our Seasonal Trends page (Maligayang pagdating sa aming Pahina ng Mga Panahonang Trend). To effectively use this tool, follow these instructions (Upang magamit nang maayos ang tool na ito, sundin ang mga tagubilin na ito):</p>
+        <div>
+            <p>Welcome to our Seasonal Trends page. To effectively use this tool, follow these instructions:</p>
+       
+           <ol>
+             <li><strong>Select Your Parameters:</strong><br>
+             Use the dropdown menus and filters to choose the crops, seasons, or other criteria you wish to analyze.</li>
+       
+             <li><strong>View Trends:</strong><br>
+             Explore the displayed charts and tables to see trends in crop production volumes, prices, income, and pest/disease occurrences etc.</li>
+       
+             <li><strong>Analyze Data:</strong><br>
+             Utilize the provided data to observe patterns, compare different crops, and make strategic decisions for crop management.</li>
+       
+             <li><strong>Monitor Growth:</strong><br>
+             Track the growth of selected crops and assess their performance over time to improve agricultural practices.</li>
+       
+             <li><strong>Download Data:</strong><br>
+             You can download the data in various formats for further analysis:
+               <ul>
+                 <li><strong>CSV:</strong> Download raw data in CSV format for use in spreadsheet applications or data analysis tools.</li>
+                 <li><strong>Excel:</strong> Download the data in Excel format, which includes formatted tables for easy review and manipulation.</li>
+                 <li><strong>PDF:</strong> Download charts and visualizations in PDF format for easy sharing and reporting.</li>
+               </ul>
+             </li>
+           </ol>
+       
+           <p>This tool is designed to help you identify and monitor key agricultural trends, offering valuable insights into crop performance and market dynamics.</p>
+        </div>
+       `;
 
-    <ol>
-      <li><strong>Select Your Parameters (Piliin ang Iyong Mga Parameter):</strong><br>
-      Use the dropdown menus and filters to choose the crops, seasons, or other criteria you wish to analyze (Gamitin ang mga dropdown menu at filter upang piliin ang mga pananim, panahon, o iba pang pamantayan na nais mong suriin).</li>
-
-      <li><strong>View Trends (Tingnan ang Mga Trend):</strong><br>
-      Explore the displayed charts and tables to see trends in crop production volumes, prices, income, and pest/disease occurrences etc. (Suriin ang mga ipinakitang tsart at talahanayan upang makita ang mga trend sa dami ng produksyon ng pananim, presyo, kita, at paglitaw ng peste/sakit atbp.).</li>
-
-      <li><strong>Analyze Data (Suriin ang Data):</strong><br>
-      Utilize the provided data to observe patterns, compare different crops, and make strategic decisions for crop management (Gamitin ang ibinigay na data upang obserbahan ang mga pattern, ihambing ang iba't ibang pananim, at gumawa ng mga istratehikong desisyon para sa pamamahala ng pananim).</li>
-
-      <li><strong>Monitor Growth (Subaybayan ang Paglago):</strong><br>
-      Track the growth of selected crops and assess their performance over time to improve agricultural practices (Subaybayan ang paglago ng napiling mga pananim at tasahin ang kanilang pagganap sa paglipas ng panahon upang mapabuti ang mga kasanayan sa agrikultura).</li>
-
-      <li><strong>Download Data (I-download ang Data):</strong><br>
-      You can download the data in various formats for further analysis (Maaari mong i-download ang data sa iba't ibang format para sa karagdagang pagsusuri):
-        <ul>
-          <li><strong>CSV:</strong> Download raw data in CSV format for use in spreadsheet applications or data analysis tools (I-download ang raw data sa format na CSV para sa paggamit sa mga spreadsheet application o mga tool sa pagsusuri ng data).</li>
-          <li><strong>Excel:</strong> Download the data in Excel format, which includes formatted tables for easy review and manipulation (I-download ang data sa format na Excel, na may kasamang mga naka-format na talahanayan para sa madaling pagsusuri at pagmamanipula).</li>
-          <li><strong>PDF:</strong> Download charts and visualizations in PDF format for easy sharing and reporting (I-download ang mga tsart at visualisasyon sa format na PDF para sa madaling pagbabahagi at pag-uulat).</li>
-        </ul>
-      </li>
-    </ol>
-
-    <p>This tool is designed to help you identify and monitor key agricultural trends, offering valuable insights into crop performance and market dynamics (Ang tool na ito ay idinisenyo upang tulungan kang matukoy at subaybayan ang mga pangunahing trend sa agrikultura, na nag-aalok ng mahahalagang pananaw sa pagganap ng pananim at dinamika ng merkado).</p>
- </div>
-
-    `;
         Dialog.showInfoModal(e);
     });
 });
@@ -592,55 +592,49 @@ function interpretData(o) {
     );
     const d = l.length === 1 ? l[0] : `${l[0]} - ${l[l.length - 1]}`;
     let p = `
-    <h3 data-key="messages.test" class="text-primary" style="font-size: 2rem; font-weight: bold;">Crop Performance Analysis for <strong>${e}</strong> (Pagsusuri sa Pagganap ng Pananim para sa <strong>${e}</strong>)</h3>
-    <p style="font-size: 1.1rem; color: #333;">Period: <span class="text-success">${d}</span> (Panahon: <span class="text-success">${d}</span>). Below is a detailed breakdown of the crop's performance during the specified period, focusing on the latest years with sufficient records: (Narito ang detalyadong pagsusuri ng pagganap ng pananim sa tinukoy na panahon, na nakatuon sa pinakahuling taon na may sapat na talaan:)</p>
+    <h3 data-key="messages.test" class="text-primary" style="font-size: 2rem; font-weight: bold;">Crop Performance Analysis for <strong>${e}</strong></h3>
+    <p style="font-size: 1.1rem; color: #333;">Period: <span class="text-success">${d}</span>. Below is a detailed breakdown of the crop's performance during the specified period, focusing on the latest years with sufficient records:</p>
     `;
     const u = t[t.length - 1];
     const g = r[u];
     const h = u.replace(/([A-Z])/g, " $1").toLowerCase();
     let m;
     if (g > 20) {
-        m = `The crop's <strong>${h}</strong> has shown a performance categorized as <strong>Excellent</strong> (Ang <strong>${h}</strong> ng pananim ay nagpakita ng pagganap na inuri bilang <strong>Napakahusay</strong>) with a growth rate of <strong>${g.toFixed(
+        m = `The crop's <strong>${h}</strong> has shown a performance categorized as <strong>Excellent</strong> with a growth rate of <strong>${g.toFixed(
             2
-        )}%</strong>, indicating significant growth compared to the previous season. (na may antas ng paglago na <strong>${g.toFixed(
-            2
-        )}%</strong>, na nagpapahiwatig ng makabuluhang paglago kumpara sa nakaraang panahon.)`;
+        )}%</strong>, indicating significant growth compared to the previous season.`;
     } else if (g > 5) {
-        m = `The crop's <strong>${h}</strong> has shown a performance categorized as <strong>Good</strong> (Ang <strong>${h}</strong> ng pananim ay nagpakita ng pagganap na inuri bilang <strong>Maganda</strong>) with a growth rate of <strong>${g.toFixed(
+        m = `The crop's <strong>${h}</strong> has shown a performance categorized as <strong>Good</strong> with a growth rate of <strong>${g.toFixed(
             2
-        )}%</strong>, reflecting a positive trend in production levels. (na may antas ng paglago na <strong>${g.toFixed(
-            2
-        )}%</strong>, na nagpapakita ng positibong takbo sa antas ng produksyon.)`;
+        )}%</strong>, reflecting a positive trend in production levels.`;
     } else if (g >= -5) {
-        m = `The crop's <strong>${h}</strong> performance has remained <strong>Stable</strong> (Ang pagganap ng <strong>${h}</strong> ng pananim ay nanatiling <strong>Matatag</strong>) with a growth rate of <strong>${g.toFixed(
+        m = `The crop's <strong>${h}</strong> performance has remained <strong>Stable</strong> with a growth rate of <strong>${g.toFixed(
             2
-        )}%</strong>, indicating consistency in production levels. (na may antas ng paglago na <strong>${g.toFixed(
-            2
-        )}%</strong>, na nagpapahiwatig ng pagiging pare-pareho sa antas ng produksyon.)`;
+        )}%</strong>, indicating consistency in production levels.`;
     } else if (g >= -20) {
-        m = `The crop's <strong>${h}</strong> has experienced a performance categorized as <strong>Poor</strong> (Ang <strong>${h}</strong> ng pananim ay nakaranas ng pagganap na inuri bilang <strong>Mahirap</strong>) with a growth rate of <strong>${g.toFixed(
+        m = `The crop's <strong>${h}</strong> has experienced a performance categorized as <strong>Poor</strong> with a growth rate of <strong>${g.toFixed(
             2
-        )}%</strong>, suggesting potential issues that may need addressing. (na may antas ng paglago na <strong>${g.toFixed(
-            2
-        )}%</strong>, na nagpapahiwatig ng mga potensyal na isyu na maaaring kailangang tugunan.)`;
+        )}%</strong>, suggesting potential issues that may need addressing.`;
     } else {
-        m = `The crop's <strong>${h}</strong> has shown a performance categorized as <strong>Very Poor</strong> (Ang <strong>${h}</strong> ng pananim ay nagpakita ng pagganap na inuri bilang <strong>Napakahina</strong>) with a growth rate of <strong>${g.toFixed(
+        m = `The crop's <strong>${h}</strong> has shown a performance categorized as <strong>Very Poor</strong> with a growth rate of <strong>${g.toFixed(
             2
-        )}%</strong>, indicating significant decline and requiring immediate attention. (na may antas ng paglago na <strong>${g.toFixed(
-            2
-        )}%</strong>, na nagpapahiwatig ng makabuluhang pagbagsak at nangangailangan ng agarang pansin.)`;
+        )}%</strong>, indicating significant decline and requiring immediate attention.`;
     }
     p += `
     <div class="row mb-4">
         <div class="col-12">
             <div class="alert alert-info" role="alert" style="border-radius: 10px;">
-                <strong>Performance Summary:</strong> (Buod ng Pagganap:) ${m}
+                <strong>Performance Summary:</strong> ${m}
             </div>
         </div>
     </div>
     `;
 
     p += `<div class="row" style="margin-bottom: 20px;">`;
+    // Create the cards and store their references
+    let cardHeights = [];
+    let cards = [];
+
     t.slice()
         .reverse()
         .forEach((e) => {
@@ -660,28 +654,53 @@ function interpretData(o) {
                     ? '<i class="fas fa-arrow-down"></i>'
                     : '<i class="fas fa-minus"></i>';
             const s = e === u ? "highlighted-field" : "";
+
             p += ` 
-    <div class="col-md-4 mb-4"> <!-- Adjust the number of columns here --> 
-        <div class="card shadow-lg" style="border-radius: 15px; color: white; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);"> 
-            <div class="card-header ${a} ${s} text-center" style="font-size: 1.25rem;"><strong>${n} ${
+        <div class="col-md-4 mb-4">
+            <div class="card item-size shadow-lg" id="card-${e}" style="border-radius: 15px; color: white; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);">
+                <div class="card-header ${a} ${s} text-center" style="font-size: 1.25rem;">
+                    <strong>${n} ${
                 t.charAt(0).toUpperCase() + t.slice(1)
-            }</strong></div> 
-            <div class="card-body"> 
-                <ul class="text-center" style="list-style-type: none; padding: 0; color: #000"> 
-                    <li style="margin: 5px 0;">Average: <strong>${i[
-                        e
-                    ].average.toFixed(2)}</strong></li> 
-                    <li style="margin: 5px 0;">Overall Growth Rate: <strong>${o}%</strong></li> 
-                    <li style="margin: 5px 0;">Growth Rate in Latest Month: <strong>${r}%</strong></li> 
-                    <li style="margin: 5px 0;">Performance: <strong>${
-                        i[e].performance
-                    }</strong></li> 
-                </ul> 
-            </div> 
-        </div> 
-    </div>
-`;
+            }</strong>
+                </div>
+                <div class="card-body">
+                    <ul class="text-center" style="list-style-type: none; padding: 0; color: #000">
+                        <li style="margin: 5px 0;">Average: <strong>${i[
+                            e
+                        ].average.toFixed(2)}</strong></li>
+                        <li style="margin: 5px 0;">Overall Growth Rate: <strong>${o}%</strong></li>
+                        <li style="margin: 5px 0;">Growth Rate in Latest Month: <strong>${r}%</strong></li>
+                        <li style="margin: 5px 0;">Performance: <strong>${
+                            i[e].performance
+                        }</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>`;
+
+            // Store a reference to the card for later height calculation
+            cards.push(`card-${e}`);
         });
+
+    // Use a setTimeout or requestAnimationFrame to delay height calculation until after the DOM has been updated
+    setTimeout(() => {
+        // Get the heights of all cards
+        cardHeights = cards.map(
+            (id) => document.getElementById(id)?.offsetHeight || 0
+        );
+
+        // Get the maximum height
+        let maxCardHeight = Math.max(...cardHeights);
+
+        // Set all cards to the maximum height
+        cards.forEach((id) => {
+            const card = document.getElementById(id);
+            if (card) {
+                card.style.height = `${maxCardHeight}px`;
+            }
+        });
+    }, 0); // Delaying the height calculation by 0ms to ensure the DOM has been updated
+
     p += `</div>`;
     if (Object.keys(a.pestOccurrences).length > 0) {
         const f = Object.entries(a.pestOccurrences)
@@ -721,8 +740,8 @@ function interpretData(o) {
     </div>
 `;
     }
-    p += `<p style="margin-top: 20px; font-size: 1rem; color: #333;">This analysis provides a detailed breakdown of the crop's performance over time, highlighting trends, growth rates, and performance levels to support informed decision-making. (Ang pagsusuring ito ay nagbibigay ng detalyadong pagsusuri ng pagganap ng pananim sa paglipas ng panahon, na binibigyang-diin ang mga uso, antas ng paglago, at antas ng pagganap upang suportahan ang mahusay na paggawa ng desisyon.)</p>`;
-    p += `<small class="text-muted">Note: Findings are based on available data only. (Tandaan: Ang mga natuklasan ay batay lamang sa mga magagamit na datos.)</small>`;
+    p += `<p style="margin-top: 20px; font-size: 1rem; color: #333;">This analysis provides a detailed breakdown of the crop's performance over time, highlighting trends, growth rates, and performance levels to support informed decision-making.</p>`;
+    p += `<small class="text-muted">Note: Findings are based on available data only. </small>`;
 
     return p;
 }

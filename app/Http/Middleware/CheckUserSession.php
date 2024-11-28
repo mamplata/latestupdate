@@ -21,6 +21,7 @@ class CheckUserSession
         // Retrieve the token from the cookie
         $token = $request->cookie('auth_token');
 
+
         if (!$token) {
             // Token is missing
             return response()->json(['message' => 'No Token Provided'], 401);
@@ -32,6 +33,8 @@ class CheckUserSession
 
         // Hash the token for comparison
         $hashedToken = hash('sha256', $actualToken);
+
+
 
         // Retrieve the token record from the database
         $tokenRecord = DB::table('personal_access_tokens')

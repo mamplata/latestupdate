@@ -46,10 +46,13 @@
         </style>
     </head>
     <body>
-        <header class="header-container">
+        <header class="header-container notranslate">
             <!-- Your header content or component -->
         </header>
         <main class="main-content w-100 mx-0">
+            <div class="d-flex justify-content-end mt-2">
+                <div id="google_translate_element"></div>
+            </div>
             <div class="container-fluid">
                 <div class="cont">
                     <div class="col-md-12">
@@ -77,7 +80,10 @@
                                         <label for="season" class="form-label"
                                             >Season:</label
                                         >
-                                        <select id="season" class="form-select">
+                                        <select
+                                            id="season"
+                                            class="form-select notranslate"
+                                        >
                                             <option value="dry">Dry</option>
                                             <option value="wet">Wet</option>
                                         </select>
@@ -100,7 +106,7 @@
                                         <label
                                             id="cropLabel"
                                             for="crop"
-                                            class="form-label"
+                                            class="form-label notranslate"
                                             >Crop:</label
                                         >
                                         <select id="crop" class="form-select">
@@ -232,7 +238,7 @@
                 </div>
             </div>
         </main>
-        <div class="footer-container">
+        <div class="footer-container notranslate">
             <!-- Your footer content or component -->
         </div>
 
@@ -240,4 +246,23 @@
         <script type="module" src="../../components/Footer.js"></script>
         <script type="module" src="../../js/seasonalTrend.js"></script>
     </body>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement(
+                {
+                    pageLanguage: "en", // The original page language (English)
+                    includedLanguages: "en,tl", // Include only English and Filipino
+                    layout: google.translate.TranslateElement.InlineLayout
+                        .SIMPLE, // Use simple dropdown layout
+                    autoDisplay: false, // Optional: prevent automatic display of the translation toolbar
+                },
+                "google_translate_element"
+            );
+        }
+    </script>
+
+    <script
+        type="text/javascript"
+        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+    ></script>
 </html>

@@ -203,8 +203,12 @@ p {
     font-family: 'Poppins', sans-serif;
 }
 
-body, html {
+html {
     overflow-x: hidden;
+}
+
+.VIpgJd-ZVi9od-ORHb-OEVmcd {
+    display: none !important;
 }
 
 body {
@@ -213,6 +217,7 @@ body {
     flex-direction: column;
     background-color: var(--color-background)!important;
     color: var(--color-text);
+    top: 0 !important;
 }
 
 /* Custom styles */
@@ -423,13 +428,18 @@ h2 {
   }
 
 #seasonalTrendChart,
-#totalPerYearChart,
-#vegetablesChart,
-#riceChart,
-#fruitsChart {
+#totalPerYearChart {
     width: 100% !important;
     height: 100% !important; 
 }
+
+#vegetablesChart,
+#riceChart,
+#fruitsChart {
+    width: 60% !important;
+    height: 60% !important; 
+}
+
 
 .loading-overlay {
     position: fixed;
@@ -466,7 +476,7 @@ section {
 }
 
 /* Ensure the body and html are contained */
-html, body {
+html {
     height: 100%; /* Ensure height is full */
     overflow: auto; /* Allow scrolling */
 }

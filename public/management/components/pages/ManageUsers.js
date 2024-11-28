@@ -71,7 +71,7 @@ export default function initDashboard() {
             <div class="text-right mt-3">
               <button id="prevBtn" class="btn btn-green mr-2">Previous</button>
               <button id="nextBtn" class="btn btn-green mr-2">Next</button>
-              <span id="paginationInfo" class="fs-5">1/2</span>
+              <span id="paginationInfo" class="fs-5">1/1</span>
             </div>
           </div>
         </div>
@@ -258,7 +258,6 @@ export default function initDashboard() {
                     $("#userTableBody tr").removeClass("selected-row");
                     displayUsers();
                 } catch (error) {
-                    // Handle any errors during the process
                     toastr.error(
                         "Something went wrong. Please try again.",
                         "Error",

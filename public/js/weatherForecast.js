@@ -8,31 +8,29 @@ $(document).ready(function () {
     $(document).ready(function () {
         $("#infoBtn").click(function () {
             let e = `
-<p>Welcome to the Weather Forecast page. (Maligayang pagdating sa pahina ng Weather Forecast.) This tool provides a 5-day weather forecast to help you plan and prepare for upcoming weather conditions. (Ang tool na ito ay nagbibigay ng 5-araw na pagtataya ng panahon upang matulungan kang magplano at maghanda para sa mga paparating na kondisyon ng panahon.) Follow these instructions to use the tool effectively: (Sundin ang mga tagubiling ito upang magamit ang tool nang epektibo:)</p>
+<p>Welcome to the Weather Forecast page. This tool provides a 5-day weather forecast to help you plan and prepare for upcoming weather conditions. Follow these instructions to use the tool effectively:</p>
 
 <ol>
-  <li><strong>View the 5-Day Forecast:</strong><br>
-  (Tingnan ang 5-Araw na Taya ng Panahon:) The forecast displays weather information for the next five days. (Ipinapakita ng taya ang impormasyon ng panahon para sa susunod na limang araw.) Each day includes detailed data on the following parameters: (Ang bawat araw ay may kasamang detalyadong datos sa mga sumusunod na parameter:)
+  <li><strong>View the 5-Day Forecast:</strong><br> The forecast displays weather information for the next five days. Each day includes detailed data on the following parameters:
     <ul>
-      <li><strong>Temperature:</strong> The expected high and low temperatures for each day. (<strong>Temperatura:</strong> Ang inaasahang pinakamataas at pinakamababang temperatura bawat araw.)</li>
-      <li><strong>Humidity:</strong> The forecasted humidity levels, indicating the amount of moisture in the air. (<strong>Halumigmig:</strong> Ang inaasahang antas ng halumigmig, na nagpapahiwatig ng dami ng kahalumigmigan sa hangin.)</li>
-      <li><strong>Precipitation:</strong> The amount of expected precipitation, including rain, snow, or other forms of moisture. (<strong>Pag-ulan:</strong> Ang inaasahang dami ng ulan, niyebe, o iba pang anyo ng kahalumigmigan.)</li>
-      <li><strong>Rainfall Probability:</strong> The likelihood of rainfall, expressed as a percentage probability. (<strong>Pagkakataon ng Ulan:</strong> Ang posibilidad ng ulan, na ipinapahayag bilang porsyentong posibilidad.)</li>
+      <li><strong>Temperature:</strong> The expected high and low temperatures for each day.</li>
+      <li><strong>Humidity:</strong> The forecasted humidity levels, indicating the amount of moisture in the air.</li>
+      <li><strong>Precipitation:</strong> The amount of expected precipitation, including rain, snow, or other forms of moisture.</li>
+      <li><strong>Rainfall Probability:</strong> The likelihood of rainfall, expressed as a percentage probability.</li>
     </ul>
   </li>
 
-  <li><strong>Understand Weather Parameters:</strong><br>
-  (Unawain ang Mga Parameter ng Panahon:) Each weather parameter provides insights into the expected conditions: (Ang bawat parameter ng panahon ay nagbibigay ng pananaw sa mga inaasahang kondisyon:)
+  <li><strong>Understand Weather Parameters:</strong><br> Each weather parameter provides insights into the expected conditions:
     <ul>
-      <li><strong>Temperature:</strong> Helps you prepare for hot or cold weather. (<strong>Temperatura:</strong> Tumutulong sa iyong maghanda para sa mainit o malamig na panahon.)</li>
-      <li><strong>Humidity:</strong> Useful for understanding comfort levels and potential impacts on health. (<strong>Halumigmig:</strong> Kapaki-pakinabang para sa pag-unawa sa antas ng kaginhawaan at potensyal na epekto sa kalusugan.)</li>
-      <li><strong>Precipitation:</strong> Indicates potential for rain or snow, helping you plan outdoor activities. (<strong>Pag-ulan:</strong> Nagpapahiwatig ng posibilidad ng ulan o niyebe, na tumutulong sa iyong magplano ng mga aktibidad sa labas.)</li>
-      <li><strong>Rainfall Probability:</strong> Allows you to gauge the chance of rain and plan accordingly. (<strong>Pagkakataon ng Ulan:</strong> Pinapayagan kang tantyahin ang tsansa ng ulan at magplano nang naaayon.)</li>
+      <li><strong>Temperature:</strong> Helps you prepare for hot or cold weather.</li>
+      <li><strong>Humidity:</strong> Useful for understanding comfort levels and potential impacts on health.</li>
+      <li><strong>Precipitation:</strong> Indicates potential for rain or snow, helping you plan outdoor activities.</li>
+      <li><strong>Rainfall Probability:</strong> Allows you to gauge the chance of rain and plan accordingly.</li>
     </ul>
   </li>
 </ol>
 
-<p>This tool provides comprehensive weather forecasting to help you make informed decisions based on expected weather conditions. (Ang tool na ito ay nagbibigay ng komprehensibong pagtataya ng panahon upang matulungan kang gumawa ng mahusay na desisyon batay sa mga inaasahang kondisyon ng panahon.)</p>
+<p>This tool provides comprehensive weather forecasting to help you make informed decisions based on expected weather conditions.</p>
 
   `;
             Dialog.showInfoModal(e);

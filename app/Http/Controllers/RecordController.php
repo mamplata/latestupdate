@@ -165,12 +165,19 @@ class RecordController extends Controller
     {
         $pageSize = $request->query('pageSize', 10); // Default page size
         $recordName = $request->query('recordName'); // Optional record name filter
+        $userRole = $request->query('userRole'); // User role
+        $userId = $request->query('userId'); // User ID
 
         // Build the query
         $query = Record::query();
 
         // Filter by dataType
         $query->where('type', $dataType);
+
+        // If userRole is not 'admin', filter by userId
+        if ($userRole !== 'admin' && $userId) {
+            $query->where('userId', $userId);
+        }
 
         if ($recordName) {
             // Filter by record name
@@ -203,6 +210,8 @@ class RecordController extends Controller
         $records->appends([
             'recordName' => $recordName,
             'pageSize' => $pageSize,
+            'userRole' => $userRole,
+            'userId' => $userId,
         ]);
 
         // Return records as JSON response

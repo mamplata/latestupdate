@@ -70,7 +70,7 @@ function initializeRiceProductionView() {
       <button id="lastBtn" class="btn btn-green mr-2">
           <i class="fas fa-angle-double-right"></i> <!-- Last Page Icon -->
       </button>
-          <span id="paginationInfo" class="fs-5">1/2</span>
+          <span id="paginationInfo" class="fs-5">1/1</span>
       </div>
     </div>
   </div>
@@ -126,7 +126,7 @@ function initializeProductionView() {
       <button id="lastBtn" class="btn btn-green mr-2">
           <i class="fas fa-angle-double-right"></i> <!-- Last Page Icon -->
       </button>
-          <span id="paginationInfo" class="fs-5">1/2</span>
+          <span id="paginationInfo" class="fs-5">1/1</span>
         </div>
       </div>
     </div>
@@ -174,7 +174,7 @@ function initializePriceView() {
       <button id="lastBtn" class="btn btn-green mr-2">
           <i class="fas fa-angle-double-right"></i> <!-- Last Page Icon -->
       </button>
-          <span id="paginationInfo" class="fs-5">1/2</span>
+          <span id="paginationInfo" class="fs-5">1/1</span>
         </div>
       </div>
     </div>
@@ -225,7 +225,7 @@ function initializePestView() {
       <button id="lastBtn" class="btn btn-green mr-2">
           <i class="fas fa-angle-double-right"></i> <!-- Last Page Icon -->
       </button>
-          <span id="paginationInfo" class="fs-5">1/2</span>
+          <span id="paginationInfo" class="fs-5">1/1</span>
         </div>
       </div>
     </div>
@@ -276,7 +276,7 @@ function initializeDiseaseView() {
       <button id="lastBtn" class="btn btn-green mr-2">
           <i class="fas fa-angle-double-right"></i> <!-- Last Page Icon -->
       </button>
-          <span id="paginationInfo" class="fs-5">1/2</span>
+          <span id="paginationInfo" class="fs-5">1/1</span>
         </div>
       </div>
     </div>
@@ -329,7 +329,7 @@ function initializeDamageView() {
       <button id="lastBtn" class="btn btn-green mr-2">
           <i class="fas fa-angle-double-right"></i> <!-- Last Page Icon -->
       </button>
-          <span id="paginationInfo" class="fs-5">1/2</span>
+          <span id="paginationInfo" class="fs-5">1/1</span>
         </div>
       </div>
     </div>
@@ -384,7 +384,7 @@ function initializeSoilHealthsView() {
       <button id="lastBtn" class="btn btn-green mr-2">
           <i class="fas fa-angle-double-right"></i> <!-- Last Page Icon -->
       </button>
-          <span id="paginationInfo" class="fs-5">1/2</span>
+          <span id="paginationInfo" class="fs-5">1/1</span>
         </div>
       </div>
     </div>

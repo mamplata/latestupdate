@@ -116,10 +116,13 @@
         </style>
     </head>
     <body>
-        <header class="header-container">
+        <header class="header-container notranslate">
             <!-- Your header content or component -->
         </header>
         <main class="main-content mx-0 w-100">
+            <div class="d-flex justify-content-end mt-2">
+                <div id="google_translate_element"></div>
+            </div>
             <div class="container-fluid">
                 <div class="row cont">
                     <div class="col-md-12">
@@ -212,7 +215,7 @@
             </div>
         </main>
 
-        <div class="footer-container">
+        <div class="footer-container notranslate">
             <!-- Your footer content or component -->
         </div>
         <!-- Concerns Modal -->
@@ -385,30 +388,29 @@
             $(document).ready(function () {
                 $("#infoBtn").click(function () {
                     let htmlScript = `
-         <p>Welcome to the Contact Us page. (Maligayang pagdating sa pahina ng Contact Us.) Here, you can send us your feedback or inquiries by filling out the form. (Dito, maaari mong ipadala sa amin ang iyong puna o mga tanong sa pamamagitan ng pag-fill out ng form.) Follow these instructions to use the form effectively: (Sundin ang mga tagubiling ito upang magamit nang epektibo ang form:)</p>
+<p>Welcome to the Contact Us page. Here, you can send us your feedback or inquiries by filling out the form. Follow these instructions to use the form effectively:</p>
   
 <ol>
   <li><strong>Provide Your Feedback:</strong><br>
-  (Magbigay ng Iyong Puna:) Fill out the form with the following details: (Punan ang form gamit ang sumusunod na detalye:)
+    Fill out the form with the following details:
     <ul>
-      <li><strong>Subject:</strong> Enter a brief subject line for your feedback or inquiry. (<strong>Paksa:</strong> Ipasok ang maikling linya ng paksa para sa iyong puna o tanong.)</li>
-      <li><strong>Content:</strong> Provide detailed content of your message or feedback. Include any relevant information or questions you have. (<strong>Nilalaman:</strong> Magbigay ng detalyadong nilalaman ng iyong mensahe o puna. Isama ang anumang nauugnay na impormasyon o tanong na mayroon ka.)</li>
-      <li><strong>Image (Optional):</strong> If you have an image related to your feedback or inquiry, you can upload it using the optional image upload field. This helps us better understand your message if relevant. (<strong>Larawan (Opsyonal):</strong> Kung mayroon kang larawan na may kaugnayan sa iyong puna o tanong, maaari mo itong i-upload gamit ang opsyonal na larangan ng pag-upload ng larawan. Nakakatulong ito sa amin na mas maunawaan ang iyong mensahe kung may kaugnayan.)</li>
+      <li><strong>Subject:</strong> Enter a brief subject line for your feedback or inquiry.</li>
+      <li><strong>Content:</strong> Provide detailed content of your message or feedback. Include any relevant information or questions you have.</li>
+      <li><strong>Image (Optional):</strong> If you have an image related to your feedback or inquiry, you can upload it using the optional image upload field. This helps us better understand your message if relevant.</li>
     </ul>
   </li>
 
   <li><strong>Submit Your Message:</strong><br>
-  (Ipadala ang Iyong Mensahe:) After filling out the form, click the "Send Feedback" button to submit your message. (Pagkatapos punan ang form, i-click ang button na "Ipadala ang Puna" upang ipadala ang iyong mensahe.) Ensure that the subject and content fields are completed to avoid submission errors. (Siguraduhing napunan ang mga larangan ng paksa at nilalaman upang maiwasan ang mga error sa pagsusumite.)</li>
+    After filling out the form, click the "Send Feedback" button to submit your message. Ensure that the subject and content fields are completed to avoid submission errors.</li>
 
   <li><strong>Confirmation:</strong><br>
-  (Kumpirmasyon:) You will receive a confirmation message on the screen once your feedback is successfully submitted. (Makakatanggap ka ng mensahe ng kumpirmasyon sa screen kapag matagumpay na naipadala ang iyong puna.) We will review your message and respond as necessary. (Susuriin namin ang iyong mensahe at sasagot kung kinakailangan.)</li>
+    You will receive a confirmation message on the screen once your feedback is successfully submitted. We will review your message and respond as necessary.</li>
 
   <li><strong>Privacy and Security:</strong><br>
-  (Pagkapribado at Seguridad:) Your feedback, including any uploaded images, will be treated confidentially and used solely for addressing your inquiry or improving our services. (Ang iyong puna, kabilang ang anumang na-upload na larawan, ay ituturing nang kumpidensyal at gagamitin lamang para tugunan ang iyong tanong o pagbutihin ang aming mga serbisyo.) We are committed to protecting your data according to our privacy policy. (Kami ay nakatuon sa pangangalaga ng iyong datos ayon sa aming patakaran sa privacy.)</li>
+    Your feedback, including any uploaded images, will be treated confidentially and used solely for addressing your inquiry or improving our services. We are committed to protecting your data according to our privacy policy.</li>
 </ol>
 
-<p>We appreciate your feedback and look forward to assisting you. (Pinahahalagahan namin ang iyong puna at inaasahan namin ang pagtulong sa iyo.) If you have any further questions or need additional help, please use the contact form. (Kung mayroon kang anumang karagdagang tanong o kailangan ng karagdagang tulong, mangyaring gamitin ang contact form.)</p>
-
+<p>We appreciate your feedback and look forward to assisting you. If you have any further questions or need additional help, please use the contact form.</p>
           `;
 
                     Dialog.showInfoModal(htmlScript);
@@ -429,4 +431,23 @@
         </script>
         <script src="../../js/sendConcern.js"></script>
     </body>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement(
+                {
+                    pageLanguage: "en", // The original page language (English)
+                    includedLanguages: "en,tl", // Include only English and Filipino
+                    layout: google.translate.TranslateElement.InlineLayout
+                        .SIMPLE, // Use simple dropdown layout
+                    autoDisplay: false, // Optional: prevent automatic display of the translation toolbar
+                },
+                "google_translate_element"
+            );
+        }
+    </script>
+
+    <script
+        type="text/javascript"
+        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+    ></script>
 </html>
