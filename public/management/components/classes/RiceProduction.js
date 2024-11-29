@@ -280,9 +280,6 @@ function initializeMethodsRiceProduction() {
                 // Call the download dialog and await the promise
                 let format = await Dialog.downloadDialog();
 
-                // Log the rice data for debugging purposes
-                console.log(riceData);
-
                 // Perform the download with the selected format and data
                 download(format, riceData);
             } catch (error) {
@@ -424,7 +421,7 @@ function initializeMethodsRiceProduction() {
             "cropName",
             "areaPlanted",
             "monthHarvested",
-            "volumericeProduction",
+            "volumeProduction",
             "averageYield",
             "season",
             "year",

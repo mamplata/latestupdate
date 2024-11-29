@@ -109,7 +109,6 @@ class TopCrops {
     }
 
     generateTopCrops(cropData) {
-        console.log(cropData);
         if (!Array.isArray(cropData)) {
             console.error("Expected input to be an array");
             return [];
@@ -180,6 +179,8 @@ class TopCrops {
                     diseaseOccurrence: item.diseaseOccurrence,
                     totalArea: item.totalArea,
                     totalVolume: item.totalVolume,
+                    totalIncome: item.totalIncome,
+                    totalProfit: item.totalProfit,
                 };
             }
         });
@@ -376,12 +377,6 @@ class TopCrops {
                         cropTitle,
                         varietyDetails
                     );
-
-                    if (res.operation === Dialog.OK_OPTION) {
-                        console.log("Modal was closed by the user");
-                    } else {
-                        console.log("Modal was not closed");
-                    }
                 });
             })
             .catch((error) => {
@@ -399,7 +394,6 @@ $(document).ready(async function () {
         const season = $("#seasonSelect").val();
         const type = $("#typeSelect").val();
         if (type === "Rice") {
-            console.log(true);
             $("#riceDisplay").show();
         } else {
             $("#riceDisplay").hide();
@@ -425,9 +419,12 @@ $(document).ready(async function () {
     $(document).ready(function () {
         $(".download-btn").click(function () {
             // Call the downloadDialog method and handle the promise
-            Dialog.downloadDialog()
+            Dialog.downloadDialog(
+                "This format is for data export. This will download the data behind in table individually.",
+                "Suitable for spreadsheets. This will download the data behind in table individually.",
+                "Download a PDF document. This will download the current display in table."
+            )
                 .then((format) => {
-                    console.log(format); // This will log the format (e.g., 'csv', 'xlsx', or 'pdf')
                     const currentType = $("#typeSelect").val();
                     download(format, currentType, dataEntry);
                 })
@@ -450,8 +447,6 @@ async function main(season, type) {
         price = price.map((entry) => ({ ...entry, type }));
         pest = pest.map((entry) => ({ ...entry, type }));
         disease = disease.map((entry) => ({ ...entry, type }));
-
-        console.log(type);
 
         if (type === "Rice") {
             return await stats.getRiceCropData(riceProduction);
@@ -502,12 +497,11 @@ function downloadCSV(filename, data) {
     // Define the header mapping
     const headerMap = {
         cropName: "Crop Name",
-        variety: "Variety",
         type: "Type",
         totalArea: "Total Area (ha)",
-        volumeProductionPerHectare: "Average Volume Production (mt/ha)",
-        incomePerHectare: "Average Income / ha ",
-        profitPerHectare: "Average Profit / ha",
+        totalVolume: "Volume Production (mt/ha)",
+        totalIncome: "Income / ha ",
+        totalProfit: "Profit / ha",
         price: "Price (kg)",
         pestOccurrence: "Pest Observed",
         diseaseOccurrence: "Disease Observed",
@@ -518,9 +512,9 @@ function downloadCSV(filename, data) {
         "cropName",
         "type",
         "totalArea",
-        "volumeProductionPerHectare",
-        "incomePerHectare",
-        "profitPerHectare",
+        "totalVolume",
+        "totalIncome",
+        "totalProfit",
         "price",
         "pestOccurrence",
         "diseaseOccurrence",
@@ -549,8 +543,8 @@ function downloadCSV(filename, data) {
                 .map((key) => {
                     const value = row[key] !== undefined ? row[key] : ""; // Ensure non-null values
                     if (
-                        key === "incomePerHectare" ||
-                        key === "profitPerHectare" ||
+                        key === "totalIncome" ||
+                        key === "totalProfit" ||
                         key === "price"
                     ) {
                         return value !== ""
@@ -588,9 +582,9 @@ function downloadExcel(filename, data) {
         cropName: "Crop Name",
         type: "Type",
         totalArea: "Total Area (ha)",
-        volumeProductionPerHectare: "Average Volume Production (mt/ha)",
-        incomePerHectare: "Average Income / ha ",
-        profitPerHectare: "Average Profit / ha",
+        totalVolume: "Volume Production (mt/ha)",
+        totalIncome: "Income / ha ",
+        totalProfit: "Profit / ha",
         price: "Price (kg)",
         pestOccurrence: "Pest Observed",
         diseaseOccurrence: "Disease Observed",
@@ -601,9 +595,9 @@ function downloadExcel(filename, data) {
         "cropName",
         "type",
         "totalArea",
-        "volumeProductionPerHectare",
-        "incomePerHectare",
-        "profitPerHectare",
+        "totalVolume",
+        "totalIncome",
+        "totalProfit",
         "price",
         "pestOccurrence",
         "diseaseOccurrence",
@@ -633,8 +627,8 @@ function downloadExcel(filename, data) {
                 const value = row[headerMap[header]];
                 // Format specific columns with peso sign
                 if (
-                    header === "incomePerHectare" ||
-                    header === "profitPerHectare" ||
+                    header === "totalIncome" ||
+                    header === "totalProfit" ||
                     header === "price"
                 ) {
                     return value ? `₱${parseFloat(value).toFixed(2)}` : "";

@@ -747,7 +747,11 @@ function interpretData(o) {
 }
 $(document).ready(function () {
     $(".download-btn").click(function () {
-        Dialog.downloadDialog()
+        Dialog.downloadDialog(
+            "This format is for data export. This will download the data behind in charts individually.",
+            "Suitable for spreadsheets. This will download the data behind in charts individually.",
+            "Download a PDF document. This will download the charts and description."
+        )
             .then((e) => {
                 download(e, currentType, downloadData);
             })

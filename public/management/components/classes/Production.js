@@ -196,6 +196,7 @@ function initializeMethodsProduction() {
 
                 // Clear previous results
                 $("#productionTableBody").empty();
+                productions = data.data;
 
                 if (data.data.length > 0) {
                     data.data.forEach(function (production) {

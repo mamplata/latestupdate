@@ -338,7 +338,7 @@ class Dialog {
         });
     }
 
-    static async downloadDialog() {
+    static async downloadDialog(csvInfo = "", excelInfo = "", pdfInfo = "") {
         // Create elements
         const inputDialog = document.createElement("dialog");
         const modalContent = document.createElement("div");
@@ -388,6 +388,19 @@ class Dialog {
         btnPDF.setAttribute("data-format", "pdf");
         btnPDF.style.width = "100%";
 
+        // Create a single info text element for all formats
+        const infoElement = document.createElement("p");
+        infoElement.className = "info-text";
+
+        // Add descriptions to the note if provided
+        if (csvInfo || excelInfo || pdfInfo) {
+            let noteText = "Note: \n";
+            if (csvInfo) noteText += `For CSV: ${csvInfo}\n`;
+            if (excelInfo) noteText += `For Excel: ${excelInfo}\n`;
+            if (pdfInfo) noteText += `For PDF: ${pdfInfo}\n`;
+            infoElement.innerText = noteText;
+        }
+
         // Add event listeners for buttons
         let resolvePromise;
         const formatPromise = new Promise((resolve) => {
@@ -406,6 +419,7 @@ class Dialog {
 
         // Style and structure modal body
         divButtons.className = "d-grid gap-3"; // Bootstrap's grid gap class for spacing
+        divButtons.append(infoElement); // Add the info note
         divButtons.append(btnCSV, btnExcel, btnPDF, closeButton);
 
         // Assemble modal content
