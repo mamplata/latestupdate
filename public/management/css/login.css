@@ -41,6 +41,20 @@ html, body {
     background-size: cover;
     background-position: center;
     height: 100vh;
+    position: relative; /* Required for absolute positioning of text */
+}
+
+/* Courtesy Text Styling */
+.courtesy-text {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 14px;
+    color: white;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.5); /* Optional: adds a transparent background for readability */
+    padding: 5px;
+    border-radius: 5px;
 }
 
 .login-form {
