@@ -1,3 +1,104 @@
+async function getDataEntriesCount() {
+    try {
+        const r = await $.ajax({
+            url: "api/data-entries/count",
+            type: "GET",
+            dataType: "json",
+        });
+        return r;
+    } catch (e) {
+        console.error(
+            "An error occurred while fetching data entries count:",
+            e
+        );
+        throw e;
+    }
+}
+
+async function getFarmerCount() {
+    try {
+        const r = await $.ajax({
+            url: "api/farmer/count",
+            type: "GET",
+            dataType: "json",
+        });
+        return r;
+    } catch (e) {
+        console.error("An error occurred while fetching farmer count:", e);
+        throw e;
+    }
+}
+
+async function getRecordCount() {
+    try {
+        const r = await $.ajax({
+            url: "api/record/count",
+            type: "GET",
+            dataType: "json",
+        });
+        return r;
+    } catch (e) {
+        console.error("An error occurred while fetching record count:", e);
+        throw e;
+    }
+}
+
+async function getBarangayCount() {
+    try {
+        const r = await $.ajax({
+            url: "api/barangay/count",
+            type: "GET",
+            dataType: "json",
+        });
+        return r;
+    } catch (e) {
+        console.error("An error occurred while fetching barangay count:", e);
+        throw e;
+    }
+}
+
+async function getUserCount() {
+    try {
+        const r = await $.ajax({
+            url: "api/user/count",
+            type: "GET",
+            dataType: "json",
+        });
+        return r;
+    } catch (e) {
+        console.error("An error occurred while fetching user count:", e);
+        throw e;
+    }
+}
+
+async function getDownloadCount() {
+    try {
+        const r = await $.ajax({
+            url: "api/download/count",
+            type: "GET",
+            dataType: "json",
+        });
+        return r;
+    } catch (e) {
+        console.error("An error occurred while fetching download count:", e);
+        throw e;
+    }
+}
+
+async function getConcernCount() {
+    try {
+        const r = await $.ajax({
+            url: "api/concern/count",
+            type: "GET",
+            dataType: "json",
+        });
+        return r;
+    } catch (e) {
+        console.error("An error occurred while fetching concern count:", e);
+        throw e;
+    }
+}
+
 async function getCrop(r = "") {
     try {
         const t = await $.ajax({
@@ -72,22 +173,7 @@ function getProductions() {
         });
     });
 }
-function getDownloadCount() {
-    return new Promise((r, o) => {
-        $.ajax({
-            url: "api/downloads/count",
-            method: "GET",
-            dataType: "json",
-            success: function (e) {
-                r(e.download_count);
-            },
-            error: function (e, r, t) {
-                console.error("Failed to fetch download count:", r, t);
-                o(0);
-            },
-        });
-    });
-}
+
 async function getBarangay() {
     try {
         const r = await $.ajax({
@@ -110,7 +196,7 @@ async function getFarmer() {
         });
         return r;
     } catch (e) {
-        console.error("An error occurred while fetching barangay data:", e);
+        console.error("An error occurred while fetching farmer data:", e);
         throw e;
     }
 }
@@ -123,7 +209,7 @@ async function getRecord() {
         });
         return r;
     } catch (e) {
-        console.error("An error occurred while fetching barangay data:", e);
+        console.error("An error occurred while fetching record data:", e);
         throw e;
     }
 }
@@ -136,7 +222,7 @@ async function getSoilHealth() {
         });
         return r;
     } catch (e) {
-        console.error("An error occurred while fetching barangay data:", e);
+        console.error("An error occurred while fetching soil health data:", e);
         throw e;
     }
 }
@@ -149,7 +235,7 @@ async function getUsers() {
         });
         return r;
     } catch (e) {
-        console.error("An error occurred while fetching barangay data:", e);
+        console.error("An error occurred while fetching user data:", e);
         throw e;
     }
 }
@@ -166,23 +252,7 @@ async function getConcerns() {
         throw e;
     }
 }
-async function getDataEntries() {
-    try {
-        let [e, r, t, o, a, d] = await Promise.all([
-            getProductions(),
-            getPrice(),
-            getPest(),
-            getDisease(),
-            getSoilHealth(),
-            getRiceProduction(),
-        ]);
-        let n = e.length + r.length + t.length + o.length + a.length + d.length;
-        return n;
-    } catch (e) {
-        console.error("Error fetching data:", e);
-        throw e;
-    }
-}
+
 async function getRiceProduction(e = "", r = "") {
     try {
         const o = await $.ajax({
@@ -375,16 +445,22 @@ export {
     getPest,
     getDisease,
     getFarmer,
-    getDataEntries,
     getRecord,
     getUsers,
     getConcerns,
     getYearRange,
-    getDownloadCount,
     getUniqueCropNames,
     addDownload,
     getCropVarieties,
     getCropName,
     getTotalAreaPlanted,
     getDamages,
+    getBarangayCount,
+    getConcernCount,
+    getDataEntriesCount,
+    getRecordCount,
+    getSoilHealth,
+    getUserCount,
+    getDownloadCount,
+    getFarmerCount,
 };

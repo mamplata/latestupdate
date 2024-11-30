@@ -261,8 +261,6 @@ function initializeMethodsRecord(dataType) {
                 query += `&recordName=${encodeURIComponent(recordName)}`;
             }
 
-            console.log(user.userId);
-
             // Fetch records from the server
             const response = await fetch(query, {
                 credentials: "include", // Include credentials for cookies

@@ -211,6 +211,33 @@ html {
     display: none !important;
 }
 
+.goog-te-gadget-simple {
+    background-color: #f9f9f9; /* Soft background color */
+    border-radius: 8px; /* Larger rounded corners */
+    border: 1px solid #d1d1d1; /* Light gray border */
+    font-size: 14px; /* Larger font size */
+    display: inline-block;
+    padding: 10px 20px; /* Increased padding for more space around the text */
+    margin-right: 20px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Deeper shadow for more prominence */
+}
+
+.goog-te-gadget-simple:hover {
+    background-color: #e0e0e0; /* Slightly darker background on hover */
+    border-color: #b0b0b0; /* Darker border on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+.goog-te-gadget-simple:active {
+    background-color: #d1d1d1; /* Even darker background when clicked */
+    border-color: #a0a0a0; /* Darker border when clicked */
+    box-shadow: none; /* Remove shadow on click */
+}
+
+
 body {
     min-height: 100vh;
     display: flex;

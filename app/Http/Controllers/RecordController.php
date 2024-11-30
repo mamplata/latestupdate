@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Barangay;
+use App\Models\Concern;
 use App\Models\DamageReport;
 use App\Models\Record;
 use App\Models\Production;
 use App\Models\Price;
 use App\Models\Pest;
 use App\Models\Disease;
+use App\Models\Download;
+use App\Models\Farmer;
 use App\Models\RiceProduction;
 use App\Models\SoilHealth;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -159,6 +164,43 @@ class RecordController extends Controller
                 return null;
         }
     }
+
+    public function getDataEntriesCount()
+    {
+        return RiceProduction::count() + Production::count() + Price::count()
+            + Pest::count() + Disease::count() + DamageReport::count();
+    }
+
+    public function getFarmerCount()
+    {
+        return Farmer::count();
+    }
+
+    public function getRecordCount()
+    {
+        return Record::count();
+    }
+
+    public function getBarangayCount()
+    {
+        return Barangay::count();
+    }
+
+    public function getUserCount()
+    {
+        return User::count();
+    }
+
+    public function getDownloadCount()
+    {
+        return Download::count();
+    }
+
+    public function getConcernCount()
+    {
+        return Concern::count();
+    }
+
 
 
     public function indexByType(Request $request, $dataType)

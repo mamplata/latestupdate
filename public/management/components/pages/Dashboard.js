@@ -4,16 +4,15 @@ import {
     getPrice,
     getPest,
     getDisease,
-    getProductions,
-    getFarmer,
-    getDataEntries,
-    getRecord,
-    getUsers,
-    getBarangay,
-    getConcerns,
-    getDownloadCount,
     getUniqueCropNames,
     getRiceProduction,
+    getBarangayCount,
+    getConcernCount,
+    getDataEntriesCount,
+    getRecordCount,
+    getUserCount,
+    getDownloadCount,
+    getFarmerCount,
 } from "../../../js/fetch.js";
 import * as stats from "../../../js/statistics.js";
 import { user } from "../HeaderSidebar.js";
@@ -368,29 +367,21 @@ export default function initDashboard() {
         });
     });
 
-    // Initialize dashboard with dummy data
     async function initializeDashboard() {
         try {
-            const results = await Promise.allSettled([
-                getFarmer(),
-                getRecord(),
-                getUsers(),
-                getBarangay(),
-                getConcerns(),
-                getDataEntries(),
-                getDownloadCount(),
-            ]);
+            const isAgriculturist = user.role === "agriculturist"; // Check if the user role is agriculturist
+
+            // If the user is agriculturist, only fetch necessary data
+            const dataToFetch = [
+                isAgriculturist ? getBarangayCount() : getFarmerCount(),
+                isAgriculturist ? getFarmerCount() : getBarangayCount(),
+                getRecordCount(),
+            ];
+
+            const results = await Promise.allSettled(dataToFetch);
 
             // Destructure results for easier handling
-            const [
-                farmersResult,
-                recordsResult,
-                usersResult,
-                barangaysResult,
-                concernsResult,
-                dataEntriesResult,
-                downloadResult,
-            ] = results;
+            const [barangaysResult, farmersResult, recordsResult] = results;
 
             // Initialize dashboard data with default values
             const dashboardData = {
@@ -411,27 +402,18 @@ export default function initDashboard() {
             };
 
             // Populate dashboardData with fetched values or defaults
-            dashboardData.users =
-                getValue(usersResult, dashboardData.users).length ||
-                dashboardData.users;
-            dashboardData.farmers =
-                getValue(farmersResult, dashboardData.farmers).length ||
-                dashboardData.farmers;
-            dashboardData.barangays =
-                getValue(barangaysResult, dashboardData.barangays).length ||
-                dashboardData.barangays;
-            dashboardData.records =
-                getValue(recordsResult, dashboardData.records).length ||
-                dashboardData.records;
-            dashboardData.concerns =
-                getValue(concernsResult, dashboardData.concerns).length ||
-                dashboardData.concerns;
-            dashboardData.dataEntries =
-                getValue(dataEntriesResult, dashboardData.dataEntries) ||
-                dashboardData.dataEntries;
-            dashboardData.downloads =
-                getValue(downloadResult, dashboardData.downloads) ||
-                dashboardData.downloads;
+            dashboardData.barangays = getValue(
+                barangaysResult,
+                dashboardData.barangays
+            );
+            dashboardData.farmers = getValue(
+                farmersResult,
+                dashboardData.farmers
+            );
+            dashboardData.records = getValue(
+                recordsResult,
+                dashboardData.records
+            );
 
             // Optionally, log or handle any rejected promises
             results.forEach((result, index) => {
@@ -445,13 +427,50 @@ export default function initDashboard() {
             });
 
             // Update dashboard with the fetched data
-            $("#users-count").text(dashboardData.users);
             $("#farmers-count").text(dashboardData.farmers);
             $("#barangays-count").text(dashboardData.barangays);
             $("#records-count").text(dashboardData.records);
-            $("#data-entries-count").text(dashboardData.dataEntries);
-            $("#downloads-count").text(dashboardData.downloads);
-            $("#concerns-count").text(dashboardData.concerns);
+
+            // If the user is not agriculturist, fetch additional data
+            if (!isAgriculturist) {
+                const additionalResults = await Promise.allSettled([
+                    getUserCount(),
+                    getConcernCount(),
+                    getDataEntriesCount(),
+                    getDownloadCount(),
+                ]);
+
+                const [
+                    usersResult,
+                    concernsResult,
+                    dataEntriesResult,
+                    downloadResult,
+                ] = additionalResults;
+
+                // Populate remaining dashboardData with fetched values or defaults
+                dashboardData.users = getValue(
+                    usersResult,
+                    dashboardData.users
+                );
+                dashboardData.concerns = getValue(
+                    concernsResult,
+                    dashboardData.concerns
+                );
+                dashboardData.dataEntries = getValue(
+                    dataEntriesResult,
+                    dashboardData.dataEntries
+                );
+                dashboardData.downloads = getValue(
+                    downloadResult,
+                    dashboardData.downloads
+                );
+
+                // Update additional data on dashboard
+                $("#users-count").text(dashboardData.users);
+                $("#data-entries-count").text(dashboardData.dataEntries);
+                $("#downloads-count").text(dashboardData.downloads);
+                $("#concerns-count").text(dashboardData.concerns);
+            }
 
             if (user.role === "admin") {
                 $(".card-box").click(function () {
@@ -485,6 +504,7 @@ export default function initDashboard() {
             console.error("Error initializing dashboard:", error);
         }
     }
+
     // Function to update crop options based on type and season
     async function updateCropOptions() {
         const type = $("#type").val().toLowerCase();

@@ -137,6 +137,9 @@ class UserController extends Controller
         // Set a session cookie to store the token (no expiration set, so it will expire when the browser is closed)
         $cookie = cookie('auth_token', $token, 0, null, null, false, true); // HttpOnly = true
 
+        // Log the user in
+        Auth::login($user);
+
         // Return the user and token information with the cookie
         return response()->json([
             'user' => $user,

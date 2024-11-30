@@ -7,15 +7,6 @@ use Illuminate\Http\Request;
 
 class DownloadController extends Controller
 {
-    // Method to count the rows in the downloads table
-    public function countDownloads()
-    {
-        $count = Download::count();
-
-        return response()->json([
-            'download_count' => $count,
-        ]);
-    }
 
     // Method to add a new download record
     public function addDownload(Request $request)

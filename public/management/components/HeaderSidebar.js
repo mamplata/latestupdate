@@ -2,6 +2,81 @@ export let user;
 import Dialog from "./helpers/Dialog.js";
 
 $(document).ready(function () {
+    // Add event listener to a parent container, like the document body
+    document.body.addEventListener("click", async function (event) {
+        // Check if the clicked element is a button or an anchor tag
+        if (
+            (event.target && event.target.tagName === "BUTTON") ||
+            (event.target && event.target.tagName === "A")
+        ) {
+            // Check if the user is authenticated and token is valid
+            const isValidToken = await checkUserToken();
+
+            if (isValidToken) {
+                // If it's a button inside a form, you can submit it here
+                // if (event.target.tagName === "BUTTON") {
+                //     event.target.form.submit();
+                // }
+
+                // Check if the user role has changed
+                await checkAndHandleRoleChange();
+            } else {
+                // Log the user out by redirecting to login page
+                setTimeout(function () {
+                    window.location.href = "/management-login";
+                }, 2000); // Redirect after 2 seconds delay
+            }
+        }
+    });
+
+    // Function to check token and user role
+    async function checkAndHandleRoleChange() {
+        // Request CSRF cookie first (if applicable)
+        await requestCsrfCookie();
+
+        // Check the token and fetch user data
+        const response = await checkToken();
+        const currentUrl = window.location.href;
+        if (response.message !== "Invalid Token") {
+            const user = response.user;
+
+            // If user role has changed or other conditions apply, handle redirection
+            if (response.redirect_url) {
+                if (!currentUrl.includes(user.role)) {
+                    window.location.href = response.redirect_url;
+                }
+            }
+        } else {
+            // If token is invalid, redirect to login
+            setTimeout(function () {
+                window.location.href = "/management-login";
+            }, 2000); // Redirect after 2 seconds delay
+        }
+    }
+
+    // Function to check if the CSRF token is still valid
+    async function checkUserToken() {
+        const token = await getCsrfToken();
+        try {
+            const response = await $.ajax({
+                url: "/api/check-user",
+                type: "GET",
+                xhrFields: {
+                    withCredentials: true,
+                },
+                headers: {
+                    "X-CSRF-TOKEN": token,
+                },
+            });
+
+            // Check if the response indicates the token is valid
+            return response.message !== "Invalid Token";
+        } catch (error) {
+            console.error("Error checking token:", error);
+            return false; // If there is an error, assume token is invalid
+        }
+    }
+
     async function getCsrfToken() {
         return $('meta[name="csrf-token"]').attr("content");
     }
@@ -37,21 +112,20 @@ $(document).ready(function () {
 
             if (response.message !== "Invalid Token") {
                 user = response.user;
-                console.log(user.role);
 
                 // If user exists, show loading screen and then load content
                 if (user) {
                     $("body").prepend(`
-                        <!-- Loading screen -->
-                        <div id="loadingScreen" class="loading-overlay1">
-                            <div class="spinner-container1">
-                                <div class="spinner-grow" role="status"></div>
-                                <div class="spinner-grow" role="status"></div>
-                                <div class="spinner-grow" role="status"></div>
-                                <p class="loading-message1">Please wait while we load content...</p>
-                            </div>
+                    <!-- Loading screen -->
+                    <div id="loadingScreen" class="loading-overlay1">
+                        <div class="spinner-container1">
+                            <div class="spinner-grow" role="status"></div>
+                            <div class="spinner-grow" role="status"></div>
+                            <div class="spinner-grow" role="status"></div>
+                            <p class="loading-message1">Please wait while we load content...</p>
                         </div>
-                    `);
+                    </div>
+                `);
                     showLoadingScreen();
                 }
 

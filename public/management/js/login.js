@@ -33,7 +33,6 @@ $(document).ready(function () {
     function redirectBasedOnRole(role) {
         if (role) {
             if (role === "admin") {
-                console.log(true);
                 window.location.href = "/management-admin"; // Redirect to admin page
             } else if (role === "agriculturist") {
                 window.location.href = "/management-agriculturist"; // Redirect to agriculturist page
@@ -70,9 +69,6 @@ $(document).ready(function () {
 
         var username = $("#username").val();
         var password = $("#password").val();
-
-        console.log("Username:", username);
-        console.log("Password:", password);
 
         // Send login request to the server
         $.ajax({

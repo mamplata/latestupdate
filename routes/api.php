@@ -50,6 +50,14 @@ Route::get('/weather-keys', function () {
 
 // Protected routes (authentication required)
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/data-entries/count', [RecordController::class, 'getDataEntriesCount']);
+    Route::get('/record/count', [RecordController::class, 'getRecordCount']);
+    Route::get('/barangay/count', [RecordController::class, 'getBarangayCount']);
+    Route::get('/user/count', [RecordController::class, 'getUserCount']);
+    Route::get('/download/count', [RecordController::class, 'getDownloadCount']);
+    Route::get('/concern/count', [RecordController::class, 'getConcernCount']);
+    Route::get('/farmer/count', [RecordController::class, 'getFarmerCount']);
+
     Route::get('/farmers', [FarmerController::class, 'index']);
     Route::get('/records', [RecordController::class, 'index']);
     // Api for users
@@ -156,7 +164,6 @@ Route::middleware('auth:sanctum')->group(function () {
     // Api for concerns
     Route::get('/concerns', [ConcernController::class, 'index'])->middleware('role:admin');
     Route::get('/concerns/{id}', [ConcernController::class, 'show']);
-    Route::put('/concerns/{id}', [ConcernController::class, 'update']);
     Route::delete('/concerns/{id}', [ConcernController::class, 'destroy']);
     Route::put('/concerns/{id}/status', [ConcernController::class, 'updateStatus']);
 
@@ -170,7 +177,6 @@ Route::post('/weatherforecasts', [WeatherForecastController::class, 'store']);
 Route::get('/weatherforecasts/{id}', [WeatherForecastController::class, 'show']);
 
 // Downloads routes
-Route::get('/downloads/count', [DownloadController::class, 'countDownloads']);
 Route::post('/downloads/add', [DownloadController::class, 'addDownload']);
 
 // Check user route
