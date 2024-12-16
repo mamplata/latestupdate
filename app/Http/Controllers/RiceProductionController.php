@@ -11,38 +11,40 @@ class RiceProductionController extends Controller
 {
     public function index(Request $request)
     {
-        // Get the search term and page size from the request
-        $searchTerm = $request->query('searchTerm'); // Search term for all columns
-        $pageSize = $request->query('pageSize', null); // Null by default if not provided
+        $search = $request->query('search'); // Search query
+        $pageSize = $request->query('pageSize'); // Page size, default to null if not provided
+        $page = $request->query('page'); // Current page
 
-        // Build the query to retrieve rice productions
+        // Initialize the query to retrieve rice productions
         $query = RiceProduction::query();
 
-        if ($searchTerm) {
-            // Apply search to all columns if a search term is provided
-            $query->where(function ($query) use ($searchTerm) {
-                $query->where('barangay', 'like', "%$searchTerm%")
-                    ->orWhere('cropName', 'like', "%$searchTerm%")
-                    ->orWhere('areaPlanted', 'like', "%$searchTerm%")
-                    ->orWhere('monthHarvested', 'like', "%$searchTerm%")
-                    ->orWhere('volumeProduction', 'like', "%$searchTerm%")
-                    ->orWhere('averageYield', 'like', "%$searchTerm%")
-                    ->orWhere('season', 'like', "%$searchTerm%")
-                    ->orWhere('year', 'like', "%$searchTerm%");
+        // Apply search filter if provided
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('barangay', 'like', "%$search%")
+                    ->orWhere('cropName', 'like', "%$search%")
+                    ->orWhere('areaPlanted', 'like', "%$search%")
+                    ->orWhere('monthHarvested', 'like', "%$search%")
+                    ->orWhere('volumeProduction', 'like', "%$search%")
+                    ->orWhere('averageYield', 'like', "%$search%")
+                    ->orWhere('season', 'like', "%$search%")
+                    ->orWhere('year', 'like', "%$search%");
             });
         }
 
-        // If no page size is specified, return all records
-        if ($pageSize === null) {
-            $productions = $query->orderBy('riceProductionId', 'desc')->get(); // No pagination
+        // If no pageSize is specified, return all records without pagination
+        if (!$pageSize) {
+            $productions = $query->orderBy('riceProductionId', 'desc')->get(); // No pagination, return all results
         } else {
-            // Paginate results based on the provided page size
-            $productions = $query->orderBy('riceProductionId', 'desc')->paginate($pageSize);
+            // Apply pagination, and use the 'page' parameter for the current page
+            $productions = $query->orderBy('riceProductionId', 'desc')
+                ->paginate($pageSize ?: 10, ['*'], 'page', $page); // Default pageSize to 10 if not provided
         }
 
         // Return the data as a JSON response
         return response()->json($productions, 200);
     }
+
 
     public function store(Request $request)
     {

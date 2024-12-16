@@ -172,48 +172,55 @@ async function getRiceProduction() {
 function initializeMethodsRiceProduction() {
     $(document).ready(function () {
         // Function to search rice productions based on a search term
-        let pageSize = 5;
-        let currentPage = 1;
+        let pageSize = 5; // Define page size
+        let currentPage = 1; // Define current page
 
         // Function to display rice production data with pagination and search
         async function displayRiceProduction(searchTerm = null) {
             try {
+                // Simulate a delay (optional)
+                await new Promise((resolve) => setTimeout(resolve, 1000));
+
                 // Construct query parameters for pagination and search
                 let query = `?page=${currentPage}&pageSize=${pageSize}`;
                 if (searchTerm) {
-                    query += `&searchTerm=${encodeURIComponent(searchTerm)}`;
+                    query += `&search=${encodeURIComponent(searchTerm)}`;
                 }
 
                 // Fetch rice production data from the server
                 const response = await fetch(`/api/riceProductions${query}`);
                 const data = await response.json();
 
-                riceProductions = data.data;
-
                 // Clear previous results
                 $("#riceProductionTableBody").empty();
 
                 if (data.data.length > 0) {
                     data.data.forEach((riceProduction) => {
+                        // Append each row to the table body
                         $("#riceProductionTableBody").append(`
-                  <tr data-index="${riceProduction.riceProductionId}">
-                      <td>${riceProduction.barangay}</td>
-                      <td>${riceProduction.cropName}</td>
-                      <td>${riceProduction.areaPlanted}</td>
-                      <td>${riceProduction.monthHarvested}</td>
-                      <td>${riceProduction.volumeProduction.toFixed(2)}</td>
-                      <td>${riceProduction.averageYield.toFixed(2)}</td>
-                      <td>${riceProduction.season}</td>
-                      <td>${riceProduction.year}</td>
-                  </tr>
-              `);
+                            <tr data-index="${riceProduction.riceProductionId}">
+                                <td>${riceProduction.barangay}</td>
+                                <td>${riceProduction.cropName}</td>
+                                <td>${riceProduction.areaPlanted}</td>
+                                <td>${riceProduction.monthHarvested}</td>
+                                <td>${riceProduction.volumeProduction.toFixed(
+                                    2
+                                )}</td>
+                                <td>${riceProduction.averageYield.toFixed(
+                                    2
+                                )}</td>
+                                <td>${riceProduction.season}</td>
+                                <td>${riceProduction.year}</td>
+                            </tr>
+                        `);
                     });
                 } else {
+                    // Display a message if no results are found
                     $("#riceProductionTableBody").append(`
-              <tr>
-                  <td colspan="8">No results found!</td>
-              </tr>
-          `);
+                        <tr>
+                            <td colspan="8">No results found!</td>
+                        </tr>
+                    `);
                 }
 
                 // Update pagination info
@@ -228,12 +235,19 @@ function initializeMethodsRiceProduction() {
             } catch (error) {
                 console.error("Error fetching rice production:", error);
                 $("#riceProductionTableBody").append(`
-          <tr>
-              <td colspan="8">Error loading rice production data.</td>
-          </tr>
-      `);
+                    <tr>
+                        <td colspan="8">Error loading rice production data.</td>
+                    </tr>
+                `);
             }
         }
+
+        // Event listener for search input
+        $("#search").on("input", function () {
+            let searchTerm = $(this).val();
+            currentPage = 1; // Reset to the first page when searching
+            displayRiceProduction(searchTerm);
+        });
 
         // Pagination: First button click handler
         $("#firstBtn").click(function () {
@@ -260,11 +274,17 @@ function initializeMethodsRiceProduction() {
 
         // Pagination: Last button click handler
         $("#lastBtn").click(function () {
-            // Get the total pages from the backend API
-            const totalPages = $("#paginationInfo").text().split("/")[1]; // Get total pages
-            currentPage = parseInt(totalPages);
             const searchTerm = $("#search").val();
-            displayRiceProduction(searchTerm);
+            fetch(
+                `/api/riceProductions?searchTerm=${encodeURIComponent(
+                    searchTerm
+                )}&pageSize=${pageSize}`
+            )
+                .then((response) => response.json())
+                .then((data) => {
+                    currentPage = data.last_page;
+                    displayRiceProduction(searchTerm);
+                });
         });
 
         // Initial load

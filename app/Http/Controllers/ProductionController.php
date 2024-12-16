@@ -11,8 +11,8 @@ class ProductionController extends Controller
     public function index(Request $request)
     {
         $search = $request->query('search'); // Search query
-        $pageSize = $request->query('pageSize', null); // Page size, default to null if not provided
-        $page = $request->query('page', 1); // Current page
+        $pageSize = $request->query('pageSize'); // Page size, default to null if not provided
+        $page = $request->query('page'); // Current page
 
         $query = Production::query();
 
